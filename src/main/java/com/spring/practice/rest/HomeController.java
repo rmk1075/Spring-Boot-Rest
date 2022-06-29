@@ -1,15 +1,16 @@
 package com.spring.practice.rest;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/")
 public class HomeController {
 
     @GetMapping("hello")
-    public String getHome() {
-        return "index.html";
+    public ResponseEntity<String> getHome() {
+        return ResponseEntity.ok("Hello World");
     }
 }
