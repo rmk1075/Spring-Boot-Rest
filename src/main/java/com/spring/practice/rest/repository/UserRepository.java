@@ -1,24 +1,13 @@
 package com.spring.practice.rest.repository;
 
+import java.util.List;
+
 import com.spring.practice.rest.domain.User;
 
-public class UserRepository {
-    
-    public User getUser() {
-        // TODO:
-        User user = new User();
-        return user;
-    }
-
-    public void addUser(User user) {
-        // TODO:
-    }
-
-    public void updateUser(User user) {
-        // TODO:
-    }
-
-    public void removeUser(User user) {
-        // TODO:
-    }
+public interface UserRepository {
+    public User saveUser(User user);
+    public List<User> findAllUsers();
+    public User findById(String id);
+    public void updateUser(User user);
+    public void removeUser(User user);
 }
