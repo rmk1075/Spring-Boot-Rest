@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.practice.rest.domain.User;
 import com.spring.practice.rest.repository.UserRepository;
 
-@Repository
+@Repository("MockUserRepository")
 public class MockUserRepository implements UserRepository {
 
     private List<User> users = new ArrayList<>();
