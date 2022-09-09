@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.practice.rest.domain.User;
@@ -19,7 +23,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    
+
     @GetMapping("/")
     public Map<Object, Object> getUsers() {
         Map<Object, Object> map = new HashMap<>();
@@ -34,5 +38,39 @@ public class UserController {
         User user = userService.getUser(id);
         map.put("user", user);
         return map;
+    }
+
+    @PostMapping("/{id}")
+    public void addUser(@PathVariable String id, @RequestParam String name) {
+        // id validation
+        User newUser = new User(id, name);
+        User oldUser = userService.getUser(id);
+        if(oldUser != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", id, name));
+        
+        // add User
+        userService.addUser(newUser);
+    }
+
+    @PutMapping("/{id}")
+    public void updateUser(@PathVariable String id, @RequestParam String name) {
+        // id validation
+        User newUser = new User(id, name);
+        User oldUser = userService.getUser(id);
+        if(oldUser == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
+
+        // update User
+        userService.updateUser(newUser);
+
+        newUser = userService.getUser(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void removeUser(@PathVariable String id) {
+        // id validation
+        User user = userService.getUser(id);
+        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
+
+        // remove User
+        userService.removeUser(id);
     }
 }
