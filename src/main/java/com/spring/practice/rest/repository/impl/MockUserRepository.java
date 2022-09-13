@@ -51,8 +51,7 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public void removeUser(User user) {
-        String id = user.getId();
+    public void removeUser(String id) {
         for(int i = 0; i < users.size(); i++) {
             if(users.get(i).getId().equals(id)) {
                 users.remove(i);

@@ -9,5 +9,5 @@ public interface UserRepository {
     public List<User> findAllUsers();
     public User findById(String id);
     public void updateUser(User user);
-    public void removeUser(User user);
+    public void removeUser(String id);
 }

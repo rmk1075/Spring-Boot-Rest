@@ -43,9 +43,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeUser(User user) {
+    public void removeUser(String id) {
         // TODO:
-        userRepository.removeUser(user);
+        userRepository.removeUser(id);
     }
     
 }
