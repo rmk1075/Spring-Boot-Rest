@@ -1,5 +1,6 @@
 package com.spring.practice.rest.repository.impl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,42 +22,68 @@ public class MockUserRepository implements UserRepository {
 
     @Override
     public User saveUser(User user) {
-        users.add(user);
+        try {
+            users.add(user);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
         return user;
     }
 
     @Override
     public List<User> findAllUsers() {
-        return users;
+        try {
+            return users;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
     
     @Override
     public User findById(String id) {
-        for(int i = 0; i < users.size(); i++) {
-            if(users.get(i).getId().equals(id)) {
-                return users.get(i);
+        User user = null;
+        try {
+            for(int i = 0; i < users.size(); i++) {
+                if(users.get(i).getId().equals(id)) {
+                    user = users.get(i);
+                }
             }
+
+            if(user == null) throw new SQLException(String.format("No matching id. id=%s", id));
+        } catch(Exception e) {
+            throw new IllegalStateException(e);
         }
-        return null;
+        return user;
     }
 
     @Override
-    public void updateUser(User user) {
-        String id = user.getId();
-        for(int i = 0; i < users.size(); i++) {
-            if(users.get(i).getId().equals(id)) {
-                users.set(i, user);
+    public User updateUser(User user) {
+        try {
+            String id = user.getId();
+            for(int i = 0; i < users.size(); i++) {
+                if(users.get(i).getId().equals(id)) {
+                    users.set(i, user);
+                }
             }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
+        return user;
     }
 
     @Override
-    public void removeUser(String id) {
-        for(int i = 0; i < users.size(); i++) {
-            if(users.get(i).getId().equals(id)) {
-                users.remove(i);
-                break;
+    public User removeUser(String id) {
+        User user = null;
+        try {
+            for(int i = 0; i < users.size(); i++) {
+                if(users.get(i).getId().equals(id)) {
+                    user = users.remove(i);
+                    break;
+                }
             }
+        } catch(Exception e) {
+            throw new IllegalStateException(e);
         }
+        return user;
     }
 }
