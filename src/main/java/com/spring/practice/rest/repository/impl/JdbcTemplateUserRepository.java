@@ -17,8 +17,6 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static final String TABLE = "USERS";
-
     @Override
     public User saveUser(User user) {
         String sql = String.format("INSERT INTO %s VALUES (?, ?)", TABLE);
