@@ -21,13 +21,12 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public User saveUser(User user) {
+    public void saveUser(User user) {
         try {
             users.add(user);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        return user;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public User updateUser(User user) {
+    public void updateUser(User user) {
         try {
             String id = user.getId();
             for(int i = 0; i < users.size(); i++) {
@@ -68,22 +67,19 @@ public class MockUserRepository implements UserRepository {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        return user;
     }
 
     @Override
-    public User removeUser(String id) {
-        User user = null;
+    public void removeUser(String id) {
         try {
             for(int i = 0; i < users.size(); i++) {
                 if(users.get(i).getId().equals(id)) {
-                    user = users.remove(i);
+                    users.remove(i);
                     break;
                 }
             }
         } catch(Exception e) {
             throw new IllegalStateException(e);
         }
-        return user;
     }
 }
