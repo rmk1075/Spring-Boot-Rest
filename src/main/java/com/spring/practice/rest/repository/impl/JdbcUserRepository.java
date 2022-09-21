@@ -3,7 +3,6 @@ package com.spring.practice.rest.repository.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +66,7 @@ public class JdbcUserRepository implements UserRepository {
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                User user = new User(rs.getString("id"), rs.getString("name"));
-                users.add(user);
+                users.add(new User(rs.getString("id"), rs.getString("name")));
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -92,7 +90,6 @@ public class JdbcUserRepository implements UserRepository {
             rs = pstmt.executeQuery();
 
             if(rs.next()) user = new User(rs.getString("id"), rs.getString("name"));
-            else throw new SQLException(String.format("No matching id. id=%s", id));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         } finally {
