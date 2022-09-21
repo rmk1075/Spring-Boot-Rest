@@ -31,12 +31,12 @@ public class JdbcUserRepository implements UserRepository {
                 obj.close();
             }
         } catch(Exception e) {
-            // TODO:
+            e.printStackTrace();
         }
     }
 
     @Override
-    public User saveUser(User user) {
+    public void saveUser(User user) {
         String sql = String.format("INSERT INTO %s VALUES (?, ?)", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -47,11 +47,10 @@ public class JdbcUserRepository implements UserRepository {
             pstmt.setString(2, user.getName());
             pstmt.executeUpdate();
         } catch (Exception e) {
-            return null; // TODO:
+            throw new IllegalStateException(e);
         } finally {
             close(conn, pstmt);
         }
-        return user;
     }
 
     @Override
@@ -67,11 +66,10 @@ public class JdbcUserRepository implements UserRepository {
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                User user = new User(rs.getString("id"), rs.getString("name"));
-                users.add(user);
+                users.add(new User(rs.getString("id"), rs.getString("name")));
             }
         } catch (Exception e) {
-            // TODO:
+            throw new IllegalStateException(e);
         } finally {
             close(conn, pstmt, rs);
         }
@@ -91,11 +89,9 @@ public class JdbcUserRepository implements UserRepository {
             pstmt.setString(1, id);
             rs = pstmt.executeQuery();
 
-            if(rs.next()) {
-                user = new User(rs.getString("id"), rs.getString("name"));
-            }
+            if(rs.next()) user = new User(rs.getString("id"), rs.getString("name"));
         } catch (Exception e) {
-            // TODO:
+            throw new IllegalStateException(e);
         } finally {
             close(conn, pstmt, rs);
         }
@@ -114,7 +110,7 @@ public class JdbcUserRepository implements UserRepository {
             pstmt.setString(2, user.getId());
             pstmt.executeUpdate();
         } catch (Exception e) {
-            // TODO:
+            throw new IllegalStateException(e);
         } finally {
             close(conn, pstmt);
         }
@@ -131,7 +127,7 @@ public class JdbcUserRepository implements UserRepository {
             pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (Exception e) {
-            // TODO:
+            throw new IllegalStateException(e);
         } finally {
             close(conn, pstmt);
         }

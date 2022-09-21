@@ -7,7 +7,7 @@ import com.spring.practice.rest.domain.User;
 public interface UserRepository {
     public static final String TABLE = "USERS";
     
-    public User saveUser(User user);
+    public void saveUser(User user);
     public List<User> findAllUsers();
     public User findById(String id);
     public void updateUser(User user);

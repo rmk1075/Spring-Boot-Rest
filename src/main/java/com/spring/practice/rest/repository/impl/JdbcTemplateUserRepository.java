@@ -18,10 +18,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public User saveUser(User user) {
+    public void saveUser(User user) {
         String sql = String.format("INSERT INTO %s VALUES (?, ?)", TABLE);
-        jdbcTemplate.update(sql, user.getId(), user.getName());
-        return user;
+        try {
+            jdbcTemplate.update(sql, user.getId(), user.getName());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override
@@ -31,7 +34,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         try {
             users = jdbcTemplate.query(sql, userRowMapper());
         } catch(Exception e) {
-            return null;
+            throw new IllegalStateException(e);
         }
         return users;
     }
@@ -43,7 +46,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         try {
             user = jdbcTemplate.queryForObject(sql, userRowMapper());
         } catch(Exception e) {
-            return null;
+            throw new IllegalStateException(e);
         }
         return user;
     }
@@ -54,7 +57,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         try {
             jdbcTemplate.update(sql, user.getName(), user.getId());
         } catch(Exception e) {
-            // TODO:
+            throw new IllegalStateException(e);
         }
     }
 
@@ -64,7 +67,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         try {
             jdbcTemplate.update(sql, id);
         } catch(Exception e) {
-            // TODO:
+            throw new IllegalStateException(e);
         }
     }
 
