@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         try {
             user = jdbcTemplate.queryForObject(sql, userRowMapper());
         } catch(Exception e) {
-            throw new IllegalStateException(e);
+            if(!EmptyResultDataAccessException.class.isInstance(e)) throw new IllegalStateException(e);
         }
         return user;
     }
