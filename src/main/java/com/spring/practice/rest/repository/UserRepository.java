@@ -6,6 +6,7 @@ import com.spring.practice.rest.domain.User;
 
 public interface UserRepository {
     public static final String TABLE = "USERS";
+    public static final String ENTITY = "User";
     
     public void saveUser(User user);
     public List<User> findAllUsers();
