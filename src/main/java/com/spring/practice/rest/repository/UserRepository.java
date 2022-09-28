@@ -8,9 +8,9 @@ public interface UserRepository {
     public static final String TABLE = "USERS";
     public static final String ENTITY = "User";
     
-    public void saveUser(User user);
-    public List<User> findAllUsers();
+    public void save(User user);
+    public List<User> findAll();
     public User findById(String id);
-    public void updateUser(User user);
-    public void removeUser(String id);
+    public void update(User user);
+    public void remove(String id);
 }

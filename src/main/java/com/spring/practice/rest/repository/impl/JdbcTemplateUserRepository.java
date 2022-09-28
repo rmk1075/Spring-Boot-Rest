@@ -19,7 +19,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void saveUser(User user) {
+    public void save(User user) {
         String sql = String.format("INSERT INTO %s VALUES (?, ?)", TABLE);
         try {
             jdbcTemplate.update(sql, user.getId(), user.getName());
@@ -29,7 +29,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> findAll() {
         String sql = String.format("SELECT * FROM %s", TABLE);
         List<User> users = new ArrayList<>();
         try {
@@ -53,7 +53,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void update(User user) {
         String sql = String.format("UPDATE %s SET NAME=? WHERE ID=?", TABLE);
         try {
             jdbcTemplate.update(sql, user.getName(), user.getId());
@@ -63,7 +63,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void removeUser(String id) {
+    public void remove(String id) {
         String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
         try {
             jdbcTemplate.update(sql, id);

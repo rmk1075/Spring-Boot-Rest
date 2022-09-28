@@ -30,23 +30,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-        List<User> users = this.userRepository.findAllUsers();
+        List<User> users = this.userRepository.findAll();
         return users;
     }
 
     @Override
     public void addUser(User user) {
-        userRepository.saveUser(user);
+        userRepository.save(user);
     }
 
     @Override
     public void updateUser(User user) {
-        userRepository.updateUser(user);
+        userRepository.update(user);
     }
 
     @Override
     public void removeUser(String id) {
-        userRepository.removeUser(id);
+        userRepository.remove(id);
     }
     
 }
