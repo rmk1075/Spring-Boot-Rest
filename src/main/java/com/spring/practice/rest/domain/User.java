@@ -11,25 +11,34 @@ import javax.persistence.Table;
 public class User {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long uid;
+    private Long id;
 
-    private String id;
+    private String uid;
     private String name;
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", uid=" + uid + ", name=" + name + "]";
+    }
 
     // JPA Entity 에는 default constructor 가 필요하다.
     public User() {}
 
-    public User(String id, String name) {
-        this.id = id;
+    public User(String uid, String name) {
+        this.uid = uid;
         this.name = name;
     }
-    
-    public String getId() {
-        return id;
+
+    public Long getId() {
+        return this.id;
     }
     
-    public void setId(String id) {
-        this.id = id;
+    public String getUid() {
+        return this.uid;
+    }
+    
+    public void setUid(String uid) {
+        this.uid = uid;
     }
     
     public String getName() {
