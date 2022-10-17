@@ -58,7 +58,7 @@ public class UserController {
         if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
 
         // update User
-        user.setId(id);
+        user.setUid(id);
         user.setName(name);
         userService.updateUser(user);
 
@@ -72,6 +72,6 @@ public class UserController {
         if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
 
         // remove User
-        userService.removeUser(id);
+        userService.removeUser(user);
     }
 }

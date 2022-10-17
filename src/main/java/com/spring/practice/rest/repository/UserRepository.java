@@ -10,7 +10,9 @@ public interface UserRepository {
     
     public void save(User user);
     public List<User> findAll();
-    public User findById(String id);
+    public User findByUid(String uid);
     public void update(User user);
-    public void remove(String id);
+    public void delete(User user);
+    public void deleteById(Long id);
+    public void deleteByUid(String uid);
 }
