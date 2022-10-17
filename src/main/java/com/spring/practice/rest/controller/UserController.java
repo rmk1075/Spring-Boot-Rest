@@ -43,25 +43,26 @@ public class UserController {
     @PostMapping("/{id}")
     public void addUser(@PathVariable String id, @RequestParam String name) {
         // id validation
-        User newUser = new User(id, name);
         User oldUser = userService.getUser(id);
         if(oldUser != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", id, name));
         
         // add User
+        User newUser = new User(id, name);
         userService.addUser(newUser);
     }
 
     @PutMapping("/{id}")
     public void updateUser(@PathVariable String id, @RequestParam String name) {
         // id validation
-        User newUser = new User(id, name);
-        User oldUser = userService.getUser(id);
-        if(oldUser == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
+        User user = userService.getUser(id);
+        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
 
         // update User
-        userService.updateUser(newUser);
+        user.setId(id);
+        user.setName(name);
+        userService.updateUser(user);
 
-        newUser = userService.getUser(id);
+        user = userService.getUser(id);
     }
 
     @DeleteMapping("/{id}")

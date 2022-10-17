@@ -21,7 +21,7 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void save(User user) {
         try {
             users.add(user);
         } catch (Exception e) {
@@ -30,7 +30,7 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public List<User> findAll() {
         try {
             return users;
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUser(User user) {
+    public void update(User user) {
         try {
             String id = user.getId();
             for(int i = 0; i < users.size(); i++) {
@@ -70,7 +70,7 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public void removeUser(String id) {
+    public void remove(String id) {
         try {
             for(int i = 0; i < users.size(); i++) {
                 if(users.get(i).getId().equals(id)) {
