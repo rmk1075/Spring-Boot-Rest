@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User getUser(String id) {
-        User user = userRepository.findById(id);
+    public User getUser(String uid) {
+        User user = userRepository.findByUid(uid);
         return user;
     }
 
@@ -45,8 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeUser(String id) {
-        userRepository.remove(id);
+    public void removeUser(User user) {
+        userRepository.delete(user);
     }
     
 }

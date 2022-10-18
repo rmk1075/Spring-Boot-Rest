@@ -5,9 +5,9 @@ import java.util.List;
 import com.spring.practice.rest.domain.User;
 
 public interface UserService {
-    public User getUser(String id);
+    public User getUser(String uid);
     public List<User> getUsers();
     public void addUser(User user);
     public void updateUser(User user);
-    public void removeUser(String id);
+    public void removeUser(User user);
 }

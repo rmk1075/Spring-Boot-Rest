@@ -32,46 +32,46 @@ public class UserController {
         return map;
     }
     
-    @GetMapping("/{id}")
-    public Map<Object, Object> getUser(@PathVariable String id) {
+    @GetMapping("/{uid}")
+    public Map<Object, Object> getUser(@PathVariable String uid) {
         Map<Object, Object> map = new HashMap<>();
-        User user = userService.getUser(id);
+        User user = userService.getUser(uid);
         map.put("user", user);
         return map;
     }
 
-    @PostMapping("/{id}")
-    public void addUser(@PathVariable String id, @RequestParam String name) {
+    @PostMapping("/{uid}")
+    public void addUser(@PathVariable String uid, @RequestParam String name) {
         // id validation
-        User oldUser = userService.getUser(id);
-        if(oldUser != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", id, name));
+        User oldUser = userService.getUser(uid);
+        if(oldUser != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", uid, name));
         
         // add User
-        User newUser = new User(id, name);
+        User newUser = new User(uid, name);
         userService.addUser(newUser);
     }
 
-    @PutMapping("/{id}")
-    public void updateUser(@PathVariable String id, @RequestParam String name) {
+    @PutMapping("/{uid}")
+    public void updateUser(@PathVariable String uid, @RequestParam String name) {
         // id validation
-        User user = userService.getUser(id);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
+        User user = userService.getUser(uid);
+        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", uid));
 
         // update User
-        user.setId(id);
+        user.setUid(uid);
         user.setName(name);
         userService.updateUser(user);
 
-        user = userService.getUser(id);
+        user = userService.getUser(uid);
     }
 
-    @DeleteMapping("/{id}")
-    public void removeUser(@PathVariable String id) {
+    @DeleteMapping("/{uid}")
+    public void removeUser(@PathVariable String uid) {
         // id validation
-        User user = userService.getUser(id);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", id));
+        User user = userService.getUser(uid);
+        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", uid));
 
         // remove User
-        userService.removeUser(id);
+        userService.removeUser(user);
     }
 }

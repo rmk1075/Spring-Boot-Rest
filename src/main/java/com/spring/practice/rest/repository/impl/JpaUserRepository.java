@@ -27,8 +27,8 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public User findById(String id) {
-        return repository.findById(id);
+    public User findByUid(String uid) {
+        return repository.findByUid(uid);
     }
 
     @Override
@@ -37,7 +37,17 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public void remove(String id) {
-        repository.remove(id);
+    public void delete(User user) {
+        repository.delete(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
+    
+    @Override
+    public void deleteByUid(String uid) {
+        repository.deleteByUid(uid);
     }
 }

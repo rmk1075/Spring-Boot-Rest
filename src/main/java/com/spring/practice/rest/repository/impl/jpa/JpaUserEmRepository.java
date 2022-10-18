@@ -28,9 +28,9 @@ public class JpaUserEmRepository implements UserRepository {
     }
 
     @Override
-    public User findById(String id) {
-        String query = String.format("SELECT u FROM %s as u WHERE ID = :id", ENTITY);
-        List<User> result = em.createQuery(query, User.class).setParameter("id", id).getResultList();
+    public User findByUid(String uid) {
+        String query = String.format("SELECT u FROM %s as u WHERE UID = :id", ENTITY);
+        List<User> result = em.createQuery(query, User.class).setParameter("id", uid).getResultList();
         return result.size() == 0 ? null : result.get(0);
     }
 
@@ -41,8 +41,19 @@ public class JpaUserEmRepository implements UserRepository {
     }
 
     @Override
-    public void remove(String id) {
-        User user = this.findById(id);
+    public void delete(User user) {
+        em.remove(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        User user = em.find(User.class, id);
+        em.remove(user);
+    }
+
+    @Override
+    public void deleteByUid(String uid) {
+        User user = this.findByUid(uid);
         em.remove(user);
     }
 }
