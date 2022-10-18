@@ -78,8 +78,8 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUid(String id) {
-        String sql = String.format("SELECT * FROM %s WHERE ID=?", TABLE);
+    public User findByUid(String uid) {
+        String sql = String.format("SELECT * FROM %s WHERE UID=?", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -87,7 +87,7 @@ public class JdbcUserRepository implements UserRepository {
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);
+            pstmt.setString(1, uid);
             rs = pstmt.executeQuery();
 
             if(rs.next()) user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
