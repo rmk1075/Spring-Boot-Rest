@@ -27,6 +27,11 @@ public class JpaUserEmRepository implements UserRepository {
         return em.createQuery(query, User.class).getResultList();
     }
 
+    public User findById(Long id) {
+        User result = em.find(User.class, id);
+        return result;
+    }
+
     @Override
     public User findByUid(String uid) {
         String query = String.format("SELECT u FROM %s as u WHERE UID = :id", ENTITY);
