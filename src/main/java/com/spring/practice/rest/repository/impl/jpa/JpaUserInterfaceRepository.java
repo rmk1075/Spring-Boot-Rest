@@ -9,5 +9,6 @@ import com.spring.practice.rest.domain.User;
 
 @Repository("JpaUserInterfaceRepository")
 public interface JpaUserInterfaceRepository extends JpaRepository<User, Long> {
-    Optional<User> findById(String id);
+    Optional<User> findByUid(String uid);
+    Optional<User> deleteByUid(String uid);
 }

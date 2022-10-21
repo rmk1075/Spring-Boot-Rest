@@ -31,9 +31,14 @@ public class JpaUserRepository implements UserRepository {
         return repository.findAll();
     }
 
-    @Override
-    public User findById(String id) {
+    public User findById(Long id) {
         Optional<User> user = repository.findById(id);
+        return user.isPresent() ? user.get() : null;
+    }
+
+    @Override
+    public User findByUid(String uid) {
+        Optional<User> user = repository.findByUid(uid);
         return user.isPresent() ? user.get() : null;
     }
 
