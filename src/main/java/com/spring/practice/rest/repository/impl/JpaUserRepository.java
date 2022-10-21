@@ -45,10 +45,17 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public void remove(String id) {
-        Optional<User> u = repository.findById(id);
-        if(!u.isPresent()) throw new IllegalArgumentException(String.format("User is not exists. id=%s", id));
-        User old = u.get();
-        repository.delete(old);
+    public void delete(User user) {
+        repository.delete(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
+    
+    @Override
+    public void deleteByUid(String uid) {
+        repository.deleteByUid(uid);
     }
 }

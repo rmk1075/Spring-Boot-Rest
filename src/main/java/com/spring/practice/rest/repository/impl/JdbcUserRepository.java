@@ -37,14 +37,15 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        String sql = String.format("INSERT INTO %s VALUES (?, ?)", TABLE);
+        String sql = String.format("INSERT INTO %s VALUES (?, ?, ?)", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user.getId());
-            pstmt.setString(2, user.getName());
+            pstmt.setString(1, String.valueOf(user.getId()));
+            pstmt.setString(2, user.getUid());
+            pstmt.setString(3, user.getName());
             pstmt.executeUpdate();
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -66,7 +67,7 @@ public class JdbcUserRepository implements UserRepository {
             rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                users.add(new User(rs.getString("id"), rs.getString("name")));
+                users.add(new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name")));
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -77,8 +78,8 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User findById(String id) {
-        String sql = String.format("SELECT * FROM %s WHERE ID=?", TABLE);
+    public User findByUid(String uid) {
+        String sql = String.format("SELECT * FROM %s WHERE UID=?", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -86,10 +87,10 @@ public class JdbcUserRepository implements UserRepository {
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);
+            pstmt.setString(1, uid);
             rs = pstmt.executeQuery();
 
-            if(rs.next()) user = new User(rs.getString("id"), rs.getString("name"));
+            if(rs.next()) user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         } finally {
@@ -107,7 +108,7 @@ public class JdbcUserRepository implements UserRepository {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, user.getName());
-            pstmt.setString(2, user.getId());
+            pstmt.setString(2, String.valueOf(user.getId()));
             pstmt.executeUpdate();
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -117,14 +118,40 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void remove(String id) {
+    public void delete(User user) {
+        try {
+            this.deleteById(user.getId());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
         String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);
+            pstmt.setString(1, String.valueOf(id));
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt);
+        }
+    }
+
+    @Override
+    public void deleteByUid(String uid) {
+        String sql = String.format("DELETE FROM %s WHERE UID=?", TABLE);
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, uid);
             pstmt.executeUpdate();
         } catch (Exception e) {
             throw new IllegalStateException(e);

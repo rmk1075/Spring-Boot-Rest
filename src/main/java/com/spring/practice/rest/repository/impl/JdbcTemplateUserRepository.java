@@ -20,9 +20,9 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        String sql = String.format("INSERT INTO %s VALUES (?, ?)", TABLE);
+        String sql = String.format("INSERT INTO %s VALUES (?, ?, ?)", TABLE);
         try {
-            jdbcTemplate.update(sql, user.getId(), user.getName());
+            jdbcTemplate.update(sql, user.getId(), user.getUid(), user.getName());
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -41,8 +41,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
     
     @Override
-    public User findById(String id) {
-        String sql = String.format("SELECT * FROM %s WHERE ID=%s", TABLE, id);
+    public User findByUid(String uid) {
+        String sql = String.format("SELECT * FROM %s WHERE UID=%s", TABLE, uid);
         User user = null;
         try {
             user = jdbcTemplate.queryForObject(sql, userRowMapper());
@@ -63,7 +63,16 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void remove(String id) {
+    public void delete(User user) {
+        try {
+            this.deleteById(user.getId());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
         String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
         try {
             jdbcTemplate.update(sql, id);
@@ -72,9 +81,19 @@ public class JdbcTemplateUserRepository implements UserRepository {
         }
     }
 
+    @Override
+    public void deleteByUid(String uid) {
+        String sql = String.format("DELETE FROM %s WHERE UID=?", TABLE);
+        try {
+            jdbcTemplate.update(sql, uid);
+        } catch(Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            User user = new User(rs.getString("id"), rs.getString("name"));
+            User user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
             return user;
         };
     }
