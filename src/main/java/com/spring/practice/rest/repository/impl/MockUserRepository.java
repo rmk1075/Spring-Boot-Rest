@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.repository.UserRepository;
 
 @Repository("MockUserRepository")

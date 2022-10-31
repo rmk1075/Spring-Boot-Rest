@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.repository.UserRepository;
 import com.spring.practice.rest.repository.impl.jpa.JpaUserInterfaceRepository;
 

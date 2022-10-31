@@ -2,7 +2,7 @@ package com.spring.practice.rest.repository;
 
 import java.util.List;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.User;
 
 public interface UserRepository {
     public static final String TABLE = "USERS";

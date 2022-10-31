@@ -2,7 +2,7 @@ package com.spring.practice.rest.service;
 
 import java.util.List;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.User;
 
 public interface UserService {
     public User getUser(String uid);
