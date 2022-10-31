@@ -5,9 +5,14 @@ import java.util.List;
 import com.spring.practice.rest.domain.User;
 
 public interface UserRepository {
-    public User saveUser(User user);
-    public List<User> findAllUsers();
-    public User findById(String id);
-    public void updateUser(User user);
-    public void removeUser(User user);
+    public static final String TABLE = "USERS";
+    public static final String ENTITY = "User";
+    
+    public void save(User user);
+    public List<User> findAll();
+    public User findByUid(String uid);
+    public void update(User user);
+    public void delete(User user);
+    public void deleteById(Long id);
+    public void deleteByUid(String uid);
 }

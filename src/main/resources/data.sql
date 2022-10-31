@@ -1,0 +1,12 @@
+INSERT INTO USERS (UID, NAME)
+VALUES ('uid1', 'user-1')
+    ,  ('uid2', 'user-2')
+    ,  ('uid3', 'user-3')
+    ,  ('uid4', 'user-4')
+    ,  ('uid5', 'user-5')
+    ,  ('uid6', 'user-6')
+    ,  ('uid7', 'user-7')
+    ,  ('uid8', 'user-8')
+    ,  ('uid9', 'user-9')
+    ,  ('uid10', 'user-10')
+;
