@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.practice.rest.domain.user.User;
+import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.repository.UserRepository;
 import com.spring.practice.rest.service.UserService;
 
@@ -23,30 +25,36 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User getUser(String uid) {
-        User user = userRepository.findByUid(uid);
-        return user;
+    public UserInfo getUser(String uid) {
+        User result = userRepository.findByUid(uid);
+        return UserInfo.ofUser(result);
     }
 
     @Override
-    public List<User> getUsers() {
-        List<User> users = this.userRepository.findAll();
-        return users;
+    public List<UserInfo> getUsers() {
+        List<UserInfo> result = this.userRepository.findAll().stream().map(user -> UserInfo.ofUser(user)).collect(Collectors.toList());
+        return result;
     }
 
     @Override
-    public void addUser(User user) {
-        userRepository.save(user);
+    public UserInfo addUser(UserInfo userInfo) {
+        User user = User.ofUserInfo(userInfo);
+        User result = userRepository.save(user);
+        return UserInfo.ofUser(result);
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.update(user);
+    public UserInfo updateUser(UserInfo userInfo) {
+        User user = User.ofUserInfo(userInfo);
+        User result = userRepository.update(user);
+        return UserInfo.ofUser(result);
     }
 
     @Override
-    public void removeUser(User user) {
-        userRepository.delete(user);
+    public UserInfo removeUser(UserInfo userInfo) {
+        User user = User.ofUserInfo(userInfo);
+        User result = userRepository.delete(user);
+        return UserInfo.ofUser(result);
     }
     
 }

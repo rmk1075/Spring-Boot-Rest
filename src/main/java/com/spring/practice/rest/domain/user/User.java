@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.spring.practice.rest.domain.user.dto.UserInfo;
+
 @Entity
 @Table(name = "USERS")
 public class User {
@@ -53,5 +55,12 @@ public class User {
     
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static User ofUserInfo(UserInfo userInfo) {
+        User user = new User();
+        user.setUid(userInfo.getUid());
+        user.setName(userInfo.getName());
+        return user;
     }
 }

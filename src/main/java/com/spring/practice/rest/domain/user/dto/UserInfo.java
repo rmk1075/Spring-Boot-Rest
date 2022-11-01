@@ -1,5 +1,7 @@
 package com.spring.practice.rest.domain.user.dto;
 
+import com.spring.practice.rest.domain.user.User;
+
 public class UserInfo {
     
     // private Long id;
@@ -20,5 +22,12 @@ public class UserInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static UserInfo ofUser(User user) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUid(user.getUid());
+        userInfo.setName(user.getName());
+        return userInfo;
     }
 }

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.practice.rest.domain.user.User;
+import com.spring.practice.rest.domain.user.dto.UserCreate;
+import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.UserService;
 
 @RestController
@@ -27,7 +29,7 @@ public class UserController {
     @GetMapping("/")
     public Map<Object, Object> getUsers() {
         Map<Object, Object> map = new HashMap<>();
-        List<User> users = userService.getUsers();
+        List<UserInfo> users = userService.getUsers();
         map.put("users", users);
         return map;
     }
@@ -35,31 +37,32 @@ public class UserController {
     @GetMapping("/{uid}")
     public Map<Object, Object> getUser(@PathVariable String uid) {
         Map<Object, Object> map = new HashMap<>();
-        User user = userService.getUser(uid);
+        UserInfo user = userService.getUser(uid);
         map.put("user", user);
         return map;
     }
 
     @PostMapping("/{uid}")
-    public void addUser(@PathVariable String uid, @RequestParam String name) {
+    public void addUser(@PathVariable String uid, @RequestParam UserCreate userCreate) {
         // id validation
-        User oldUser = userService.getUser(uid);
-        if(oldUser != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", uid, name));
+        UserInfo oldUser = userService.getUser(userCreate.getUid());
+        if(oldUser != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", userCreate.getUid(), userCreate.getName()));
         
         // add User
-        User newUser = new User(uid, name);
+        UserInfo newUser = new UserInfo();
+        newUser.setUid(userCreate.getUid());
+        newUser.setName(userCreate.getName());
         userService.addUser(newUser);
     }
 
     @PutMapping("/{uid}")
-    public void updateUser(@PathVariable String uid, @RequestParam String name) {
+    public void updateUser(@PathVariable String uid, @RequestParam UserUpdate userUpdate) {
         // id validation
-        User user = userService.getUser(uid);
+        UserInfo user = userService.getUser(uid);
         if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", uid));
 
         // update User
-        user.setUid(uid);
-        user.setName(name);
+        user.setName(userUpdate.getName());
         userService.updateUser(user);
 
         user = userService.getUser(uid);
@@ -68,7 +71,7 @@ public class UserController {
     @DeleteMapping("/{uid}")
     public void removeUser(@PathVariable String uid) {
         // id validation
-        User user = userService.getUser(uid);
+        UserInfo user = userService.getUser(uid);
         if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", uid));
 
         // remove User
