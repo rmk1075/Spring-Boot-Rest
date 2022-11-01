@@ -25,9 +25,10 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         try {
             users.put(user.getId(), user);
+            return user;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -40,6 +41,17 @@ public class MockUserRepository implements UserRepository {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    @Override
+    public User findById(Long id) {
+        User user = null;
+        try {
+            user = users.get(id);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return user;
     }
     
     @Override
@@ -56,39 +68,43 @@ public class MockUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public User update(User user) {
         try {
             Long id = user.getId();
             if(!users.containsKey(id)) throw new SQLException(String.format("User is not exists. %s", user));
-            User old = users.put(id, user);
+            users.put(id, user);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+        return user;
     }
 
     @Override
-    public void delete(User user) {
+    public User delete(User user) {
         try {
             User old = users.remove(user.getId());
+            return old;
         } catch(Exception e) {
             throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public void deleteById(Long id) {
+    public User deleteById(Long id) {
         try {
             User old = users.remove(id);
+            return old;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
 
     @Override
-    public void deleteByUid(String uid) {
+    public User deleteByUid(String uid) {
         try {
             User user = this.findByUid(uid);
             User old = users.remove(user.getId());
+            return old;
         } catch(Exception e) {
             throw new IllegalStateException(e);
         }
