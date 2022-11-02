@@ -151,7 +151,6 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
-    @Override
     public User deleteById(Long id) {
         User user = this.findById(id);
         String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
@@ -161,25 +160,6 @@ public class JdbcUserRepository implements UserRepository {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, String.valueOf(id));
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(conn, pstmt);
-        }
-        return user;
-    }
-
-    @Override
-    public User deleteByUid(String uid) {
-        User user = this.findByUid(uid);
-        String sql = String.format("DELETE FROM %s WHERE UID=?", TABLE);
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        try {
-            conn = getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, uid);
             pstmt.executeUpdate();
         } catch (Exception e) {
             throw new IllegalStateException(e);

@@ -15,6 +15,4 @@ public interface UserRepository {
     public User findByUid(String uid);
     public User update(User user);
     public User delete(User user);
-    public User deleteById(Long id);
-    public User deleteByUid(String uid);
 }

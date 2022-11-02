@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.practice.rest.domain.user.User;
+import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.UserRepository;
 import com.spring.practice.rest.service.UserService;
 
@@ -37,23 +39,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfo addUser(UserInfo userInfo) {
-        User user = User.ofUserInfo(userInfo);
-        User result = userRepository.save(user);
+    public UserInfo createUser(UserCreate userCreate) {
+        UserInfo user = this.getUser(userCreate.getUid());
+        if(user != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", user.getUid(), user.getName()));
+
+        user = new UserInfo();
+        user.setUid(userCreate.getUid());
+        user.setName(userCreate.getName());
+        User result = userRepository.save(User.ofUserInfo(user));
         return UserInfo.ofUser(result);
     }
 
     @Override
-    public UserInfo updateUser(UserInfo userInfo) {
-        User user = User.ofUserInfo(userInfo);
-        User result = userRepository.update(user);
+    public UserInfo updateUser(String uid, UserUpdate userUpdate) {
+        UserInfo user = this.getUser(uid);
+        if(user == null) throw new RuntimeException(String.format("the user is not exists. uid=%s", uid));
+
+        user.setName(userUpdate.getName());
+        User result = userRepository.update(User.ofUserInfo(user));
         return UserInfo.ofUser(result);
     }
 
     @Override
-    public UserInfo removeUser(UserInfo userInfo) {
-        User user = User.ofUserInfo(userInfo);
-        User result = userRepository.delete(user);
+    public UserInfo deleteUser(String uid) {
+        UserInfo user = this.getUser(uid);
+        if(user == null) throw new RuntimeException(String.format("the user is not exists. uid=%s", uid));
+
+        User result = userRepository.delete(User.ofUserInfo(user));
         return UserInfo.ofUser(result);
     }
     

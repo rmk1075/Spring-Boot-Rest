@@ -55,18 +55,4 @@ public class JpaUserRepository implements UserRepository {
         repository.delete(user);
         return user;
     }
-
-    @Override
-    public User deleteById(Long id) {
-        User old = this.findById(id);
-        repository.deleteById(id);
-        return old;
-    }
-    
-    @Override
-    public User deleteByUid(String uid) {
-        User old = this.findByUid(uid);
-        repository.deleteByUid(uid);
-        return old;
-    }
 }
