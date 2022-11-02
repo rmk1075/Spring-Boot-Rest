@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo getUser(String uid) {
         User result = userRepository.findByUid(uid);
-        return UserInfo.ofUser(result);
+        return result != null ? UserInfo.ofUser(result) : null;
     }
 
     @Override
