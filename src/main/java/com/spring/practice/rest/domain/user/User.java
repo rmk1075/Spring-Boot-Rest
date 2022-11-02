@@ -1,10 +1,12 @@
-package com.spring.practice.rest.domain;
+package com.spring.practice.rest.domain.user;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.spring.practice.rest.domain.user.dto.UserInfo;
 
 @Entity
 @Table(name = "USERS")
@@ -35,6 +37,10 @@ public class User {
         this.name = name;
     }
 
+    private void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -53,5 +59,13 @@ public class User {
     
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static User ofUserInfo(UserInfo userInfo) {
+        User user = new User();
+        user.setId(userInfo.getId());
+        user.setUid(userInfo.getUid());
+        user.setName(userInfo.getName());
+        return user;
     }
 }

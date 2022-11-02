@@ -1,64 +1,53 @@
 package com.spring.practice.rest.repository.impl.jpa;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.spring.practice.rest.domain.User;
-import com.spring.practice.rest.repository.UserRepository;
+import com.spring.practice.rest.domain.user.User;
 
 @Repository("JpaUserEmRepository")
-public class JpaUserEmRepository implements UserRepository {
+public class JpaUserEmRepository {
+
+    private static final String ENTITY = "User";
 
     @Autowired
     private EntityManager em;
 
-    @Override
-    public void save(User user) {
+    public User save(User user) {
         em.persist(user);
+        return user;
     }
 
-    @Override
     public List<User> findAll() {
         String query = String.format("SELECT u FROM %s as u", ENTITY);
         return em.createQuery(query, User.class).getResultList();
     }
 
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         User result = em.find(User.class, id);
-        return result;
+        return Optional.ofNullable(result);
     }
 
-    @Override
-    public User findByUid(String uid) {
+    public Optional<User> findByUid(String uid) {
         String query = String.format("SELECT u FROM %s as u WHERE UID = :id", ENTITY);
         List<User> result = em.createQuery(query, User.class).setParameter("id", uid).getResultList();
-        return result.size() == 0 ? null : result.get(0);
+        return Optional.ofNullable(result.size() == 0 ? null : result.get(0));
     }
 
-    @Override
-    public void update(User user) {
+    public User update(User user) {
         String query = String.format("UPDATE %s as u SET NAME=:name WHERE ID = :id", ENTITY);
         em.createQuery(query).setParameter("name", user.getName()).setParameter("id", user.getId());
+        em.refresh(user);
+        return user;
     }
 
-    @Override
-    public void delete(User user) {
+    public User delete(User user) {
         em.remove(user);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        User user = em.find(User.class, id);
-        em.remove(user);
-    }
-
-    @Override
-    public void deleteByUid(String uid) {
-        User user = this.findByUid(uid);
-        em.remove(user);
+        return user;
     }
 }

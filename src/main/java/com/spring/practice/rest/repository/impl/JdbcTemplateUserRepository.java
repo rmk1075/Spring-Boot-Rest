@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.repository.UserRepository;
 
 @Repository("JdbcTemplateUserRepository")
@@ -19,13 +19,14 @@ public class JdbcTemplateUserRepository implements UserRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         String sql = String.format("INSERT INTO %s VALUES (?, ?, ?)", TABLE);
         try {
             jdbcTemplate.update(sql, user.getId(), user.getUid(), user.getName());
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+        return user;
     }
 
     @Override
@@ -41,6 +42,18 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
     
     @Override
+    public User findById(Long id) {
+        String sql = String.format("SELECT * FROM %s WHERE ID=%s", TABLE, id);
+        User user = null;
+        try {
+            user = jdbcTemplate.queryForObject(sql, userRowMapper());
+        } catch(Exception e) {
+            if(!EmptyResultDataAccessException.class.isInstance(e)) throw new IllegalStateException(e);
+        }
+        return user;
+    }
+
+    @Override
     public User findByUid(String uid) {
         String sql = String.format("SELECT * FROM %s WHERE UID=%s", TABLE, uid);
         User user = null;
@@ -53,42 +66,35 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public User update(User user) {
         String sql = String.format("UPDATE %s SET NAME=? WHERE ID=?", TABLE);
         try {
             jdbcTemplate.update(sql, user.getName(), user.getId());
         } catch(Exception e) {
             throw new IllegalStateException(e);
         }
+        return user;
     }
 
     @Override
-    public void delete(User user) {
+    public User delete(User user) {
         try {
-            this.deleteById(user.getId());
+            User old = this.deleteById(user.getId());
+            return old;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
 
-    @Override
-    public void deleteById(Long id) {
+    public User deleteById(Long id) {
+        User old = this.findById(id);
         String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
         try {
             jdbcTemplate.update(sql, id);
         } catch(Exception e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    @Override
-    public void deleteByUid(String uid) {
-        String sql = String.format("DELETE FROM %s WHERE UID=?", TABLE);
-        try {
-            jdbcTemplate.update(sql, uid);
-        } catch(Exception e) {
-            throw new IllegalStateException(e);
-        }
+        return old;
     }
 
     private RowMapper<User> userRowMapper() {

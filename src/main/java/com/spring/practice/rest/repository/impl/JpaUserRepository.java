@@ -4,26 +4,25 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.repository.UserRepository;
+import com.spring.practice.rest.repository.impl.jpa.JpaUserEmRepository;
 import com.spring.practice.rest.repository.impl.jpa.JpaUserInterfaceRepository;
 
 @Repository("JpaUserRepository")
 public class JpaUserRepository implements UserRepository {
 
     // @Autowired
-    // @Qualifier("JpaUserEmRepository")
-    // private UserRepository repository;
+    // private JpaUserEmRepository repository;
 
     @Autowired
     private JpaUserInterfaceRepository repository;
 
     @Override
-    public void save(User user) {
-        repository.save(user);
+    public User save(User user) {
+        return repository.save(user);
     }
 
     @Override
@@ -31,6 +30,7 @@ public class JpaUserRepository implements UserRepository {
         return repository.findAll();
     }
 
+    @Override
     public User findById(Long id) {
         Optional<User> user = repository.findById(id);
         return user.isPresent() ? user.get() : null;
@@ -43,24 +43,16 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public User update(User user) {
         Optional<User> u = repository.findById(user.getId());
         if(!u.isPresent()) throw new IllegalArgumentException(String.format("User is not exists. id=%s", user.getId()));
         User result = repository.save(user);
+        return result;
     }
 
     @Override
-    public void delete(User user) {
+    public User delete(User user) {
         repository.delete(user);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
-    
-    @Override
-    public void deleteByUid(String uid) {
-        repository.deleteByUid(uid);
+        return user;
     }
 }

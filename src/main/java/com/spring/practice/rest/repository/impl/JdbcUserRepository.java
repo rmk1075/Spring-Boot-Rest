@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.repository.UserRepository;
 
 @Repository("JdbcUserRepository")
@@ -36,7 +36,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         String sql = String.format("INSERT INTO %s VALUES (?, ?, ?)", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -52,6 +52,7 @@ public class JdbcUserRepository implements UserRepository {
         } finally {
             close(conn, pstmt);
         }
+        return user;
     }
 
     @Override
@@ -78,6 +79,28 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public User findById(Long id) {
+        String sql = String.format("SELECT * FROM %s WHERE ID=?", TABLE);
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        User user = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, id);
+            rs = pstmt.executeQuery();
+    
+            if(rs.next()) user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+        return user;
+    }
+
+    @Override
     public User findByUid(String uid) {
         String sql = String.format("SELECT * FROM %s WHERE UID=?", TABLE);
         Connection conn = null;
@@ -100,7 +123,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public User update(User user) {
         String sql = String.format("UPDATE %s SET NAME=? WHERE ID=?", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -115,19 +138,21 @@ public class JdbcUserRepository implements UserRepository {
         } finally {
             close(conn, pstmt);
         }
+        return user;
     }
 
     @Override
-    public void delete(User user) {
+    public User delete(User user) {
         try {
-            this.deleteById(user.getId());
+            User old = this.deleteById(user.getId());
+            return old;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
 
-    @Override
-    public void deleteById(Long id) {
+    public User deleteById(Long id) {
+        User user = this.findById(id);
         String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -141,22 +166,6 @@ public class JdbcUserRepository implements UserRepository {
         } finally {
             close(conn, pstmt);
         }
-    }
-
-    @Override
-    public void deleteByUid(String uid) {
-        String sql = String.format("DELETE FROM %s WHERE UID=?", TABLE);
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        try {
-            conn = getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, uid);
-            pstmt.executeUpdate();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(conn, pstmt);
-        }
+        return user;
     }
 }

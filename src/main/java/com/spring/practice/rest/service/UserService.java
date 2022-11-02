@@ -2,12 +2,14 @@ package com.spring.practice.rest.service;
 
 import java.util.List;
 
-import com.spring.practice.rest.domain.User;
+import com.spring.practice.rest.domain.user.dto.UserCreate;
+import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserUpdate;
 
 public interface UserService {
-    public User getUser(String uid);
-    public List<User> getUsers();
-    public void addUser(User user);
-    public void updateUser(User user);
-    public void removeUser(User user);
+    public UserInfo getUser(String uid);
+    public List<UserInfo> getUsers();
+    public UserInfo createUser(UserCreate userCreate);
+    public UserInfo updateUser(String uid, UserUpdate userUpdate);
+    public UserInfo deleteUser(String uid);
 }
