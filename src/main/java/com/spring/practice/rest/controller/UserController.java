@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.practice.rest.domain.user.dto.UserCreate;
@@ -42,13 +42,13 @@ public class UserController {
         return map;
     }
 
-    @PostMapping("/{uid}")
-    public void createUser(@PathVariable String uid, @RequestParam UserCreate userCreate) {
+    @PostMapping("/")
+    public void createUser(@RequestBody UserCreate userCreate) {
         UserInfo created = userService.createUser(userCreate);
     }
 
     @PutMapping("/{uid}")
-    public void updateUser(@PathVariable String uid, @RequestParam UserUpdate userUpdate) {
+    public void updateUser(@PathVariable String uid, @RequestBody UserUpdate userUpdate) {
         UserInfo updated = userService.updateUser(uid, userUpdate);
     }
 
