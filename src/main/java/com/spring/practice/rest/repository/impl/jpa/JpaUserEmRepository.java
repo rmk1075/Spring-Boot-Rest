@@ -50,14 +50,4 @@ public class JpaUserEmRepository {
         em.remove(user);
         return user;
     }
-
-    public User deleteById(Long id) {
-        User user = em.find(User.class, id);
-        return this.delete(user);
-    }
-
-    public User deleteByUid(String uid) {
-        Optional<User> user = this.findByUid(uid);
-        return this.delete(user.get());
-    }
 }

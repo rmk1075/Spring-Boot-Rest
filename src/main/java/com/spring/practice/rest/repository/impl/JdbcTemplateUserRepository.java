@@ -86,24 +86,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
         }
     }
 
-    @Override
     public User deleteById(Long id) {
         User old = this.findById(id);
         String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
         try {
             jdbcTemplate.update(sql, id);
-        } catch(Exception e) {
-            throw new IllegalStateException(e);
-        }
-        return old;
-    }
-
-    @Override
-    public User deleteByUid(String uid) {
-        User old = this.findByUid(uid);
-        String sql = String.format("DELETE FROM %s WHERE UID=?", TABLE);
-        try {
-            jdbcTemplate.update(sql, uid);
         } catch(Exception e) {
             throw new IllegalStateException(e);
         }

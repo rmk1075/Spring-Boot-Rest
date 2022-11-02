@@ -88,25 +88,4 @@ public class MockUserRepository implements UserRepository {
             throw new IllegalStateException(e);
         }
     }
-
-    @Override
-    public User deleteById(Long id) {
-        try {
-            User old = users.remove(id);
-            return old;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @Override
-    public User deleteByUid(String uid) {
-        try {
-            User user = this.findByUid(uid);
-            User old = users.remove(user.getId());
-            return old;
-        } catch(Exception e) {
-            throw new IllegalStateException(e);
-        }
-    }
 }
