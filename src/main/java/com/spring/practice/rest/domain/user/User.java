@@ -37,6 +37,10 @@ public class User {
         this.name = name;
     }
 
+    private void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -59,6 +63,7 @@ public class User {
 
     public static User ofUserInfo(UserInfo userInfo) {
         User user = new User();
+        user.setId(userInfo.getId());
         user.setUid(userInfo.getUid());
         user.setName(userInfo.getName());
         return user;
