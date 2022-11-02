@@ -43,38 +43,17 @@ public class UserController {
     }
 
     @PostMapping("/{uid}")
-    public void addUser(@PathVariable String uid, @RequestParam UserCreate userCreate) {
-        // id validation
-        UserInfo oldUser = userService.getUser(userCreate.getUid());
-        if(oldUser != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", userCreate.getUid(), userCreate.getName()));
-        
-        // add User
-        UserInfo newUser = new UserInfo();
-        newUser.setUid(userCreate.getUid());
-        newUser.setName(userCreate.getName());
-        userService.addUser(newUser);
+    public void createUser(@PathVariable String uid, @RequestParam UserCreate userCreate) {
+        UserInfo created = userService.createUser(userCreate);
     }
 
     @PutMapping("/{uid}")
     public void updateUser(@PathVariable String uid, @RequestParam UserUpdate userUpdate) {
-        // id validation
-        UserInfo user = userService.getUser(uid);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", uid));
-
-        // update User
-        user.setName(userUpdate.getName());
-        userService.updateUser(user);
-
-        user = userService.getUser(uid);
+        UserInfo updated = userService.updateUser(uid, userUpdate);
     }
 
     @DeleteMapping("/{uid}")
     public void removeUser(@PathVariable String uid) {
-        // id validation
-        UserInfo user = userService.getUser(uid);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. id=%s", uid));
-
-        // remove User
-        userService.removeUser(user);
+        UserInfo removed = userService.deleteUser(uid);
     }
 }
