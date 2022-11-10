@@ -19,6 +19,9 @@ import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -28,6 +31,7 @@ public class UserController {
 
     @GetMapping("/")
     public Map<Object, Object> getUsers() {
+        log.info("getUsers()");
         Map<Object, Object> map = new HashMap<>();
         List<UserInfo> users = userService.getUsers();
         map.put("users", users);
@@ -36,6 +40,7 @@ public class UserController {
     
     @GetMapping("/{uid}")
     public Map<Object, Object> getUser(@PathVariable String uid) {
+        log.info("getUsers() uid={}", uid);
         Map<Object, Object> map = new HashMap<>();
         UserInfo user = userService.getUser(uid);
         map.put("user", user);
@@ -44,16 +49,19 @@ public class UserController {
 
     @PostMapping("/")
     public void createUser(@RequestBody UserCreate userCreate) {
+        log.info("craeteUser() userCreate={}", userCreate.toString());
         UserInfo created = userService.createUser(userCreate);
     }
 
     @PutMapping("/{uid}")
     public void updateUser(@PathVariable String uid, @RequestBody UserUpdate userUpdate) {
+        log.info("updateUser() uid={}, userUpdate={}", uid, userUpdate);
         UserInfo updated = userService.updateUser(uid, userUpdate);
     }
 
     @DeleteMapping("/{uid}")
     public void removeUser(@PathVariable String uid) {
+        log.info("removeUser() uid={}", uid);
         UserInfo removed = userService.deleteUser(uid);
     }
 }

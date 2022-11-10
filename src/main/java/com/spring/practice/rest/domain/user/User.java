@@ -8,6 +8,9 @@ import javax.persistence.Table;
 
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "USERS")
 public class User {
@@ -17,11 +20,6 @@ public class User {
 
     private String uid;
     private String name;
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", uid=" + uid + ", name=" + name + "]";
-    }
 
     // JPA Entity 에는 default constructor 가 필요하다.
     public User() {}
@@ -34,30 +32,6 @@ public class User {
     public User(Long id, String uid, String name) {
         this.id = id;
         this.uid = uid;
-        this.name = name;
-    }
-
-    private void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-    
-    public String getUid() {
-        return this.uid;
-    }
-    
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
         this.name = name;
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.repository.UserRepository;
-import com.spring.practice.rest.repository.impl.jpa.JpaUserEmRepository;
+// import com.spring.practice.rest.repository.impl.jpa.JpaUserEmRepository;
 import com.spring.practice.rest.repository.impl.jpa.JpaUserInterfaceRepository;
 
 @Repository("JpaUserRepository")
