@@ -1,8 +1,6 @@
 package com.spring.practice.rest.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +17,6 @@ import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.UserService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -30,38 +25,32 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/")
-    public Map<Object, Object> getUsers() {
-        log.info("getUsers()");
-        Map<Object, Object> map = new HashMap<>();
+    public List<UserInfo> getUsers() {
         List<UserInfo> users = userService.getUsers();
-        map.put("users", users);
-        return map;
+        return users;
     }
     
     @GetMapping("/{uid}")
-    public Map<Object, Object> getUser(@PathVariable String uid) {
-        log.info("getUsers() uid={}", uid);
-        Map<Object, Object> map = new HashMap<>();
+    public UserInfo getUser(@PathVariable String uid) {
         UserInfo user = userService.getUser(uid);
-        map.put("user", user);
-        return map;
+        return user;
     }
 
     @PostMapping("/")
-    public void createUser(@RequestBody UserCreate userCreate) {
-        log.info("craeteUser() userCreate={}", userCreate.toString());
+    public UserInfo createUser(@RequestBody UserCreate userCreate) {
         UserInfo created = userService.createUser(userCreate);
+        return created;
     }
 
     @PutMapping("/{uid}")
-    public void updateUser(@PathVariable String uid, @RequestBody UserUpdate userUpdate) {
-        log.info("updateUser() uid={}, userUpdate={}", uid, userUpdate);
+    public UserInfo updateUser(@PathVariable String uid, @RequestBody UserUpdate userUpdate) {
         UserInfo updated = userService.updateUser(uid, userUpdate);
+        return updated;
     }
 
     @DeleteMapping("/{uid}")
-    public void removeUser(@PathVariable String uid) {
-        log.info("removeUser() uid={}", uid);
+    public UserInfo removeUser(@PathVariable String uid) {
         UserInfo removed = userService.deleteUser(uid);
+        return removed;
     }
 }
