@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo getUser(String uid) {
         User result = userRepository.findByUid(uid);
+        if(result == null) throw new NoSuchElementException(String.format("User[uid=%s] is not exists. uid=%s", uid));
         return result != null ? UserInfo.ofUser(result) : null;
     }
 
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo createUser(UserCreate userCreate) {
         UserInfo user = this.getUser(userCreate.getUid());
-        if(user != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", user.getUid(), user.getName()));
+        if(user != null) throw new IllegalArgumentException(String.format("User[uid=%s] is already exists.", user.getUid()));
 
         user = new UserInfo();
         user.setUid(userCreate.getUid());
@@ -53,8 +55,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo updateUser(String uid, UserUpdate userUpdate) {
         UserInfo user = this.getUser(uid);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. uid=%s", uid));
-
         user.setName(userUpdate.getName());
         User result = userRepository.update(User.ofUserInfo(user));
         return UserInfo.ofUser(result);
@@ -63,8 +63,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo deleteUser(String uid) {
         UserInfo user = this.getUser(uid);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. uid=%s", uid));
-
         User result = userRepository.delete(User.ofUserInfo(user));
         return UserInfo.ofUser(result);
     }
