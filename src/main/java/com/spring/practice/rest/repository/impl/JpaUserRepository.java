@@ -38,8 +38,8 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public User findByUid(String uid) {
-        Optional<User> user = repository.findByUid(uid);
-        return user.isPresent() ? user.get() : null;
+        User user = repository.findByUid(uid);
+        return user;
     }
 
     @Override
