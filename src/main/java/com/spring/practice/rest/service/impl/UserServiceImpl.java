@@ -28,9 +28,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public UserInfo getUser(String uid) {
-        User user = userRepository.findByUid(uid);
-        if(user == null) throw new NoSuchElementException(String.format("User[uid=%s] is not exists.", uid));
+    public UserInfo getUser(Long id) {
+        User user = userRepository.findById(id);
+        if(user == null) throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
         return UserInfo.ofUser(user);
     }
 
@@ -53,16 +53,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfo updateUser(String uid, UserUpdate userUpdate) {
-        UserInfo user = this.getUser(uid);
+    public UserInfo updateUser(Long id, UserUpdate userUpdate) {
+        UserInfo user = this.getUser(id);
         user.setName(userUpdate.getName());
         User updated = userRepository.update(User.ofUserInfo(user));
         return UserInfo.ofUser(updated);
     }
 
     @Override
-    public UserInfo deleteUser(String uid) {
-        UserInfo user = this.getUser(uid);
+    public UserInfo deleteUser(Long id) {
+        UserInfo user = this.getUser(id);
         User removed = userRepository.delete(User.ofUserInfo(user));
         return UserInfo.ofUser(removed);
     }

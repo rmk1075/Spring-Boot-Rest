@@ -26,6 +26,7 @@ import com.spring.practice.rest.service.UserService;
 @TestPropertySource("classpath:application-test.properties")
 public class UserServiceImplTest {
 
+    private Long ID;
     private final String UID = "testId";
     private final String NAME = "testName";
 
@@ -39,6 +40,7 @@ public class UserServiceImplTest {
     @BeforeEach
     void setup() {
         User user = userRepository.save(new User(UID, NAME));
+        ID = user.getId();
         System.out.println(user);
     }
 
@@ -62,7 +64,7 @@ public class UserServiceImplTest {
 
     @Test
     void testDeleteUser() {
-        UserInfo user = userService.deleteUser(UID);
+        UserInfo user = userService.deleteUser(ID);
 
         assertTrue(user.getUid().equals(UID));
         assertTrue(user.getName().equals(NAME));
@@ -72,7 +74,7 @@ public class UserServiceImplTest {
 
     @Test
     void testGetUser() {
-        UserInfo user = userService.getUser(UID);
+        UserInfo user = userService.getUser(ID);
 
         assertTrue(user.getUid().equals(UID));
         assertTrue(user.getName().equals(NAME));
@@ -91,7 +93,7 @@ public class UserServiceImplTest {
         UserUpdate update = new UserUpdate();
         update.setName("updated");
 
-        UserInfo user = userService.updateUser(UID, update);
+        UserInfo user = userService.updateUser(ID, update);
 
         assertNotNull(user);
         assertTrue(user.getUid().equals(UID));

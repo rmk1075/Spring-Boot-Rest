@@ -7,9 +7,9 @@ import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 
 public interface UserService {
-    public UserInfo getUser(String uid);
+    public UserInfo getUser(Long id);
     public List<UserInfo> getUsers();
     public UserInfo createUser(UserCreate userCreate);
-    public UserInfo updateUser(String uid, UserUpdate userUpdate);
-    public UserInfo deleteUser(String uid);
+    public UserInfo updateUser(Long id, UserUpdate userUpdate);
+    public UserInfo deleteUser(Long id);
 }
