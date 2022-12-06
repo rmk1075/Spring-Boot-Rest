@@ -1,9 +1,13 @@
 package com.spring.practice.rest.controller.exceptions;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.spring.practice.rest.common.exceptions.CustomException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,12 +24,17 @@ public class ExceptionHandlerController {
     
     @GetMapping("/RuntimeException")
     public void runtimeException() {
-        throw new RuntimeException("ExceptionController - RuntimeException");
+        throw new RuntimeException("ExceptionHandlerController - RuntimeException");
     }
 
     @GetMapping("/NullPointerException")
     public void nullPointerException() {
-        throw new NullPointerException();
+        throw new NullPointerException("ExceptionHandlerController - NullPointerException");
+    }
+
+    @GetMapping("/CustomException")
+    public void customException() throws CustomException {
+        throw new CustomException("ExceptionHandlerController - CusotomException");
     }
 
     /**
@@ -34,8 +43,9 @@ public class ExceptionHandlerController {
      * 해당 클래스에서 RuntimeException 에러 발생 시 동작하는 예외 처리 함수
      */
     @ExceptionHandler({RuntimeException.class})
-    public void runtimeExceptionHandler() {
+    public ResponseEntity<String> runtimeExceptionHandler(RuntimeException exception) {
         log.error("RuntimeException");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
     }
 
     /**
@@ -44,7 +54,19 @@ public class ExceptionHandlerController {
      * 해당 클래스에서 NullPointerException 에러 발생 시 동작하는 예외 처리 함수
      */
     @ExceptionHandler({NullPointerException.class})
-    public void nullPointerExceptionHandler() {
+    public ResponseEntity<String> nullPointerExceptionHandler(NullPointerException exception) {
         log.error("NullPointerException");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+    }
+
+    /**
+     * @ExceptionHandler({CustomException.class})
+     * 
+     * 해당 클래스에서 사용자 정의 에러인 CustomException 예외 발생 시 동작하는 예외 처리 함수
+     */
+    @ExceptionHandler({CustomException.class})
+    public ResponseEntity<String> customExceptionHandler(CustomException exception) {
+        log.error("CustomException");
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(exception.getMessage());
     }
 }
