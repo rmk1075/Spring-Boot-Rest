@@ -29,7 +29,7 @@ public class ControllerAdviceController {
 }
 
 @Slf4j
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.spring.practice.rest.controller.exceptions")
 class ControllerAdviceExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
@@ -40,7 +40,7 @@ class ControllerAdviceExceptionHandler {
 }
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.spring.practice.rest.controller.exceptions")
 class RestControllerAdviceExceptionHandler {
 
     @ExceptionHandler(IndexOutOfBoundsException.class)
