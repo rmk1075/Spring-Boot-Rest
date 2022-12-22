@@ -12,10 +12,33 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class CommonRestControllerAdvice {
+
+    private void error(HttpStatus status, Exception exception) {
+        log.error(String.format("[%s] error=%s message=%s", status.getReasonPhrase(), exception.getClass(), exception.getMessage()));
+        log.error(exception.getStackTrace().toString());
+    }
     
+    // BAD_REQUEST (400)
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<?> badRequestHandler(Exception exception) {
+        log.error(String.format("[Bad Request] error=%s message=%s", exception.getClass(), exception.getMessage()));
+        log.error(exception.getStackTrace().toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    // NOT_FOUND (404)
     @ExceptionHandler({NoSuchElementException.class})
     public ResponseEntity<?> notFoundExceptionHandler(Exception exception) {
-        log.error(String.format("error=[%s] message=%s", exception.getClass(), exception.getMessage()));
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        this.error(status, exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    // INTERNAL_SERVER_ERROR (500)
+    @ExceptionHandler({IllegalStateException.class})
+    public ResponseEntity<?> internalServerErrorHandler(Exception exception) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        this.error(status, exception);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
     }
 }
