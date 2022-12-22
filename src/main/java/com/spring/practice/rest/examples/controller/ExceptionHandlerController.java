@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.practice.rest.common.exceptions.CustomException;
+import com.spring.practice.rest.examples.common.CustomException;
 
 import lombok.extern.slf4j.Slf4j;
 
