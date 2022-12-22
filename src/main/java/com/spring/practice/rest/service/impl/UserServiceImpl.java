@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,46 +28,43 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public UserInfo getUser(String uid) {
-        User result = userRepository.findByUid(uid);
-        return result != null ? UserInfo.ofUser(result) : null;
+    public UserInfo getUser(Long id) {
+        User user = userRepository.findById(id);
+        if(user == null) throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
+        return UserInfo.ofUser(user);
     }
 
     @Override
     public List<UserInfo> getUsers() {
-        List<UserInfo> result = this.userRepository.findAll().stream().map(user -> UserInfo.ofUser(user)).collect(Collectors.toList());
-        return result;
+        List<UserInfo> users = this.userRepository.findAll().stream().map(user -> UserInfo.ofUser(user)).collect(Collectors.toList());
+        return users;
     }
 
     @Override
     public UserInfo createUser(UserCreate userCreate) {
-        UserInfo user = this.getUser(userCreate.getUid());
-        if(user != null) throw new RuntimeException(String.format("the user is already exists. id=%s name=%s", user.getUid(), user.getName()));
+        User user = userRepository.findByUid(userCreate.getUid());
+        if(user != null) throw new IllegalArgumentException(String.format("User[uid=%s] is already exists.", user.getUid()));
 
-        user = new UserInfo();
-        user.setUid(userCreate.getUid());
-        user.setName(userCreate.getName());
-        User result = userRepository.save(User.ofUserInfo(user));
-        return UserInfo.ofUser(result);
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUid(userCreate.getUid());
+        userInfo.setName(userCreate.getName());
+        User created = userRepository.save(User.ofUserInfo(userInfo));
+        return UserInfo.ofUser(created);
     }
 
     @Override
-    public UserInfo updateUser(String uid, UserUpdate userUpdate) {
-        UserInfo user = this.getUser(uid);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. uid=%s", uid));
-
+    public UserInfo updateUser(Long id, UserUpdate userUpdate) {
+        UserInfo user = this.getUser(id);
         user.setName(userUpdate.getName());
-        User result = userRepository.update(User.ofUserInfo(user));
-        return UserInfo.ofUser(result);
+        User updated = userRepository.update(User.ofUserInfo(user));
+        return UserInfo.ofUser(updated);
     }
 
     @Override
-    public UserInfo deleteUser(String uid) {
-        UserInfo user = this.getUser(uid);
-        if(user == null) throw new RuntimeException(String.format("the user is not exists. uid=%s", uid));
-
-        User result = userRepository.delete(User.ofUserInfo(user));
-        return UserInfo.ofUser(result);
+    public UserInfo deleteUser(Long id) {
+        UserInfo user = this.getUser(id);
+        User removed = userRepository.delete(User.ofUserInfo(user));
+        return UserInfo.ofUser(removed);
     }
     
 }
