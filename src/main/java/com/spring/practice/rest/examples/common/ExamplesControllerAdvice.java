@@ -1,4 +1,4 @@
-package com.spring.practice.rest.controller.exceptions;
+package com.spring.practice.rest.examples.common;
 
 import java.util.NoSuchElementException;
 
@@ -6,30 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
 
-@RestController
-@RequestMapping("/exceptions/controller-advice")
-public class ControllerAdviceController {
-    
-    @GetMapping("NoSuchElementException")
-    public void noSuchElementException() {
-        throw new NoSuchElementException("ControllerAdviceController - NoSuchElementException");
-    }
-
-    @GetMapping("IndexOutOfBoundsException")
-    public void indexOutOfBoundsException() {
-        throw new IndexOutOfBoundsException("ControllerAdviceController - IndexOutOfBoundsException");
-    }
-}
-
 @Slf4j
-@ControllerAdvice(basePackages = "com.spring.practice.rest.controller.exceptions")
+@ControllerAdvice(basePackages = "com.spring.practice.rest.examples")
 class ControllerAdviceExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
@@ -40,7 +22,7 @@ class ControllerAdviceExceptionHandler {
 }
 
 @Slf4j
-@RestControllerAdvice(basePackages = "com.spring.practice.rest.controller.exceptions")
+@RestControllerAdvice(basePackages = "com.spring.practice.rest.examples")
 class RestControllerAdviceExceptionHandler {
 
     @ExceptionHandler(IndexOutOfBoundsException.class)

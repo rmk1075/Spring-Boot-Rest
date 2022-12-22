@@ -1,4 +1,6 @@
-package com.spring.practice.rest.controller.exceptions;
+package com.spring.practice.rest.examples.controller;
+
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,16 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/exceptions/exception-handler")
 public class ExceptionHandlerController {
+
+    @GetMapping("NoSuchElementException")
+    public void noSuchElementException() {
+        throw new NoSuchElementException("ControllerAdviceController - NoSuchElementException");
+    }
+
+    @GetMapping("IndexOutOfBoundsException")
+    public void indexOutOfBoundsException() {
+        throw new IndexOutOfBoundsException("ControllerAdviceController - IndexOutOfBoundsException");
+    }
     
     @GetMapping("/RuntimeException")
     public void runtimeException() {
