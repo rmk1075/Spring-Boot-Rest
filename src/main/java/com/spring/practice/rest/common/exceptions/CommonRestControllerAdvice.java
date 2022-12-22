@@ -14,15 +14,22 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonRestControllerAdvice {
 
     private void error(HttpStatus status, Exception exception) {
-        log.error(String.format("[%s] error=%s message=%s", status.getReasonPhrase(), exception.getClass(), exception.getMessage()));
-        log.error(exception.getStackTrace().toString());
+        log.error(
+            String.format(
+                "[%s] error=%s message=%s",
+                status.getReasonPhrase(),
+                exception.getClass(),
+                exception.getMessage()
+            ),
+            exception
+        );
     }
     
     // BAD_REQUEST (400)
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<?> badRequestHandler(Exception exception) {
-        log.error(String.format("[Bad Request] error=%s message=%s", exception.getClass(), exception.getMessage()));
-        log.error(exception.getStackTrace().toString());
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        this.error(status, exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
