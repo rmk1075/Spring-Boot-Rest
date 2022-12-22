@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -59,7 +60,7 @@ public class MockUserRepository implements UserRepository {
         User user = null;
         try {
             Optional<User> result = users.values().stream().filter(u -> u.getUid().equals(uid)).findFirst();
-            if(result == null) throw new SQLException(String.format("No matching id. uid=%s", uid));
+            if(result == null) throw new NoSuchElementException(String.format("No matching id. uid=%s", uid));
             else user = result.get();
         } catch(Exception e) {
             throw new IllegalStateException(e);
@@ -71,7 +72,7 @@ public class MockUserRepository implements UserRepository {
     public User update(User user) {
         try {
             Long id = user.getId();
-            if(!users.containsKey(id)) throw new SQLException(String.format("User is not exists. %s", user));
+            if(!users.containsKey(id)) throw new NoSuchElementException(String.format("User is not exists. %s", user));
             users.put(id, user);
         } catch (Exception e) {
             throw new IllegalStateException(e);
