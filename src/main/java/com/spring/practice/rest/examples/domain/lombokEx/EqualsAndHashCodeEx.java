@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.lombokEx;
+package com.spring.practice.rest.examples.domain.lombokEx;
 
 import lombok.EqualsAndHashCode;
 

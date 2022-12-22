@@ -1,4 +1,4 @@
-package com.spring.practice.rest.service;
+package com.spring.practice.rest.examples.service;
 
 import org.springframework.stereotype.Service;
 

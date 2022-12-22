@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import com.spring.practice.rest.examples.service.TestService;
+
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 public class TestServiceTest {
