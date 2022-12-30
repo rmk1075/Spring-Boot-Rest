@@ -1,7 +1,4 @@
-package com.spring.practice.rest.domain.lombokEx;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.spring.practice.rest.examples.domain.lombokEx;
 
 import lombok.extern.slf4j.Slf4j;
 

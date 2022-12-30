@@ -1,4 +1,4 @@
-package com.spring.practice.rest.controller;
+package com.spring.practice.rest.examples.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

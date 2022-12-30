@@ -1,4 +1,4 @@
-package com.spring.practice.rest.controller;
+package com.spring.practice.rest.examples.controller;
 
 import java.util.HashMap;
 import java.util.Map;
