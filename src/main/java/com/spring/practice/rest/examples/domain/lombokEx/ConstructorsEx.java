@@ -1,13 +1,17 @@
 package com.spring.practice.rest.examples.domain.lombokEx;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 public class ConstructorsEx {}
 
 @NoArgsConstructor
+@Setter
+@Getter
 class NoArgsConstructorEx {
 
     private Long id;
@@ -17,6 +21,8 @@ class NoArgsConstructorEx {
 
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 class VariableArgsConstructorEx {
 
     @NonNull

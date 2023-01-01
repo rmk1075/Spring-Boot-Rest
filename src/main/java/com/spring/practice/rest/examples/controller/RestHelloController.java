@@ -3,9 +3,12 @@ package com.spring.practice.rest.examples.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -42,6 +45,11 @@ public class RestHelloController {
 
     @GetMapping("hello")
     public ResponseEntity<String> getHello() {
+        return new ResponseEntity<>("hello", HttpStatus.OK);
+    }
+
+    @GetMapping("helloOK")
+    public ResponseEntity<String> getHelloOk() {
         return ResponseEntity.ok("hello");
     }
 
@@ -50,5 +58,22 @@ public class RestHelloController {
         Map<Object, Object> map = new HashMap<>();
         map.put("content", "hello");
         return  map;
+    }
+
+    @GetMapping("headers")
+    public ResponseEntity<String> getWithHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Custom-Header", "headers");
+        return new ResponseEntity<>("with custom headers", headers, HttpStatus.OK);
+    }
+
+    @GetMapping("notFound")
+    public ResponseEntity<String> getNotFound() {
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("getWithParam")
+    public ResponseEntity<String> getWithParams(@RequestParam String param) {
+        return ResponseEntity.ok().body(param);
     }
 }
