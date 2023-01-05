@@ -52,8 +52,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public UserInfo removeUser(@PathVariable Long id) {
-        UserInfo removed = userService.deleteUser(id);
-        return removed;
+    public UserInfo deleteUser(@PathVariable Long id) {
+        UserInfo deleted = userService.deleteUser(id);
+        return deleted;
     }
 }

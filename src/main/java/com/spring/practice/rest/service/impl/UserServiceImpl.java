@@ -63,8 +63,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo deleteUser(Long id) {
         UserInfo user = this.getUser(id);
-        User removed = userRepository.delete(User.ofUserInfo(user));
-        return UserInfo.ofUser(removed);
+        User deleted = userRepository.delete(User.ofUserInfo(user));
+        return UserInfo.ofUser(deleted);
     }
     
 }
