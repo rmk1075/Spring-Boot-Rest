@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,8 @@ public class UserServiceImpl implements UserService {
     @Qualifier("JpaUserRepository")
     private UserRepository userRepository;
 
-    private CustomMapper mapper = Mappers.getMapper(CustomMapper.class);
+    @Autowired
+    private CustomMapper mapper;
 
     @Override
     public UserInfo getUser(Long id) {
