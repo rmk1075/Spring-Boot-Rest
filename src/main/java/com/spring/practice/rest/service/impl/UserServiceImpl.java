@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.practice.rest.common.CustomMapper;
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
@@ -27,16 +29,18 @@ public class UserServiceImpl implements UserService {
     @Qualifier("JpaUserRepository")
     private UserRepository userRepository;
 
+    private CustomMapper mapper = Mappers.getMapper(CustomMapper.class);
+
     @Override
     public UserInfo getUser(Long id) {
         User user = userRepository.findById(id);
         if(user == null) throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
-        return UserInfo.ofUser(user);
+        return mapper.userToUserInfo(user);
     }
 
     @Override
     public List<UserInfo> getUsers() {
-        List<UserInfo> users = this.userRepository.findAll().stream().map(user -> UserInfo.ofUser(user)).collect(Collectors.toList());
+        List<UserInfo> users = this.userRepository.findAll().stream().map(user -> mapper.userToUserInfo(user)).collect(Collectors.toList());
         return users;
     }
 
@@ -49,7 +53,7 @@ public class UserServiceImpl implements UserService {
         userInfo.setUid(userCreate.getUid());
         userInfo.setName(userCreate.getName());
         User created = userRepository.save(User.ofUserInfo(userInfo));
-        return UserInfo.ofUser(created);
+        return mapper.userToUserInfo(created);
     }
 
     @Override
@@ -57,14 +61,14 @@ public class UserServiceImpl implements UserService {
         UserInfo user = this.getUser(id);
         user.setName(userUpdate.getName());
         User updated = userRepository.update(User.ofUserInfo(user));
-        return UserInfo.ofUser(updated);
+        return mapper.userToUserInfo(updated);
     }
 
     @Override
     public UserInfo deleteUser(Long id) {
         UserInfo user = this.getUser(id);
         User deleted = userRepository.delete(User.ofUserInfo(user));
-        return UserInfo.ofUser(deleted);
+        return mapper.userToUserInfo(deleted);
     }
     
 }
