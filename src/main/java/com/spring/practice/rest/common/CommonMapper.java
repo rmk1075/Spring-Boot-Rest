@@ -7,7 +7,7 @@ import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface CustomMapper {
+public interface CommonMapper {
     UserInfo userToUserInfo(User user);
     User userInfoToUser(UserInfo userInfo);
 }
