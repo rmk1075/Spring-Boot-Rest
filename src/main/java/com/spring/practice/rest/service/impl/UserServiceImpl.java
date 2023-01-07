@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = new UserInfo();
         userInfo.setUid(userCreate.getUid());
         userInfo.setName(userCreate.getName());
-        User created = userRepository.save(User.ofUserInfo(userInfo));
+        User created = userRepository.save(mapper.userInfoToUser(userInfo));
         return mapper.userToUserInfo(created);
     }
 
@@ -60,14 +60,14 @@ public class UserServiceImpl implements UserService {
     public UserInfo updateUser(Long id, UserUpdate userUpdate) {
         UserInfo user = this.getUser(id);
         user.setName(userUpdate.getName());
-        User updated = userRepository.update(User.ofUserInfo(user));
+        User updated = userRepository.update(mapper.userInfoToUser(user));
         return mapper.userToUserInfo(updated);
     }
 
     @Override
     public UserInfo deleteUser(Long id) {
         UserInfo user = this.getUser(id);
-        User deleted = userRepository.delete(User.ofUserInfo(user));
+        User deleted = userRepository.delete(mapper.userInfoToUser(user));
         return mapper.userToUserInfo(deleted);
     }
     
