@@ -22,6 +22,7 @@ public class CustomMapperTest {
         Source source = new Source();
         source.setId("testId");
         source.setName("testName");
+        source.setSource("value");
 
         Dest dest = mapper.sourceToDest(source);
 

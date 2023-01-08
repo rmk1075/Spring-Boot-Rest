@@ -8,4 +8,6 @@ import lombok.Setter;
 public class Source {
     private String id;
     private String name;
+
+    private String source;
 }
