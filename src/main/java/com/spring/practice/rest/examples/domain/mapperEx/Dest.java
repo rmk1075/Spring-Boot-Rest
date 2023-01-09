@@ -10,4 +10,6 @@ public class Dest {
     private String name;
 
     private String dest;
+
+    private B value;
 }

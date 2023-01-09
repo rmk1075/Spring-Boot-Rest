@@ -5,11 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Source {
-    private String id;
-    private String name;
-
-    private String source;
-
-    private A value;
+public class A {
+    private String value;
 }

@@ -4,6 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+import com.spring.practice.rest.examples.domain.mapperEx.A;
+import com.spring.practice.rest.examples.domain.mapperEx.B;
 import com.spring.practice.rest.examples.domain.mapperEx.Dest;
 import com.spring.practice.rest.examples.domain.mapperEx.Source;
 
@@ -14,4 +16,7 @@ public interface CustomMapper {
 
     @Mapping(target = "source", source = "dest.dest")
     public Source destToSource(Dest dest);
+
+    public B aToB(A value);
+    public A bToA(B value);
 }

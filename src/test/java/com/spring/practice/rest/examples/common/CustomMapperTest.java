@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import com.spring.practice.rest.examples.domain.mapperEx.A;
 import com.spring.practice.rest.examples.domain.mapperEx.Dest;
 import com.spring.practice.rest.examples.domain.mapperEx.Source;
 
@@ -23,6 +24,10 @@ public class CustomMapperTest {
         source.setId("testId");
         source.setName("testName");
         source.setSource("value");
+
+        A value = new A();
+        value.setValue("value");
+        source.setValue(value);
 
         Dest dest = mapper.sourceToDest(source);
 
