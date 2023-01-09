@@ -2,6 +2,10 @@ package com.spring.practice.rest.examples.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,8 +22,10 @@ public class CustomMapperTest {
     @Autowired
     CustomMapper mapper;
 
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     @Test
-    public void testCustomMapper() {
+    public void testCustomMapper() throws ParseException {
         Source source = new Source();
         source.setId("testId");
         source.setName("testName");
@@ -29,14 +35,23 @@ public class CustomMapperTest {
         value.setValue("value");
         source.setValue(value);
 
+        Date date = new Date();
+        source.setDate(date);
+
         Dest dest = mapper.sourceToDest(source);
+
+        SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 
         assertEquals(source.getId(), dest.getId());
         assertEquals(source.getName(), dest.getName());
+        assertEquals(source.getValue().getValue(), dest.getValue().getValue());
+        assertEquals(source.getDate().toString(), format.parse(dest.getDateStr()).toString());
         
         source = mapper.destToSource(dest);
         
         assertEquals(source.getId(), dest.getId());
         assertEquals(source.getName(), dest.getName());
+        assertEquals(source.getValue().getValue(), dest.getValue().getValue());
+        assertEquals(source.getDate().toString(), format.parse(dest.getDateStr()).toString());
     }
 }

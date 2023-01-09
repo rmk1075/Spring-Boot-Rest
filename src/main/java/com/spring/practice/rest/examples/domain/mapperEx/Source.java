@@ -1,5 +1,7 @@
 package com.spring.practice.rest.examples.domain.mapperEx;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,4 +14,6 @@ public class Source {
     private String source;
 
     private A value;
+
+    private Date date;
 }
