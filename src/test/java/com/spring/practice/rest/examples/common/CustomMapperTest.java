@@ -38,7 +38,10 @@ public class CustomMapperTest {
         Date date = new Date();
         source.setDate(date);
 
+        System.out.println(source.toString());
+
         Dest dest = mapper.sourceToDest(source);
+        System.out.println(dest.toString());
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 
@@ -48,6 +51,7 @@ public class CustomMapperTest {
         assertEquals(source.getDate().toString(), format.parse(dest.getDateStr()).toString());
         
         source = mapper.destToSource(dest);
+        System.out.println(source.toString());
         
         assertEquals(source.getId(), dest.getId());
         assertEquals(source.getName(), dest.getName());

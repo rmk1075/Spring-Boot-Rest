@@ -4,9 +4,11 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Source {
     private String id;
     private String name;
@@ -16,4 +18,6 @@ public class Source {
     private A value;
 
     private Date date;
+
+    private String unmappedSource;
 }
