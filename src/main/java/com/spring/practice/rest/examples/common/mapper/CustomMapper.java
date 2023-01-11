@@ -1,4 +1,4 @@
-package com.spring.practice.rest.examples.common;
+package com.spring.practice.rest.examples.common.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -26,3 +26,4 @@ public interface CustomMapper {
     public B aToB(A value);
     public A bToA(B value);
 }
+
