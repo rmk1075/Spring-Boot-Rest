@@ -1,4 +1,4 @@
-package com.spring.practice.rest.examples.common;
+package com.spring.practice.rest.examples.common.objectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import com.spring.practice.rest.examples.common.mapper.CustomMapper;
 import com.spring.practice.rest.examples.domain.mapperEx.A;
 import com.spring.practice.rest.examples.domain.mapperEx.Dest;
 import com.spring.practice.rest.examples.domain.mapperEx.Source;
@@ -24,7 +25,8 @@ public class CustomMapperTest {
     @Autowired
     CustomMapper mapstructMapper;
 
-    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    ModelMapper modelMapper;
 
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
