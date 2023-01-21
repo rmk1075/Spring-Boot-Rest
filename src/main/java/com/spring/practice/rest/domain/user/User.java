@@ -34,12 +34,4 @@ public class User {
         this.uid = uid;
         this.name = name;
     }
-
-    public static User ofUserInfo(UserInfo userInfo) {
-        User user = new User();
-        user.setId(userInfo.getId());
-        user.setUid(userInfo.getUid());
-        user.setName(userInfo.getName());
-        return user;
-    }
 }
