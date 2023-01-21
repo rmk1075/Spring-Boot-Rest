@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.spring.practice.rest.domain.user.dto.UserInfo;
-
 import lombok.Data;
 
 @Data
