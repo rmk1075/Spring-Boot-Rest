@@ -15,7 +15,7 @@ import com.spring.practice.rest.service.StorageService;
 @Service
 public class StorageServiceImpl implements StorageService {
 
-    private final String PATH = System.getProperty("user.dir") + "/output";
+    private static final String PATH = System.getProperty("user.dir") + "/resources/storage";
 
     StorageServiceImpl() throws IOException {
         if(!Files.exists(Path.of(PATH))) Files.createDirectories(Path.of(PATH));
