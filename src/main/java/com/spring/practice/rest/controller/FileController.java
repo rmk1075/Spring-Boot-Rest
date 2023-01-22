@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.practice.rest.service.StorageService;
 
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/files")
 public class FileController {
 
     @Autowired
