@@ -22,7 +22,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public List<String> add(MultipartFile[] files) throws IOException {
+    public List<String> create(MultipartFile[] files) throws IOException {
         List<String> locations = new LinkedList<>();
         for(MultipartFile file : files) {
             String name = file.getOriginalFilename();

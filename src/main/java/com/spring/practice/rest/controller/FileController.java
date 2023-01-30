@@ -23,7 +23,7 @@ public class FileController {
 
     @PostMapping("/")
     public List<String> uploadFile(@RequestPart MultipartFile[] files) throws IOException {
-        List<String> result = storageService.add(files);
+        List<String> result = storageService.create(files);
         return result;
     }
 

@@ -6,6 +6,6 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
-    public List<String> add(MultipartFile[] files) throws IOException;
+    public List<String> create(MultipartFile[] files) throws IOException;
     public void delete(String path) throws IOException;
 }

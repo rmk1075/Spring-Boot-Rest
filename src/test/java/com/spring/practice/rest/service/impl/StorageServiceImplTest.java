@@ -55,7 +55,7 @@ public class StorageServiceImplTest {
         content = Files.readAllBytes(Paths.get(TEST_FILE_PATH));
 
         MultipartFile multipartFile = new MockMultipartFile(name, originalFileName, contentType, content);
-        List<String> locations = storageService.add(new MultipartFile[]{multipartFile});
+        List<String> locations = storageService.create(new MultipartFile[]{multipartFile});
 
         for(String location : locations) {
             System.out.println(location);
