@@ -49,9 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUid(userCreate.getUid());
         if(user != null) throw new IllegalArgumentException(String.format("User[uid=%s] is already exists.", user.getUid()));
 
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUid(userCreate.getUid());
-        userInfo.setName(userCreate.getName());
+        UserInfo userInfo = UserInfo.builder().uid(userCreate.getUid()).name(userCreate.getName()).build();
         User created = userRepository.save(mapper.userInfoToUser(userInfo));
         return mapper.userToUserInfo(created);
     }
