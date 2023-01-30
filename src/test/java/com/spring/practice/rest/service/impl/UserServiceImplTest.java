@@ -55,7 +55,7 @@ public class UserServiceImplTest {
     void testCreateUser() {
         String uid = "testtest";
         String name = "created";
-        UserCreate create = new UserCreate(uid, name);
+        UserCreate create = UserCreate.builder().uid(uid).name(name).build();
         UserInfo user = userService.createUser(create);
 
         assertTrue(user.getUid().equals(create.getUid()));
