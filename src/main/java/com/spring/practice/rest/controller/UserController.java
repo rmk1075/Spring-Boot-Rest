@@ -20,7 +20,7 @@ import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
