@@ -1,4 +1,5 @@
-package com.spring.practice.rest.service.impl;
+
+package com.spring.practice.rest.service.user.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,7 +16,7 @@ import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
-import com.spring.practice.rest.service.UserService;
+import com.spring.practice.rest.service.user.UserService;
 
 @Service
 @Transactional

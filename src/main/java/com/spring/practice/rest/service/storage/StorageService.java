@@ -1,4 +1,4 @@
-package com.spring.practice.rest.service;
+package com.spring.practice.rest.service.storage;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.spring.practice.rest.service.impl;
+package com.spring.practice.rest.service.storage.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.practice.rest.service.StorageService;
+import com.spring.practice.rest.service.storage.StorageService;
 
 @Service
 public class StorageServiceImpl implements StorageService {

@@ -1,4 +1,4 @@
-package com.spring.practice.rest.service;
+package com.spring.practice.rest.service.user;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.spring.practice.rest.service.impl;
+package com.spring.practice.rest.service.storage.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
