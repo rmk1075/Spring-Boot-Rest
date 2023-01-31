@@ -19,7 +19,7 @@ import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
-import com.spring.practice.rest.repository.UserRepository;
+import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.UserService;
 
 @SpringBootTest

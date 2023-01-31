@@ -1,4 +1,4 @@
-package com.spring.practice.rest.repository.impl.jpa;
+package com.spring.practice.rest.repository.user.impl.jpa;
 
 import java.util.List;
 import java.util.Optional;

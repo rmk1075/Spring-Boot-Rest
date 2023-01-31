@@ -1,4 +1,4 @@
-package com.spring.practice.rest.repository.impl;
+package com.spring.practice.rest.repository.user.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.repository.UserRepository;
+import com.spring.practice.rest.repository.user.UserRepository;
 
 @Repository("JdbcUserRepository")
 public class JdbcUserRepository implements UserRepository {

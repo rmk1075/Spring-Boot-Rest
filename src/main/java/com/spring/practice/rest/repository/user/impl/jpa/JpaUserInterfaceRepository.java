@@ -1,4 +1,4 @@
-package com.spring.practice.rest.repository.impl.jpa;
+package com.spring.practice.rest.repository.user.impl.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

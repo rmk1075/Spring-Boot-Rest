@@ -1,4 +1,4 @@
-package com.spring.practice.rest.repository.impl;
+package com.spring.practice.rest.repository.user.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.repository.UserRepository;
-// import com.spring.practice.rest.repository.impl.jpa.JpaUserEmRepository;
-import com.spring.practice.rest.repository.impl.jpa.JpaUserInterfaceRepository;
+import com.spring.practice.rest.repository.user.UserRepository;
+import com.spring.practice.rest.repository.user.impl.jpa.JpaUserInterfaceRepository;
 
 @Repository("JpaUserRepository")
 public class JpaUserRepository implements UserRepository {

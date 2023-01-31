@@ -1,4 +1,4 @@
-package com.spring.practice.rest.repository.impl;
+package com.spring.practice.rest.repository.user.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.repository.UserRepository;
+import com.spring.practice.rest.repository.user.UserRepository;
 
 @Repository("MockUserRepository")
 public class MockUserRepository implements UserRepository {
