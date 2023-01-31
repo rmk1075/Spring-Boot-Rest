@@ -7,5 +7,5 @@ import com.spring.practice.rest.domain.dataset.Dataset;
 
 @Repository("DatasetRepository")
 public interface DatasetRepository extends JpaRepository<Dataset, Long> {
-
+    public Dataset findByName(String name);
 }
