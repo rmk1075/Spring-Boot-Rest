@@ -18,19 +18,19 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
-public class FileSystemServiceTest {
+public class FileSystemAdapterTest {
 
     private final String TEST_FILE_NAME = "test.txt";
     private final String CONTENT = "Hello World";
     private String TEST_FILE_PATH;
 
     @Autowired
-    FileSystemService fileSystemService;
+    FileSystemAdapter fileSystemAdapter;
 
     @BeforeEach
     void setup() throws IOException, URISyntaxException {
         String url = String.join("/", "file://", TEST_FILE_NAME);
-        String path = fileSystemService.create(url, CONTENT.getBytes());
+        String path = fileSystemAdapter.create(url, CONTENT.getBytes());
         TEST_FILE_PATH = path;
     }
 
@@ -42,8 +42,8 @@ public class FileSystemServiceTest {
     @Test
     void testCreate() throws URISyntaxException, IOException {
         String url = "file:///temp.txt";
-        byte[] bytes = fileSystemService.get(String.format(String.join("/", "file://", TEST_FILE_NAME)));
-        String path = fileSystemService.create(url, bytes);
+        byte[] bytes = fileSystemAdapter.get(String.format(String.join("/", "file://", TEST_FILE_NAME)));
+        String path = fileSystemAdapter.create(url, bytes);
 
         String contents = Files.readString(Path.of(path));
         assertEquals(contents, CONTENT);
@@ -54,17 +54,17 @@ public class FileSystemServiceTest {
     @Test
     void testDelete() throws URISyntaxException, IOException {
         String url = "file:///temp.txt";
-        byte[] bytes = fileSystemService.get(String.format(String.join("/", "file://", TEST_FILE_NAME)));
-        String path = fileSystemService.create(url, bytes);
+        byte[] bytes = fileSystemAdapter.get(String.format(String.join("/", "file://", TEST_FILE_NAME)));
+        String path = fileSystemAdapter.create(url, bytes);
 
-        fileSystemService.delete(url);
+        fileSystemAdapter.delete(url);
         File file = new File(path);
         assertFalse(file.exists());
     }
 
     @Test
     void testGet() throws URISyntaxException, IOException {
-        byte[] bytes = fileSystemService.get(String.format(String.join("/", "file://", TEST_FILE_NAME)));
+        byte[] bytes = fileSystemAdapter.get(String.format(String.join("/", "file://", TEST_FILE_NAME)));
         assertEquals(new String(bytes), CONTENT);
     }
 }
