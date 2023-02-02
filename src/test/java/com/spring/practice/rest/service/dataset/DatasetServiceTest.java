@@ -3,13 +3,20 @@ package com.spring.practice.rest.service.dataset;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
@@ -26,6 +33,19 @@ public class DatasetServiceTest {
     DatasetRepository datasetRepository;
 
     private final static String NAME = "dataset";
+
+    private static final String TEST_FILE_PATH = System.getProperty("user.dir") + "/test.txt";
+    private static final String CONTENT = "Hello World";
+
+    @BeforeAll
+    static void setupAll() throws IOException, URISyntaxException {
+        Files.write(Path.of(TEST_FILE_PATH), CONTENT.getBytes());
+    }
+
+    @AfterAll
+    static void tearDownAll() throws IOException {
+        Files.deleteIfExists(Path.of(TEST_FILE_PATH));
+    }
 
     @AfterEach
     void tearDown() {
@@ -47,7 +67,7 @@ public class DatasetServiceTest {
     }
 
     @Test
-    void testDeleteDataset() throws IOException {
+    void testDeleteDataset() throws IOException, IllegalArgumentException, URISyntaxException {
         DatasetInfo created = this.createDataset();
         DatasetInfo deleted = datasetService.deleteDataset(created.getId());
         assertEquals(created.getId(), deleted.getId());
@@ -77,5 +97,17 @@ public class DatasetServiceTest {
         assertEquals(created.getName(), dataset.getName());
         assertEquals(created.getPath(), dataset.getPath());
         assertEquals(created.getSize(), dataset.getSize());
+    }
+
+    @Test
+    void testUploadDataset() throws IOException, IllegalArgumentException, URISyntaxException {
+        DatasetInfo created = this.createDataset();
+
+        MultipartFile[] files = new MultipartFile[]{new MockMultipartFile(TEST_FILE_PATH, CONTENT.getBytes())};
+        DatasetInfo dataset = datasetService.uploadDataset(created.getId(), files);
+        System.out.println(dataset.toString());
+        assertEquals(dataset.getSize(), files.length);
+
+        dataset = datasetService.deleteDataset(dataset.getId());
     }
 }
