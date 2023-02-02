@@ -65,9 +65,10 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public DatasetInfo deleteDataset(Long id) {
+    public DatasetInfo deleteDataset(Long id) throws IllegalArgumentException, URISyntaxException, IOException {
         DatasetInfo dataset = this.getDataset(id);
         datasetRepository.delete(mapper.datasetInfoToDataset(dataset));
+        storageService.delete(this.generateFileUrl(dataset, ""));
         return dataset;
     }
 
@@ -103,6 +104,6 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     private String generateFileUrl(DatasetInfo dataset, String filepath) {
-        return String.format("%s://%s/%s", SCHEME, String.valueOf(dataset.getId()), filepath);
+        return String.format("%s:///%s/%s", SCHEME, String.valueOf(dataset.getId()), filepath);
     }
 }

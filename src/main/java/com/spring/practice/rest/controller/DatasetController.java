@@ -50,7 +50,7 @@ public class DatasetController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteDataset(@PathVariable Long id) {
+    public void deleteDataset(@PathVariable Long id) throws IllegalArgumentException, URISyntaxException, IOException {
         datasetService.deleteDataset(id);
     }
 

@@ -14,6 +14,6 @@ public interface DatasetService {
     public List<DatasetInfo> getDatasets();
     public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException;
     // public UserInfo updateUser(Long id, UserUpdate userUpdate);
-    public DatasetInfo deleteDataset(Long id);
+    public DatasetInfo deleteDataset(Long id) throws IllegalArgumentException, URISyntaxException, IOException;
     public DatasetInfo uploadDataset(Long id, MultipartFile[] files) throws IllegalArgumentException, URISyntaxException, IOException;
 }
