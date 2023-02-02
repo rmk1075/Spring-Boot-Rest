@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.dataset.impl;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
@@ -19,15 +21,20 @@ import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.dataset.DatasetService;
+import com.spring.practice.rest.service.storage.StorageService;
 
 @Service
 @Transactional
 public class DatasetServiceImpl implements DatasetService {
 
+    private static final String SCHEME = "file";
     private static final String PATH = System.getProperty("user.dir") + "/datasets";
     
     @Autowired
     private DatasetRepository datasetRepository;
+
+    @Autowired
+    private StorageService storageService;
 
     @Autowired
     private CommonMapper mapper;
@@ -76,5 +83,26 @@ public class DatasetServiceImpl implements DatasetService {
         List<DatasetInfo> datasets = datasetRepository.findAll()
             .stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).collect(Collectors.toList());
         return datasets;
+    }
+
+    @Override
+    public DatasetInfo uploadDataset(Long id, MultipartFile[] files) throws IllegalArgumentException, URISyntaxException, IOException {
+        DatasetInfo datasetInfo = this.getDataset(id);
+        int size = 0;
+        for (MultipartFile multipartFile : files) {
+            String name = multipartFile.getOriginalFilename();
+            String url = this.generateFileUrl(datasetInfo, name);
+            String path = storageService.create(url, multipartFile.getBytes());
+            size++;
+        }
+
+        Dataset dataset = datasetRepository.findById(id).get();
+        dataset.setSize(size);
+        datasetRepository.save(dataset);
+        return mapper.datasetToDatasetInfo(dataset);
+    }
+
+    private String generateFileUrl(DatasetInfo dataset, String filepath) {
+        return String.format("%s://%s/%s", SCHEME, String.valueOf(dataset.getId()), filepath);
     }
 }

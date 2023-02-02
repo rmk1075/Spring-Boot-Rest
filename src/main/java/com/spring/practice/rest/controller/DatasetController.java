@@ -2,6 +2,7 @@
 package com.spring.practice.rest.controller;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
@@ -49,5 +52,12 @@ public class DatasetController {
     @DeleteMapping("/{id}")
     public void deleteDataset(@PathVariable Long id) {
         datasetService.deleteDataset(id);
+    }
+
+    // TODO: consider async upload
+    @PostMapping("/{id}/files")
+    public DatasetInfo uploadDataset(@PathVariable Long id, @RequestPart MultipartFile[] files) throws IllegalArgumentException, URISyntaxException, IOException {
+        DatasetInfo dataset = datasetService.uploadDataset(id, files);
+        return dataset;
     }
 }
