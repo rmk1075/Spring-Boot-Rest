@@ -2,6 +2,9 @@ package com.spring.practice.rest.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -42,5 +45,14 @@ public class SwaggerConfig {
                 .description("springboot rest api practice with variable backend tech")
                 .version("0.1")
                 .build();
-    }    
+    }
+}
+
+@Controller
+@RequestMapping("/swagger")
+class SwaggerRedirector {
+    @GetMapping
+    public String redirectToSwagger() {
+        return "redirect:/swagger-ui/index.html";
+    }
 }
