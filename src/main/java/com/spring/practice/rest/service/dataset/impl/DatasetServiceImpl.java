@@ -1,5 +1,8 @@
 package com.spring.practice.rest.service.dataset.impl;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,7 +33,7 @@ public class DatasetServiceImpl implements DatasetService {
     private CommonMapper mapper;
 
     @Override
-    public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) {
+    public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
         String name = datasetUserCreate.getName();
         if(datasetRepository.findByName(name) != null)
             throw new IllegalArgumentException(String.format("Dataset[name=%s] is already exists.", name));
@@ -43,8 +46,11 @@ public class DatasetServiceImpl implements DatasetService {
         Dataset dataset = mapper.datasetInfoToDataset(datasetInfo);
         dataset = datasetRepository.save(dataset);
 
-        String path = String.format("%s/%d", PATH, dataset.getId());
-        // TODO: create directory to dataset path
+        // create dataset directory
+        String path = String.join("/", PATH, String.valueOf(dataset.getId()));
+        Path filePath = Path.of(path);
+        Files.deleteIfExists(filePath);
+        Files.createDirectories(filePath);
 
         dataset.setPath(path);
         dataset = datasetRepository.save(dataset);

@@ -1,6 +1,7 @@
 
 package com.spring.practice.rest.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class DatasetController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/")
-    public DatasetInfo createDataset(@RequestBody DatasetUserCreate userCreate) {
+    public DatasetInfo createDataset(@RequestBody DatasetUserCreate userCreate) throws IOException {
         DatasetInfo dataset = datasetService.createDataset(userCreate);
         return dataset;
     }

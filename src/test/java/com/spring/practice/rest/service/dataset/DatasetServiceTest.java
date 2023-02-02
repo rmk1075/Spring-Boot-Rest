@@ -2,6 +2,7 @@ package com.spring.practice.rest.service.dataset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -31,14 +32,14 @@ public class DatasetServiceTest {
         datasetRepository.deleteAll();
     }
 
-    private DatasetInfo createDataset() {
+    private DatasetInfo createDataset() throws IOException {
         DatasetUserCreate datasetUserCreate = DatasetUserCreate.builder().name(NAME).build();
         DatasetInfo datasetInfo = datasetService.createDataset(datasetUserCreate);
         return datasetInfo;
     }
 
     @Test
-    void testCreateDataset() {
+    void testCreateDataset() throws IOException {
         DatasetInfo datasetInfo = this.createDataset();
         assertEquals(datasetInfo.getName(), NAME);
         assertEquals(datasetInfo.getPath(), String.format("%s/datasets/%d", System.getProperty("user.dir"), datasetInfo.getId()));
@@ -46,7 +47,7 @@ public class DatasetServiceTest {
     }
 
     @Test
-    void testDeleteDataset() {
+    void testDeleteDataset() throws IOException {
         DatasetInfo created = this.createDataset();
         DatasetInfo deleted = datasetService.deleteDataset(created.getId());
         assertEquals(created.getId(), deleted.getId());
@@ -56,7 +57,7 @@ public class DatasetServiceTest {
     }
 
     @Test
-    void testGetDataset() {
+    void testGetDataset() throws IOException {
         DatasetInfo created = this.createDataset();
         DatasetInfo dataset = datasetService.getDataset(created.getId());
         assertEquals(created.getId(), dataset.getId());
@@ -66,7 +67,7 @@ public class DatasetServiceTest {
     }
 
     @Test
-    void testGetDatasets() {
+    void testGetDatasets() throws IOException {
         DatasetInfo created = this.createDataset();
         List<DatasetInfo> datasets = datasetService.getDatasets();
         assertEquals(datasets.size(), 1);
