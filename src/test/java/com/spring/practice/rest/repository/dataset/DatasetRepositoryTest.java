@@ -2,7 +2,9 @@ package com.spring.practice.rest.repository.dataset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -37,22 +39,27 @@ public class DatasetRepositoryTest {
         );
 
         int length = 10;
+        Map<Long, DatasetCreate> map = new HashMap<>();
         for(int i = 0; i < length; i++) {
+            String name = String.format("dataset-%d", i);
+            String path = String.format("/datasets/%d", i);
             DatasetCreate datasetCreate = DatasetCreate.builder()
-                .name(String.format("dataset-%d", i))
-                .path(String.format("/datasets/%d", i))
+                .name(name)
+                .path(path)
                 .size(0).build();
             Dataset dataset = modelMapper.map(datasetCreate, Dataset.class);
-            datasetRepository.save(dataset);
+            dataset = datasetRepository.save(dataset);
+            map.put(dataset.getId(), datasetCreate);
         }
 
         datasets = datasetRepository.findAll();
         assertEquals(datasets.size(), length);
         for(Dataset dataset : datasets) {
-            long id = dataset.getId();
-            assertEquals(dataset.getName(), String.format("dataset-%d", id - 1));
-            assertEquals(dataset.getPath(), String.format("/datasets/%d", id - 1));
-            assertEquals(dataset.getSize(), 0);
+            Long id = dataset.getId();
+            DatasetCreate datasetCreate = map.get(id);
+            assertEquals(dataset.getName(), datasetCreate.getName());
+            assertEquals(dataset.getPath(), datasetCreate.getPath());
+            assertEquals(dataset.getSize(), datasetCreate.getSize());
         }
     }
 
