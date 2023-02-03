@@ -2,6 +2,7 @@ package com.spring.practice.rest.service.image;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,12 @@ public class ImageService {
         storageService.delete(imageInfo.getUrl());
         imageRepository.delete(image.get());
         return imageInfo;
+    }
+
+    public List<ImageInfo> deleteImagesByDataset(Long datasetId) throws IllegalArgumentException, URISyntaxException, IOException {
+        List<Image> images = imageRepository.findAllByDatasetId(datasetId);
+        for (Image image : images) storageService.delete(image.getUrl());
+        imageRepository.deleteAllByDatasetId(datasetId);
+        return images.stream().map(image -> mapper.imageToImageInfo(image)).toList();
     }
 }
