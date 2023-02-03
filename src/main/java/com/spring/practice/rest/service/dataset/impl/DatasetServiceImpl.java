@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,22 +20,23 @@ import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.domain.image.dto.ImageCreate;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.dataset.DatasetService;
-import com.spring.practice.rest.service.storage.StorageService;
+import com.spring.practice.rest.service.image.ImageService;
 
 @Service
 @Transactional
 public class DatasetServiceImpl implements DatasetService {
 
     private static final String SCHEME = "file";
-    private static final String PATH = System.getProperty("user.dir") + "/datasets";
+    private static final String PATH = System.getProperty("user.dir") + "/resources/storage";
     
     @Autowired
     private DatasetRepository datasetRepository;
 
     @Autowired
-    private StorageService storageService;
+    private ImageService imageService;
 
     @Autowired
     private CommonMapper mapper;
@@ -52,9 +54,10 @@ public class DatasetServiceImpl implements DatasetService {
         DatasetInfo datasetInfo = mapper.datasetCreateToDatasetInfo(datasetCreate);
         Dataset dataset = mapper.datasetInfoToDataset(datasetInfo);
         dataset = datasetRepository.save(dataset);
+        datasetInfo = mapper.datasetToDatasetInfo(dataset);
 
         // create dataset directory
-        String path = String.join("/", PATH, String.valueOf(dataset.getId()));
+        String path = this.generateDatasetPath(datasetInfo);
         Path filePath = Path.of(path);
         Files.deleteIfExists(filePath);
         Files.createDirectories(filePath);
@@ -68,8 +71,24 @@ public class DatasetServiceImpl implements DatasetService {
     public DatasetInfo deleteDataset(Long id) throws IllegalArgumentException, URISyntaxException, IOException {
         DatasetInfo dataset = this.getDataset(id);
         datasetRepository.delete(mapper.datasetInfoToDataset(dataset));
-        storageService.delete(this.generateFileUrl(dataset, ""));
+        deleteDatasetStorage(dataset);
         return dataset;
+    }
+
+    @Override
+    public List<DatasetInfo> deleteAllDatasets() throws IllegalArgumentException, URISyntaxException, IOException {
+        List<Dataset> datasets = datasetRepository.findAll();
+        List<DatasetInfo> datasetInfos = datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
+        datasetRepository.deleteAll();
+        for (DatasetInfo datasetInfo : datasetInfos) deleteDatasetStorage(datasetInfo);
+        return datasetInfos;
+    }
+    
+    private void deleteDatasetStorage(DatasetInfo dataset) throws IllegalArgumentException, URISyntaxException, IOException {
+        imageService.deleteImagesByDataset(dataset.getId());
+        Path filePath = Path.of(dataset.getPath());
+        if(Files.exists(filePath) && Files.isDirectory(filePath))
+            FileUtils.deleteDirectory(filePath.toFile());
     }
 
     @Override
@@ -93,7 +112,9 @@ public class DatasetServiceImpl implements DatasetService {
         for (MultipartFile multipartFile : files) {
             String name = multipartFile.getOriginalFilename();
             String url = this.generateFileUrl(datasetInfo, name);
-            String path = storageService.create(url, multipartFile.getBytes());
+            ImageCreate imageCreate = ImageCreate.builder()
+                .datasetId(id).name(name).url(url).file(multipartFile.getBytes()).build();
+            imageService.createImage(imageCreate);
             size++;
         }
 
@@ -103,7 +124,11 @@ public class DatasetServiceImpl implements DatasetService {
         return mapper.datasetToDatasetInfo(dataset);
     }
 
+    private String generateDatasetPath(DatasetInfo dataset) {
+        return String.join("/", PATH, String.valueOf(dataset.getId()));
+    }
+
     private String generateFileUrl(DatasetInfo dataset, String filepath) {
-        return String.format("%s:///%s/%s", SCHEME, String.valueOf(dataset.getId()), filepath);
+        return String.join("/", String.format("%s:/", SCHEME), dataset.getPath(), filepath);
     }
 }

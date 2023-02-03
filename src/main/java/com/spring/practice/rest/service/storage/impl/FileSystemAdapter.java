@@ -28,7 +28,7 @@ public class FileSystemAdapter implements StorageServiceAdapter {
     @Override
     public byte[] get(String url) throws URISyntaxException, IOException {
         URI uri = new URI(url);
-        Path path = this.generateFilePath(uri.getPath());
+        Path path = Path.of(uri.getPath());
         byte[] file = Files.readAllBytes(path);
         return file;
     }
@@ -36,19 +36,18 @@ public class FileSystemAdapter implements StorageServiceAdapter {
     @Override
     public String create(String url, byte[] bytes) throws URISyntaxException, IOException {
         URI uri = new URI(url);
-        Path path = this.generateFilePath(uri.getPath());
+        Path path = Path.of(uri.getPath());
+        if(!Files.exists(path.getParent())) Files.createDirectories(path.getParent());
+        path = Files.createFile(path);
         path = Files.write(path, bytes);
         return path.toString();
     }
 
     @Override
-    public void delete(String url) throws URISyntaxException, IOException {
+    public String delete(String url) throws URISyntaxException, IOException {
         URI uri = new URI(url);
-        Path path = this.generateFilePath(uri.getPath());
+        Path path = Path.of(uri.getPath());
         Files.deleteIfExists(path);
-    }
-
-    private Path generateFilePath(String filepath) {
-        return Path.of(String.join("/", PATH, filepath));
+        return path.toString();
     }
 }
