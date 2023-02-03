@@ -1,0 +1,53 @@
+package com.spring.practice.rest.service.image;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.domain.image.Image;
+import com.spring.practice.rest.domain.image.dto.ImageCreate;
+import com.spring.practice.rest.domain.image.dto.ImageInfo;
+import com.spring.practice.rest.repository.image.ImageRepository;
+import com.spring.practice.rest.service.storage.StorageService;
+
+@Service
+public class ImageService {
+
+    @Autowired
+    ImageRepository imageRepository;
+    
+    @Autowired
+    StorageService storageService;
+
+    @Autowired
+    CommonMapper mapper;
+
+    public ImageInfo getImage(Long id) {
+        Optional<Image> image = imageRepository.findById(id);
+        if(image.isEmpty()) throw new IllegalArgumentException(String.format("Image[id=%d] is not exists.", id));
+        return mapper.imageToImageInfo(image.get());
+    }
+
+    public ImageInfo createImage(ImageCreate imageCreate) throws IllegalArgumentException, URISyntaxException, IOException {
+        String name = imageCreate.getName();
+        if(imageRepository.findByName(name).isPresent())
+            throw new IllegalArgumentException(String.format("Image[name=%s] is already exists.", name));
+
+        storageService.create(imageCreate.getUrl(), imageCreate.getFile());
+
+        Image image = mapper.imageCreateToImage(imageCreate);
+        image = imageRepository.save(image);
+        return mapper.imageToImageInfo(image);
+    }
+
+    public ImageInfo deleteImage(Long id) {
+        Optional<Image> image = imageRepository.findById(id);
+        if(image.isEmpty()) throw new IllegalArgumentException(String.format("Image[id=%d] is not exists.", id));
+        imageRepository.delete(image.get());
+        return mapper.imageToImageInfo(image.get());
+    }
+}
