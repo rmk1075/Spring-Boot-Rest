@@ -37,6 +37,8 @@ public class FileSystemAdapter implements StorageServiceAdapter {
     public String create(String url, byte[] bytes) throws URISyntaxException, IOException {
         URI uri = new URI(url);
         Path path = this.generateFilePath(uri.getPath());
+        if(!Files.exists(path.getParent())) Files.createDirectories(path.getParent());
+        path = Files.createFile(path);
         path = Files.write(path, bytes);
         return path.toString();
     }
