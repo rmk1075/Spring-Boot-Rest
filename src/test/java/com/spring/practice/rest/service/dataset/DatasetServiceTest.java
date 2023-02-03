@@ -34,7 +34,8 @@ public class DatasetServiceTest {
 
     private final static String NAME = "dataset";
 
-    private static final String TEST_FILE_PATH = System.getProperty("user.dir") + "/test.txt";
+    private static final String TEST_FILE_NAME = "test.txt";
+    private static final String TEST_FILE_PATH = String.join("/", System.getProperty("user.dir"), TEST_FILE_NAME);
     private static final String CONTENT = "Hello World";
 
     @BeforeAll
@@ -62,7 +63,10 @@ public class DatasetServiceTest {
     void testCreateDataset() throws IOException {
         DatasetInfo datasetInfo = this.createDataset();
         assertEquals(datasetInfo.getName(), NAME);
-        assertEquals(datasetInfo.getPath(), String.format("%s/datasets/%d", System.getProperty("user.dir"), datasetInfo.getId()));
+        assertEquals(
+            datasetInfo.getPath(),
+            String.join("/", "file://", System.getProperty("user.dir") + "/resources/storage", String.valueOf(datasetInfo.getId()))
+        );
         assertEquals(datasetInfo.getSize(), 0);
     }
 
@@ -103,7 +107,7 @@ public class DatasetServiceTest {
     void testUploadDataset() throws IOException, IllegalArgumentException, URISyntaxException {
         DatasetInfo created = this.createDataset();
 
-        MultipartFile[] files = new MultipartFile[]{new MockMultipartFile(TEST_FILE_PATH, CONTENT.getBytes())};
+        MultipartFile[] files = new MultipartFile[]{new MockMultipartFile(TEST_FILE_PATH, TEST_FILE_NAME, "text/plain", CONTENT.getBytes())};
         DatasetInfo dataset = datasetService.uploadDataset(created.getId(), files);
         System.out.println(dataset.toString());
         assertEquals(dataset.getSize(), files.length);

@@ -22,10 +22,10 @@ import com.spring.practice.rest.service.storage.StorageService;
 @TestPropertySource("classpath:application-test.properties")
 public class ImageServiceTest {
 
-    
     private final Long TEST_DATASET_ID = 1L;
     private final String TEST_NAME = "test.txt";
-    private final String TEST_URL = String.format("file:///%s/%s", String.valueOf(TEST_DATASET_ID), TEST_NAME);
+    private final String TEST_FILE_DIR = System.getProperty("user.dir") + "/resources/storage";
+    private final String TEST_URL = generateTestImageUrl(TEST_DATASET_ID, TEST_NAME);
     private final byte[] TEST_FILE = "Hello World".getBytes();
 
     private ImageInfo testImageInfo;
@@ -66,7 +66,7 @@ public class ImageServiceTest {
 
         Long datasetId = 1L;
         String name = "hello.txt";
-        String url = String.format("file:///%s/%s", String.valueOf(datasetId), name);
+        String url = generateTestImageUrl(datasetId, name);
         String contents = "Hello World";
         ImageCreate imageCreate = ImageCreate.builder()
             .datasetId(datasetId)
@@ -95,5 +95,9 @@ public class ImageServiceTest {
     void testGetImage() {
         ImageInfo imageInfo = imageService.getImage(testImageInfo.getId());
         assertEquals(imageInfo, testImageInfo);
+    }
+
+    private String generateTestImageUrl(Long datasetId, String filename) {
+        return String.join("/", "file://", TEST_FILE_DIR, String.valueOf(datasetId), filename);
     }
 }
