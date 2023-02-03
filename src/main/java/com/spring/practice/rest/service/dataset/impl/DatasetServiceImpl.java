@@ -71,14 +71,24 @@ public class DatasetServiceImpl implements DatasetService {
     public DatasetInfo deleteDataset(Long id) throws IllegalArgumentException, URISyntaxException, IOException {
         DatasetInfo dataset = this.getDataset(id);
         datasetRepository.delete(mapper.datasetInfoToDataset(dataset));
-        imageService.deleteImagesByDataset(id);
+        deleteDatasetStorage(dataset);
+        return dataset;
+    }
 
-        // delete dataset directory
+    @Override
+    public List<DatasetInfo> deleteAllDatasets() throws IllegalArgumentException, URISyntaxException, IOException {
+        List<Dataset> datasets = datasetRepository.findAll();
+        List<DatasetInfo> datasetInfos = datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
+        datasetRepository.deleteAll();
+        for (DatasetInfo datasetInfo : datasetInfos) deleteDatasetStorage(datasetInfo);
+        return datasetInfos;
+    }
+    
+    private void deleteDatasetStorage(DatasetInfo dataset) throws IllegalArgumentException, URISyntaxException, IOException {
+        imageService.deleteImagesByDataset(dataset.getId());
         Path filePath = Path.of(dataset.getPath());
         if(Files.exists(filePath) && Files.isDirectory(filePath))
             FileUtils.deleteDirectory(filePath.toFile());
-
-        return dataset;
     }
 
     @Override
@@ -115,10 +125,10 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     private String generateDatasetPath(DatasetInfo dataset) {
-        return String.join("/", String.format("%s://", SCHEME), PATH, String.valueOf(dataset.getId()));
+        return String.join("/", PATH, String.valueOf(dataset.getId()));
     }
 
     private String generateFileUrl(DatasetInfo dataset, String filepath) {
-        return String.join("/", dataset.getPath(), filepath);
+        return String.join("/", String.format("%s:/", SCHEME), dataset.getPath(), filepath);
     }
 }
