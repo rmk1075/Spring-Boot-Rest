@@ -3,6 +3,7 @@ package com.spring.practice.rest.service.image;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ImageService {
 
     public ImageInfo getImage(Long id) {
         Optional<Image> image = imageRepository.findById(id);
-        if(image.isEmpty()) throw new IllegalArgumentException(String.format("Image[id=%d] is not exists.", id));
+        if(image.isEmpty()) throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
         return mapper.imageToImageInfo(image.get());
     }
 
@@ -48,7 +49,7 @@ public class ImageService {
 
     public ImageInfo deleteImage(Long id) throws IllegalArgumentException, URISyntaxException, IOException {
         Optional<Image> image = imageRepository.findById(id);
-        if(image.isEmpty()) throw new IllegalArgumentException(String.format("Image[id=%d] is not exists.", id));
+        if(image.isEmpty()) throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
 
         ImageInfo imageInfo = mapper.imageToImageInfo(image.get());
         storageService.delete(imageInfo.getUrl());

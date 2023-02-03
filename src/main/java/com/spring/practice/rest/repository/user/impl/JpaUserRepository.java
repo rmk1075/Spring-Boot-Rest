@@ -1,6 +1,7 @@
 package com.spring.practice.rest.repository.user.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class JpaUserRepository implements UserRepository {
     @Override
     public User update(User user) {
         Optional<User> u = repository.findById(user.getId());
-        if(!u.isPresent()) throw new IllegalArgumentException(String.format("User is not exists. id=%s", user.getId()));
+        if(!u.isPresent()) throw new NoSuchElementException(String.format("User is not exists. id=%s", user.getId()));
         User result = repository.save(user);
         return result;
     }

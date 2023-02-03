@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -70,8 +71,8 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public DatasetInfo deleteDataset(Long id) throws IllegalArgumentException, URISyntaxException, IOException {
         DatasetInfo dataset = this.getDataset(id);
-        datasetRepository.delete(mapper.datasetInfoToDataset(dataset));
         deleteDatasetStorage(dataset);
+        datasetRepository.delete(mapper.datasetInfoToDataset(dataset));
         return dataset;
     }
 
@@ -79,8 +80,8 @@ public class DatasetServiceImpl implements DatasetService {
     public List<DatasetInfo> deleteAllDatasets() throws IllegalArgumentException, URISyntaxException, IOException {
         List<Dataset> datasets = datasetRepository.findAll();
         List<DatasetInfo> datasetInfos = datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
-        datasetRepository.deleteAll();
         for (DatasetInfo datasetInfo : datasetInfos) deleteDatasetStorage(datasetInfo);
+        datasetRepository.deleteAll();
         return datasetInfos;
     }
     
@@ -94,7 +95,7 @@ public class DatasetServiceImpl implements DatasetService {
     @Override
     public DatasetInfo getDataset(Long id) {
         Optional<Dataset> dataset = datasetRepository.findById(id);
-        if(!dataset.isPresent()) throw new IllegalArgumentException(String.format("Dataset[id=%d] is not exists.", id));
+        if(!dataset.isPresent()) throw new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id));
         return mapper.datasetToDatasetInfo(dataset.get());
     }
 
