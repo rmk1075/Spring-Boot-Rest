@@ -49,8 +49,8 @@ public class DatasetServiceTest {
     }
 
     @AfterEach
-    void tearDown() {
-        datasetRepository.deleteAll();
+    void tearDown() throws IllegalArgumentException, URISyntaxException, IOException {
+        datasetService.deleteAllDatasets();
     }
 
     private DatasetInfo createDataset() throws IOException {
@@ -65,7 +65,7 @@ public class DatasetServiceTest {
         assertEquals(datasetInfo.getName(), NAME);
         assertEquals(
             datasetInfo.getPath(),
-            String.join("/", "file://", System.getProperty("user.dir") + "/resources/storage", String.valueOf(datasetInfo.getId()))
+            String.join("/", System.getProperty("user.dir") + "/resources/storage", String.valueOf(datasetInfo.getId()))
         );
         assertEquals(datasetInfo.getSize(), 0);
     }
