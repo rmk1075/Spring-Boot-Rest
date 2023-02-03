@@ -41,13 +41,17 @@ public class ImageService {
 
         Image image = mapper.imageCreateToImage(imageCreate);
         image = imageRepository.save(image);
+        image = imageRepository.findById(image.getId()).get();
         return mapper.imageToImageInfo(image);
     }
 
-    public ImageInfo deleteImage(Long id) {
+    public ImageInfo deleteImage(Long id) throws IllegalArgumentException, URISyntaxException, IOException {
         Optional<Image> image = imageRepository.findById(id);
         if(image.isEmpty()) throw new IllegalArgumentException(String.format("Image[id=%d] is not exists.", id));
+
+        ImageInfo imageInfo = mapper.imageToImageInfo(image.get());
+        storageService.delete(imageInfo.getUrl());
         imageRepository.delete(image.get());
-        return mapper.imageToImageInfo(image.get());
+        return imageInfo;
     }
 }
