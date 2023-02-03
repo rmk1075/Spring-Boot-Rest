@@ -35,8 +35,8 @@ public class StorageService {
         return this.adapter(url).create(url, bytes);
     }
 
-    public void delete(String url) throws IllegalArgumentException, URISyntaxException, IOException {
-        this.adapter(url).delete(url);
+    public String delete(String url) throws IllegalArgumentException, URISyntaxException, IOException {
+        return this.adapter(url).delete(url);
     }
     
 }

@@ -42,10 +42,11 @@ public class FileSystemAdapter implements StorageServiceAdapter {
     }
 
     @Override
-    public void delete(String url) throws URISyntaxException, IOException {
+    public String delete(String url) throws URISyntaxException, IOException {
         URI uri = new URI(url);
         Path path = this.generateFilePath(uri.getPath());
         Files.deleteIfExists(path);
+        return path.toString();
     }
 
     private Path generateFilePath(String filepath) {

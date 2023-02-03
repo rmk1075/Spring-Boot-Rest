@@ -8,5 +8,5 @@ public interface StorageServiceAdapter {
     public String getScheme();
     public byte[] get(String url) throws URISyntaxException, IOException;
     public String create(String url, byte[] bytes) throws URISyntaxException, IOException;
-    public void delete(String url) throws URISyntaxException, IOException;
+    public String delete(String url) throws URISyntaxException, IOException;
 }
