@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +31,8 @@ public class DatasetController {
     private DatasetService datasetService;
 
     @GetMapping("/")
-    public List<DatasetInfo> getDatasets() {
-        List<DatasetInfo> datasets = datasetService.getDatasets();
+    public List<DatasetInfo> getDatasets(@RequestParam(required = false, defaultValue = "0") int start, @RequestParam(required = false, defaultValue = "100") int limit) {
+        List<DatasetInfo> datasets = datasetService.getDatasets(start, limit);
         return datasets;
     }
     

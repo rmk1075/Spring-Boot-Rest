@@ -11,7 +11,7 @@ import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 
 public interface DatasetService {
     public DatasetInfo getDataset(Long id);
-    public List<DatasetInfo> getDatasets();
+    public List<DatasetInfo> getDatasets(int start, int limit);
     public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException;
     // public UserInfo updateUser(Long id, UserUpdate userUpdate);
     public DatasetInfo deleteDataset(Long id) throws IllegalArgumentException, URISyntaxException, IOException;

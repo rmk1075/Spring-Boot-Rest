@@ -7,12 +7,13 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -100,9 +101,10 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     @Override
-    public List<DatasetInfo> getDatasets() {
-        List<DatasetInfo> datasets = datasetRepository.findAll()
-            .stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).collect(Collectors.toList());
+    public List<DatasetInfo> getDatasets(int start, int limit) {
+        Pageable pageable = PageRequest.of(start, limit);
+        List<DatasetInfo> datasets = datasetRepository.findAll(pageable)
+            .map(dataset -> mapper.datasetToDatasetInfo(dataset)).getContent();
         return datasets;
     }
 
