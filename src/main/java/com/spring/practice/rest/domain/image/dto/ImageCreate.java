@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ImageCreate {
 
-    private Long datasetId;
-    private String name;
-    private String url;
+  private Long datasetId;
+  private String name;
+  private String url;
 
-    private byte[] file;
+  private byte[] file;
 }

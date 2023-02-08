@@ -1,7 +1,6 @@
 package com.spring.practice.rest.examples.domain.lombokEx.builder;
 
 import java.util.UUID;
-
 import lombok.Builder;
 import lombok.ToString;
 
@@ -9,8 +8,7 @@ import lombok.ToString;
 @ToString
 public class BuilderClassEx {
 
-    private UUID id;
-    private String name;
-    private String desc;
-    
+  private UUID id;
+  private String name;
+  private String desc;
 }

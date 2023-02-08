@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DatasetCreate {
 
-    private String name;
-    private String path;
+  private String name;
+  private String path;
 
-    @Builder.Default
-    private int size = 0;
+  @Builder.Default private int size = 0;
 }

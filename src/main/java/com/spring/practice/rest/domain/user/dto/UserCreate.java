@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCreate {
-    
-    private String uid;
-    private String name;
+
+  private String uid;
+  private String name;
 }

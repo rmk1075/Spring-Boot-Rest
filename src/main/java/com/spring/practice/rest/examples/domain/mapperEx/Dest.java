@@ -8,14 +8,14 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Dest {
-    private String id;
-    private String name;
+  private String id;
+  private String name;
 
-    private String dest;
+  private String dest;
 
-    private B value;
+  private B value;
 
-    private String dateStr;
+  private String dateStr;
 
-    private String unmappedDest;
+  private String unmappedDest;
 }

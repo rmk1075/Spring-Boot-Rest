@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class B {
-    private String value;
+  private String value;
 }

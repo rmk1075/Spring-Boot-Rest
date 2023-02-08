@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DatasetUserCreate {
 
-    private String name;
+  private String name;
 }
