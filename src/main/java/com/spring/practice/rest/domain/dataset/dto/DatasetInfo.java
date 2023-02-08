@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.user.dto;
+package com.spring.practice.rest.domain.dataset.dto;
 
 import java.util.Date;
 
@@ -11,11 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfo {
-    
+public class DatasetInfo {
+
     private Long id;
-    private String uid;
     private String name;
+    private String path;
+    private int size;
 
     private Date created;
     private Date updated;

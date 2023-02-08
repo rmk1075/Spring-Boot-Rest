@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.user;
+package com.spring.practice.rest.domain.dataset;
 
 import java.util.Date;
 
@@ -19,14 +19,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "USERS")
-public class User {
+@Table(name = "dataset")
+public class Dataset {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String uid;
     private String name;
+    private String path;
+    private int size;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,15 +36,4 @@ public class User {
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
-
-    public User(String uid, String name) {
-        this.uid = uid;
-        this.name = name;
-    }
-
-    public User(Long id, String uid, String name) {
-        this.id = id;
-        this.uid = uid;
-        this.name = name;
-    }
 }
