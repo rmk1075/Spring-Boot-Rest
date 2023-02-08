@@ -1,3 +1,4 @@
+
 package com.spring.practice.rest.controller;
 
 import java.util.List;
@@ -17,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
-import com.spring.practice.rest.service.UserService;
+import com.spring.practice.rest.service.user.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -51,9 +52,9 @@ public class UserController {
         return updated;
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public UserInfo deleteUser(@PathVariable Long id) {
-        UserInfo deleted = userService.deleteUser(id);
-        return deleted;
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 }

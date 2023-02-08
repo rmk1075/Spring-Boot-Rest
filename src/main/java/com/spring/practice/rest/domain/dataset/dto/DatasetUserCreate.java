@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.user.dto;
+package com.spring.practice.rest.domain.dataset.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreate {
-    
-    private String uid;
+public class DatasetUserCreate {
+
     private String name;
 }
