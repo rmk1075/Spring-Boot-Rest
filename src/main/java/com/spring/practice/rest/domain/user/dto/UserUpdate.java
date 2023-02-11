@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserUpdate {
-    
-    private String name;
+
+  private String name;
 }

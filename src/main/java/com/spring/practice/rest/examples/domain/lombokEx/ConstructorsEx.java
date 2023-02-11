@@ -14,9 +14,9 @@ public class ConstructorsEx {}
 @Getter
 class NoArgsConstructorEx {
 
-    private Long id;
+  private Long id;
 
-    // public NoArgsConstructorEx() {}
+  // public NoArgsConstructorEx() {}
 }
 
 @RequiredArgsConstructor
@@ -25,22 +25,21 @@ class NoArgsConstructorEx {
 @Getter
 class VariableArgsConstructorEx {
 
-    @NonNull
-    private Long id;
+  @NonNull private Long id;
 
-    private final String name;
-    private String desc;
+  private final String name;
+  private String desc;
 
-    // @RequiredArgsConstructor
-    // public VariableArgsConstructorEx(@NonNull Long id, String name) {
-    //     this.id = id;
-    //     this.name = name;
-    // }
+  // @RequiredArgsConstructor
+  // public VariableArgsConstructorEx(@NonNull Long id, String name) {
+  //     this.id = id;
+  //     this.name = name;
+  // }
 
-    // @AllArgsConstructor
-    // public VariableArgsConstructorEx(@NonNull Long id, String name, String desc) {
-    //     this.id = id;
-    //     this.name = name;
-    //     this.desc = desc;
-    // }
+  // @AllArgsConstructor
+  // public VariableArgsConstructorEx(@NonNull Long id, String name, String desc) {
+  //     this.id = id;
+  //     this.name = name;
+  //     this.desc = desc;
+  // }
 }
