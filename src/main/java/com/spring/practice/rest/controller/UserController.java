@@ -17,24 +17,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for UserService.
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
   @Autowired private UserService userService;
 
+  /**
+   * Get Users info.
+   *
+   * @return list of UserInfo.
+   */
   @GetMapping("/")
   public List<UserInfo> getUsers() {
     List<UserInfo> users = userService.getUsers();
     return users;
   }
 
+  /**
+   * Get User info.
+   *
+   * @param id User id.
+   * @return UserInfo.
+   */
   @GetMapping("/{id}")
   public UserInfo getUser(@PathVariable Long id) {
     UserInfo user = userService.getUser(id);
     return user;
   }
 
+  /**
+   * Create new User.
+   *
+   * @param userCreate User create arguments.
+   * @return Created UserInfo.
+   */
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
   public UserInfo createUser(@RequestBody UserCreate userCreate) {
@@ -42,12 +62,24 @@ public class UserController {
     return created;
   }
 
+  /**
+   * Update User info.
+   *
+   * @param id User id.
+   * @param userUpdate User update arguments.
+   * @return Updated UserInfo.
+   */
   @PutMapping("/{id}")
   public UserInfo updateUser(@PathVariable Long id, @RequestBody UserUpdate userUpdate) {
     UserInfo updated = userService.updateUser(id, userUpdate);
     return updated;
   }
 
+  /**
+   * Delete User.
+   *
+   * @param id User id.
+   */
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void deleteUser(@PathVariable Long id) {
