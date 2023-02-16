@@ -1,15 +1,20 @@
 package com.spring.practice.rest.service.dataset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
+import com.spring.practice.rest.service.storage.StorageService;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,6 +32,8 @@ public class DatasetServiceTest {
   @Autowired DatasetService datasetService;
 
   @Autowired DatasetRepository datasetRepository;
+
+  @Autowired StorageService storageService;
 
   private static final String NAME = "dataset";
 
@@ -103,7 +110,33 @@ public class DatasetServiceTest {
   }
 
   @Test
-  void testUploadDataset() throws IOException, IllegalArgumentException, URISyntaxException {
+  void testGetImages() throws IOException, IllegalArgumentException, URISyntaxException {
+    DatasetInfo created = this.createDataset();
+
+    MultipartFile[] files =
+        new MultipartFile[] {
+          new MockMultipartFile(TEST_FILE_PATH, TEST_FILE_NAME, "text/plain", CONTENT.getBytes())
+        };
+    DatasetInfo dataset = datasetService.uploadImages(created.getId(), files);
+    
+    List<ImageInfo> images = datasetService.getImages(dataset.getId(), 0, 100);
+    Map<String, ImageInfo> imageMap = new HashMap<>();
+    for (ImageInfo image : images) {
+      imageMap.put(image.getName(), image);
+    }
+
+    for (MultipartFile file : files) {
+      ImageInfo imageInfo = imageMap.get(file.getOriginalFilename());
+      assertNotNull(imageInfo);
+      assertEquals(
+        new String(file.getBytes()),
+        new String(storageService.get(imageInfo.getUrl()))
+      );
+    }
+  }
+
+  @Test
+  void testUploadImages() throws IOException, IllegalArgumentException, URISyntaxException {
     DatasetInfo created = this.createDataset();
 
     MultipartFile[] files =
