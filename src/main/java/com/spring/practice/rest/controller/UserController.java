@@ -5,6 +5,8 @@ import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
+import java.util.NoSuchElementException;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,6 +48,10 @@ public class UserController {
   @GetMapping("/{id}")
   public UserInfo getUser(@PathVariable Long id) {
     UserInfo user = userService.getUser(id);
+    if (user == null) {
+      throw new NoSuchElementException(
+        String.format("User[id=%s] is not exists.", String.valueOf(id)));
+    }
     return user;
   }
 
@@ -57,7 +63,9 @@ public class UserController {
    */
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
-  public UserInfo createUser(@RequestBody UserCreate userCreate) {
+  public UserInfo createUser(
+      @Valid @RequestBody UserCreate userCreate
+  ) {
     UserInfo created = userService.createUser(userCreate);
     return created;
   }
