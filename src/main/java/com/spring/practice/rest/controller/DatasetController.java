@@ -2,6 +2,7 @@ package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -54,11 +55,20 @@ public class DatasetController {
     datasetService.deleteDataset(id);
   }
 
+  @GetMapping("/{id}/images")
+  public List<ImageInfo> getImages(
+      @PathVariable Long id,
+      @RequestParam(required = false, defaultValue = "0") int start,
+      @RequestParam(required = false, defaultValue = "100") int limit) {
+    List<ImageInfo> images = datasetService.getImages(id, start, limit);
+    return images;
+  }
+
   // TODO: consider async upload
-  @PostMapping("/{id}/files")
-  public DatasetInfo uploadDataset(@PathVariable Long id, @RequestPart MultipartFile[] files)
+  @PostMapping("/{id}/images")
+  public DatasetInfo uploadImages(@PathVariable Long id, @RequestPart MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    DatasetInfo dataset = datasetService.uploadDataset(id, files);
+    DatasetInfo dataset = datasetService.uploadImages(id, files);
     return dataset;
   }
 }
