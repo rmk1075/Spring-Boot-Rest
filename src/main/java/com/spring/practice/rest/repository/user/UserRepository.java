@@ -3,6 +3,9 @@ package com.spring.practice.rest.repository.user;
 import com.spring.practice.rest.domain.user.User;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface UserRepository {
 
   public static final String TABLE = "USERS";
@@ -11,6 +14,8 @@ public interface UserRepository {
   public User save(User user);
 
   public List<User> findAll();
+
+  public Page<User> findAll(Pageable pageable);
 
   public User findById(Long id);
 
