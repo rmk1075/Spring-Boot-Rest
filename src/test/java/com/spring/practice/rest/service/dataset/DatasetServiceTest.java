@@ -110,7 +110,7 @@ public class DatasetServiceTest {
         new MultipartFile[] {
           new MockMultipartFile(TEST_FILE_PATH, TEST_FILE_NAME, "text/plain", CONTENT.getBytes())
         };
-    DatasetInfo dataset = datasetService.uploadDataset(created.getId(), files);
+    DatasetInfo dataset = datasetService.uploadImages(created.getId(), files);
     System.out.println(dataset.toString());
     assertEquals(dataset.getSize(), files.length);
 
