@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +25,10 @@ public class UserController {
   @Autowired private UserService userService;
 
   @GetMapping("/")
-  public List<UserInfo> getUsers() {
-    List<UserInfo> users = userService.getUsers();
+  public List<UserInfo> getUsers(
+      @RequestParam(required = false, defaultValue = "0") int start,
+      @RequestParam(required = false, defaultValue = "100") int limit) {
+    List<UserInfo> users = userService.getUsers(start, limit);
     return users;
   }
 
