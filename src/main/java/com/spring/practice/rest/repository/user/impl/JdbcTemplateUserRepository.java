@@ -10,6 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * User Repository example class using JdbcTemplate.
+ */
 @Repository("JdbcTemplateUserRepository")
 public class JdbcTemplateUserRepository implements UserRepository {
 
@@ -45,7 +48,9 @@ public class JdbcTemplateUserRepository implements UserRepository {
     try {
       user = jdbcTemplate.queryForObject(sql, userRowMapper());
     } catch (Exception e) {
-      if (!EmptyResultDataAccessException.class.isInstance(e)) throw new IllegalStateException(e);
+      if (!EmptyResultDataAccessException.class.isInstance(e)) {
+        throw new IllegalStateException(e);
+      }
     }
     return user;
   }
@@ -57,7 +62,9 @@ public class JdbcTemplateUserRepository implements UserRepository {
     try {
       user = jdbcTemplate.queryForObject(sql, userRowMapper());
     } catch (Exception e) {
-      if (!EmptyResultDataAccessException.class.isInstance(e)) throw new IllegalStateException(e);
+      if (!EmptyResultDataAccessException.class.isInstance(e)) {
+        throw new IllegalStateException(e);
+      }
     }
     return user;
   }
@@ -83,7 +90,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
   }
 
-  public User deleteById(Long id) {
+  private User deleteById(Long id) {
     User old = this.findById(id);
     String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
     try {
@@ -96,7 +103,15 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
   private RowMapper<User> userRowMapper() {
     return (rs, rowNum) -> {
-      User user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
+      User user = new User(
+          rs.getLong("id"),
+          rs.getString("uid"),
+          rs.getString("name"),
+          rs.getString("email"),
+          rs.getString("desc"),
+          rs.getDate("created"),
+          rs.getDate("updated")
+      );
       return user;
     };
   }

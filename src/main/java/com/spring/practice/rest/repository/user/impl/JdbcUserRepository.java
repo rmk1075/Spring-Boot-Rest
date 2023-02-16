@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
+/**
+ * User Repository example code using Jdbc DataSource.
+ */
 @Repository("JdbcUserRepository")
 public class JdbcUserRepository implements UserRepository {
 
@@ -64,7 +67,17 @@ public class JdbcUserRepository implements UserRepository {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
-        users.add(new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name")));
+        users.add(
+          new User(
+            rs.getLong("id"),
+            rs.getString("uid"),
+            rs.getString("name"),
+            rs.getString("email"),
+            rs.getString("desc"),
+            rs.getDate("created"),
+            rs.getDate("updated")
+          )
+        );
       }
     } catch (Exception e) {
       throw new IllegalStateException(e);
@@ -87,7 +100,17 @@ public class JdbcUserRepository implements UserRepository {
       pstmt.setLong(1, id);
       rs = pstmt.executeQuery();
 
-      if (rs.next()) user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
+      if (rs.next()) {
+        user = new User(
+          rs.getLong("id"),
+          rs.getString("uid"),
+          rs.getString("name"),
+          rs.getString("email"),
+          rs.getString("desc"),
+          rs.getDate("created"),
+          rs.getDate("updated")
+        );
+      }
     } catch (Exception e) {
       throw new IllegalStateException(e);
     } finally {
@@ -109,7 +132,17 @@ public class JdbcUserRepository implements UserRepository {
       pstmt.setString(1, uid);
       rs = pstmt.executeQuery();
 
-      if (rs.next()) user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
+      if (rs.next()) {
+        user = new User(
+          rs.getLong("id"),
+          rs.getString("uid"),
+          rs.getString("name"),
+          rs.getString("email"),
+          rs.getString("desc"),
+          rs.getDate("created"),
+          rs.getDate("updated")
+        );
+      }
     } catch (Exception e) {
       throw new IllegalStateException(e);
     } finally {
@@ -147,7 +180,7 @@ public class JdbcUserRepository implements UserRepository {
     }
   }
 
-  public User deleteById(Long id) {
+  private User deleteById(Long id) {
     User user = this.findById(id);
     String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
     Connection conn = null;

@@ -10,14 +10,27 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
+/**
+ * User Repository example code.
+ * Mockup class using map instead of database.
+ */
 @Repository("MockUserRepository")
 public class MockUserRepository implements UserRepository {
 
   private Map<Long, User> users = new HashMap<>();
 
+  /**
+   * MockUserRepository Constructor.
+   * Create dummy data.
+   */
   public MockUserRepository() {
     for (int i = 0; i < 10; i++) {
-      User user = new User(String.valueOf(i), String.format("test-%d", i));
+      User user = new User(
+          String.valueOf(i),
+          String.format("test-%d", i),
+          String.format("test%d@mail.com", i),
+          ""
+      );
       users.put(user.getId(), user);
     }
   }
@@ -58,9 +71,11 @@ public class MockUserRepository implements UserRepository {
     try {
       Optional<User> result =
           users.values().stream().filter(u -> u.getUid().equals(uid)).findFirst();
-      if (result == null)
+      if (result == null) {
         throw new NoSuchElementException(String.format("No matching id. uid=%s", uid));
-      else user = result.get();
+      } else {
+        user = result.get();
+      }
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
@@ -71,8 +86,9 @@ public class MockUserRepository implements UserRepository {
   public User update(User user) {
     try {
       Long id = user.getId();
-      if (!users.containsKey(id))
+      if (!users.containsKey(id)) {
         throw new NoSuchElementException(String.format("User is not exists. %s", user));
+      }
       users.put(id, user);
     } catch (Exception e) {
       throw new IllegalStateException(e);
