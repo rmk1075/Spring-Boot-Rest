@@ -49,12 +49,17 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserInfo createUser(UserCreate userCreate) {
     User user = userRepository.findByUid(userCreate.getUid());
-    if (user != null)
+    if (user != null) {
       throw new IllegalArgumentException(
           String.format("User[uid=%s] is already exists.", user.getUid()));
+    }
 
-    UserInfo userInfo =
-        UserInfo.builder().uid(userCreate.getUid()).name(userCreate.getName()).build();
+    UserInfo userInfo = UserInfo.builder()
+        .uid(userCreate.getUid())
+        .name(userCreate.getName())
+        .email(userCreate.getEmail())
+        .desc(userCreate.getDesc())
+        .build();
     User created = userRepository.save(mapper.userInfoToUser(userInfo));
     return mapper.userToUserInfo(created);
   }
