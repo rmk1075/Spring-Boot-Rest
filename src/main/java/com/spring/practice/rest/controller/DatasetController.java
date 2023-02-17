@@ -20,12 +20,22 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Controller for DatasetService.
+ */
 @RestController
 @RequestMapping("/datasets")
 public class DatasetController {
 
   @Autowired private DatasetService datasetService;
 
+  /**
+   * Get Datasets info.
+   *
+   * @param start pagination start
+   * @param limit pagination limit
+   * @return list of DatasetInfo.
+   */
   @GetMapping("/")
   public List<DatasetInfo> getDatasets(
       @RequestParam(required = false, defaultValue = "0") int start,
@@ -34,12 +44,25 @@ public class DatasetController {
     return datasets;
   }
 
+  /**
+   * Get Dataset Info.
+   *
+   * @param id Dataset id.
+   * @return DatasetInfo.
+   */
   @GetMapping("/{id}")
   public DatasetInfo getDataset(@PathVariable Long id) {
     DatasetInfo dataset = datasetService.getDataset(id);
     return dataset;
   }
 
+  /**
+   * Create new Dataset.
+   *
+   * @param userCreate Dataset create arguments.
+   * @return Created DatasetInfo.
+   * @throws IOException Dataset directory creation error.
+   */
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
   public DatasetInfo createDataset(@RequestBody DatasetUserCreate userCreate) throws IOException {
@@ -47,6 +70,14 @@ public class DatasetController {
     return dataset;
   }
 
+  /**
+   * Delete Datset.
+   *
+   * @param id Dataset id.
+   * @throws IllegalArgumentException Input uri with unsupported scheme.
+   * @throws URISyntaxException Invalid uri.
+   * @throws IOException Image file delete error.
+   */
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
   public void deleteDataset(@PathVariable Long id)
@@ -55,6 +86,16 @@ public class DatasetController {
   }
 
   // TODO: consider async upload
+  /**
+   * Upload image to dataset.
+   *
+   * @param id Dataset id.
+   * @param files Image files.
+   * @return Uploaded DatasetInfo.
+   * @throws IllegalArgumentException Duplicated image file.
+   * @throws URISyntaxException Invalid image file url.
+   * @throws IOException Image file create error.
+   */
   @PostMapping("/{id}/files")
   public DatasetInfo uploadDataset(@PathVariable Long id, @RequestPart MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
