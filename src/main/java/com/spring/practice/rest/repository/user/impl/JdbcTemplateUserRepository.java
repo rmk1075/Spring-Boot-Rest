@@ -70,6 +70,20 @@ public class JdbcTemplateUserRepository implements UserRepository {
   }
 
   @Override
+  public User findByEmail(String email) {
+    String sql = String.format("SELECT * FROM %s WHERE EMAIL=%s", TABLE, email);
+    User user = null;
+    try {
+      user = jdbcTemplate.queryForObject(sql, userRowMapper());
+    } catch (Exception e) {
+      if (!EmptyResultDataAccessException.class.isInstance(e)) {
+        throw new IllegalStateException(e);
+      }
+    }
+    return user;
+  }
+
+  @Override
   public User update(User user) {
     String sql = String.format("UPDATE %s SET NAME=? WHERE ID=?", TABLE);
     try {

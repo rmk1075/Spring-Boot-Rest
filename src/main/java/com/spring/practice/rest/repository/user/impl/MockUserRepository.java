@@ -83,6 +83,23 @@ public class MockUserRepository implements UserRepository {
   }
 
   @Override
+  public User findByEmail(String email) {
+    User user = null;
+    try {
+      Optional<User> result =
+          users.values().stream().filter(u -> u.getEmail().equals(email)).findFirst();
+      if (result == null) {
+        throw new NoSuchElementException(String.format("No matching email. email=%s", email));
+      } else {
+        user = result.get();
+      }
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+    return user;
+  }
+
+  @Override
   public User update(User user) {
     try {
       Long id = user.getId();

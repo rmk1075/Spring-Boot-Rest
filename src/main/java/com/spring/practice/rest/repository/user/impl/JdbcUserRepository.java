@@ -152,6 +152,38 @@ public class JdbcUserRepository implements UserRepository {
   }
 
   @Override
+  public User findByEmail(String email) {
+    String sql = String.format("SELECT * FROM %s WHERE EMAIL=?", TABLE);
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+    User user = null;
+    try {
+      conn = getConnection();
+      pstmt = conn.prepareStatement(sql);
+      pstmt.setString(1, email);
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        user = new User(
+          rs.getLong("id"),
+          rs.getString("uid"),
+          rs.getString("name"),
+          rs.getString("email"),
+          rs.getString("desc"),
+          rs.getDate("created"),
+          rs.getDate("updated")
+        );
+      }
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    } finally {
+      close(conn, pstmt, rs);
+    }
+    return user;
+  }
+
+  @Override
   public User update(User user) {
     String sql = String.format("UPDATE %s SET NAME=? WHERE ID=?", TABLE);
     Connection conn = null;
