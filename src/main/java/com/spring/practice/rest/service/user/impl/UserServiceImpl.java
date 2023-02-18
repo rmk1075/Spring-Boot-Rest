@@ -43,11 +43,10 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserInfo> getUsers(int start, int limit) {
+  public List<User> getUsers(int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<UserInfo> users = userRepository
+    List<User> users = userRepository
             .findAll(pageable)
-            .map(user -> mapper.userToUserInfo(user))
             .getContent();
     return users;
   }

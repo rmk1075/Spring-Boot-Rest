@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
@@ -30,6 +31,8 @@ public class UserServiceImplTest {
   private final String EMAIL = "test@email.com";
 
   @Autowired private UserService userService;
+
+  @Autowired private CommonMapper mapper;
 
   @Autowired
   @Qualifier("JpaUserRepository")
@@ -83,7 +86,11 @@ public class UserServiceImplTest {
 
   @Test
   void testGetUsers() {
-    List<UserInfo> users = userService.getUsers(0, 100);
+    List<UserInfo> users = userService
+        .getUsers(0, 100)
+        .stream()
+        .map(user -> mapper.userToUserInfo(user))
+        .toList();
 
     assertTrue(0 < users.size());
     System.out.println();

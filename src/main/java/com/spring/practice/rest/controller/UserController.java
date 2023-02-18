@@ -1,5 +1,7 @@
 package com.spring.practice.rest.controller;
 
+import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
@@ -29,6 +31,8 @@ public class UserController {
 
   @Autowired private UserService userService;
 
+  @Autowired private CommonMapper mapper;
+
   /**
    * Get Users info.
    *
@@ -38,8 +42,8 @@ public class UserController {
   public List<UserInfo> getUsers(
       @RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "100") int limit) {
-    List<UserInfo> users = userService.getUsers(start, limit);
-    return users;
+    List<User> users = userService.getUsers(start, limit);
+    return users.stream().map(user -> mapper.userToUserInfo(user)).toList();
   }
 
   /**

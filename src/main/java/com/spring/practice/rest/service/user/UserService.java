@@ -1,5 +1,6 @@
 package com.spring.practice.rest.service.user;
 
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface UserService {
   public UserInfo getUser(Long id);
 
-  public List<UserInfo> getUsers(int start, int limit);
+  public List<User> getUsers(int start, int limit);
 
   public UserInfo createUser(UserCreate userCreate);
 
