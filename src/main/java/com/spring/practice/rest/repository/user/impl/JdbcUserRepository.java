@@ -132,7 +132,7 @@
 //       pstmt.setString(1, uid);
 //       rs = pstmt.executeQuery();
 
-if (rs.next()) {
+// if (rs.next()) {
 //   user = new User(
 //     rs.getLong("id"),
 //     rs.getString("uid"),

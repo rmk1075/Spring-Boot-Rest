@@ -41,7 +41,15 @@ public class ImageService {
     }
     return mapper.imageToImageInfo(image.get());
   }
-  
+
+  /**
+   * Get Images by dataset.
+   *
+   * @param datasetId Dataset id.
+   * @param start pagination start
+   * @param limit pagination limit
+   * @return List of Images.
+   */
   public List<ImageInfo> getImagesByDataset(Long datasetId, int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
     List<ImageInfo> images = imageRepository
