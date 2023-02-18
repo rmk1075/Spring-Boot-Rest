@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DatasetInfo dto class.
+ * Mapping with Dataset entity.
+ */
 @Builder
 @Data
 @NoArgsConstructor
