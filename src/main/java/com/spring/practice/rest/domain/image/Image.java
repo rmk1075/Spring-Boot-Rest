@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+/**
+ * Image Entity class.
+ */
 @Data
 @NoArgsConstructor
 @Entity
