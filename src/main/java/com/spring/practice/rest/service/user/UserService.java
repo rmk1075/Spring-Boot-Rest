@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
   public UserInfo getUser(Long id);
 
-  public List<UserInfo> getUsers();
+  public List<UserInfo> getUsers(int start, int limit);
 
   public UserInfo createUser(UserCreate userCreate);
 

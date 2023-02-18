@@ -83,7 +83,7 @@ public class UserServiceImplTest {
 
   @Test
   void testGetUsers() {
-    List<UserInfo> users = userService.getUsers();
+    List<UserInfo> users = userService.getUsers(0, 100);
 
     assertTrue(0 < users.size());
     System.out.println();

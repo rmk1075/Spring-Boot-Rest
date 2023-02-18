@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,6 +40,16 @@ public class ImageService {
       throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
     }
     return mapper.imageToImageInfo(image.get());
+  }
+  
+  public List<ImageInfo> getImagesByDataset(Long datasetId, int start, int limit) {
+    Pageable pageable = PageRequest.of(start, limit);
+    List<ImageInfo> images = imageRepository
+        .findAllByDatasetId(datasetId, pageable)
+        .stream()
+        .map(image -> mapper.imageToImageInfo(image))
+        .toList();
+    return images;
   }
 
   /**

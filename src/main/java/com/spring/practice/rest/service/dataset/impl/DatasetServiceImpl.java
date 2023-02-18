@@ -6,6 +6,7 @@ import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;
+import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import com.spring.practice.rest.service.image.ImageService;
@@ -57,7 +58,7 @@ public class DatasetServiceImpl implements DatasetService {
     // create dataset directory
     String path = this.generateDatasetPath(datasetInfo);
     Path filePath = Path.of(path);
-    Files.deleteIfExists(filePath);
+    FileUtils.deleteDirectory(filePath.toFile());
     Files.createDirectories(filePath);
 
     dataset.setPath(path);
@@ -117,7 +118,13 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public DatasetInfo uploadDataset(Long id, MultipartFile[] files)
+  public List<ImageInfo> getImages(Long id, int start, int limit) {
+    List<ImageInfo> images = imageService.getImagesByDataset(id, start, limit);
+    return images;
+  }
+
+  @Override
+  public DatasetInfo uploadImages(Long id, MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
     DatasetInfo datasetInfo = this.getDataset(id);
     int size = 0;

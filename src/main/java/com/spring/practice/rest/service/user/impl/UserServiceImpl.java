@@ -9,9 +9,10 @@ import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,11 +43,12 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<UserInfo> getUsers() {
-    List<UserInfo> users =
-        this.userRepository.findAll().stream()
+  public List<UserInfo> getUsers(int start, int limit) {
+    Pageable pageable = PageRequest.of(start, limit);
+    List<UserInfo> users = userRepository
+            .findAll(pageable)
             .map(user -> mapper.userToUserInfo(user))
-            .collect(Collectors.toList());
+            .getContent();
     return users;
   }
 
