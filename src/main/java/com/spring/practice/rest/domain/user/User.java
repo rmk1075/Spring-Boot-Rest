@@ -1,7 +1,6 @@
 package com.spring.practice.rest.domain.user;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,12 +32,18 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NonNull private String uid;
-  @NonNull private String name;
-  @NonNull private String email;
+  @NonNull
+  private String uid;
 
-  @Column(name="DESCRIPTION")
-  @NonNull private String desc;
+  @NonNull
+  private String name;
+
+  @NonNull
+  private String email;
+
+  @Column(name = "DESCRIPTION")
+  @NonNull
+  private String desc;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)

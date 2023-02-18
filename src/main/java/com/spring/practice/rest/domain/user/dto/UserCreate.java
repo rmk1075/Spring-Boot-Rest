@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * UserCreate dto class.
+ */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor

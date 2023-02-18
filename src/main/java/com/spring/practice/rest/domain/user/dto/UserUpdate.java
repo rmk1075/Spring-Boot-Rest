@@ -1,10 +1,12 @@
 package com.spring.practice.rest.domain.user.dto;
 
 import javax.validation.constraints.Email;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * UserUpdate dto class.
+ */
 @Data
 @NoArgsConstructor
 public class UserUpdate {

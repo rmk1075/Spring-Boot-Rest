@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * UserInfo dto class.
+ * Mapping with User entity.
+ */
 @Builder
 @Data
 @NoArgsConstructor
