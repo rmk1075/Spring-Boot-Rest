@@ -34,12 +34,12 @@ public class UserServiceImpl implements UserService {
   @Autowired private CommonMapper mapper;
 
   @Override
-  public UserInfo getUser(Long id) {
+  public User getUser(Long id) throws NoSuchElementException {
     User user = userRepository.findById(id);
     if (user == null) {
       throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
     }
-    return mapper.userToUserInfo(user);
+    return user;
   }
 
   @Override
@@ -77,9 +77,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserInfo updateUser(Long id, UserUpdate userUpdate) {
-    UserInfo userInfo = this.getUser(id);
+    User user = this.getUser(id);
     if (userUpdate.getName() != null) {
-      userInfo.setName(userUpdate.getName());
+      user.setName(userUpdate.getName());
     }
 
     if (userUpdate.getEmail() != null) {
@@ -88,22 +88,22 @@ public class UserServiceImpl implements UserService {
         throw new IllegalArgumentException(
           String.format("User[email=%s] is already exists.", email));
       } else {
-        userInfo.setEmail(email);
+        user.setEmail(email);
       }
     }
 
     if (userUpdate.getDesc() != null) {
-      userInfo.setDesc(userUpdate.getDesc());
+      user.setDesc(userUpdate.getDesc());
     }
 
-    User updated = userRepository.update(mapper.userInfoToUser(userInfo));
+    User updated = userRepository.update(user);
     return mapper.userToUserInfo(updated);
   }
 
   @Override
   public UserInfo deleteUser(Long id) {
-    UserInfo user = this.getUser(id);
-    User deleted = userRepository.delete(mapper.userInfoToUser(user));
+    User user = this.getUser(id);
+    User deleted = userRepository.delete(user);
     return mapper.userToUserInfo(deleted);
   }
 }

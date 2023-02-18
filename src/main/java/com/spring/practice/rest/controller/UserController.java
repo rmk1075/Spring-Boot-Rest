@@ -54,12 +54,8 @@ public class UserController {
    */
   @GetMapping("/{id}")
   public UserInfo getUser(@PathVariable Long id) {
-    UserInfo user = userService.getUser(id);
-    if (user == null) {
-      throw new NoSuchElementException(
-        String.format("User[id=%s] is not exists.", String.valueOf(id)));
-    }
-    return user;
+    User user = userService.getUser(id);
+    return mapper.userToUserInfo(user);
   }
 
   /**

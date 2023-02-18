@@ -78,7 +78,7 @@ public class UserServiceImplTest {
 
   @Test
   void testGetUser() {
-    UserInfo user = userService.getUser(ID);
+    User user = userService.getUser(ID);
 
     assertTrue(user.getUid().equals(UID));
     assertTrue(user.getName().equals(NAME));
