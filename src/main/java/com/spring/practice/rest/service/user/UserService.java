@@ -15,7 +15,7 @@ public interface UserService {
 
   public List<User> getUsers(int start, int limit);
 
-  public UserInfo createUser(UserCreate userCreate);
+  public User createUser(UserCreate userCreate);
 
   public UserInfo updateUser(Long id, UserUpdate userUpdate);
 

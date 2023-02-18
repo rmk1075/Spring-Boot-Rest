@@ -60,7 +60,7 @@ public class UserServiceImplTest {
     String name = "created";
     String email = "test@gmail.com";
     UserCreate create = new UserCreate(uid, name, email);
-    UserInfo user = userService.createUser(create);
+    User user = userService.createUser(create);
 
     assertTrue(user.getUid().equals(create.getUid()));
     assertTrue(user.getName().equals(create.getName()));

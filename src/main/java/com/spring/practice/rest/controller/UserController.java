@@ -69,8 +69,8 @@ public class UserController {
   public UserInfo createUser(
       @Valid @RequestBody UserCreate userCreate
   ) {
-    UserInfo created = userService.createUser(userCreate);
-    return created;
+    User user = userService.createUser(userCreate);
+    return mapper.userToUserInfo(user);
   }
 
   /**

@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserInfo createUser(UserCreate userCreate) {
+  public User createUser(UserCreate userCreate) {
     User user = userRepository.findByUid(userCreate.getUid());
     if (user != null) {
       throw new IllegalArgumentException(
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         .desc(userCreate.getDesc())
         .build();
     User created = userRepository.save(mapper.userInfoToUser(userInfo));
-    return mapper.userToUserInfo(created);
+    return created;
   }
 
   @Override
