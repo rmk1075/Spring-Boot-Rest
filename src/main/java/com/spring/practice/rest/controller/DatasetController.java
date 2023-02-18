@@ -71,7 +71,7 @@ public class DatasetController {
   }
 
   /**
-   * Delete Datset.
+   * Delete Dataset.
    *
    * @param id Dataset id.
    * @throws IllegalArgumentException Input uri with unsupported scheme.
