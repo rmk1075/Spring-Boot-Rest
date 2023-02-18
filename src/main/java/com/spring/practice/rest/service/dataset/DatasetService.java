@@ -9,6 +9,9 @@ import java.net.URISyntaxException;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * DatasetService interface.
+ */
 public interface DatasetService {
   public DatasetInfo getDataset(Long id);
 

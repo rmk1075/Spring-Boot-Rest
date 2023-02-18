@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * UserInfo dto class.
+ * Mapping with User entity.
+ */
 @Builder
 @Data
 @NoArgsConstructor
@@ -15,6 +19,8 @@ public class UserInfo {
   private Long id;
   private String uid;
   private String name;
+  private String email;
+  private String desc;
 
   private Date created;
   private Date updated;

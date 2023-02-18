@@ -12,6 +12,9 @@
 // import org.springframework.jdbc.datasource.DataSourceUtils;
 // import org.springframework.stereotype.Repository;
 
+/**
+ * User Repository example code using Jdbc DataSource.
+ */
 // @Repository("JdbcUserRepository")
 // public class JdbcUserRepository implements UserRepository {
 
@@ -63,16 +66,26 @@
 //       pstmt = conn.prepareStatement(sql);
 //       rs = pstmt.executeQuery();
 
-//       while (rs.next()) {
-//         users.add(new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name")));
-//       }
-//     } catch (Exception e) {
-//       throw new IllegalStateException(e);
-//     } finally {
-//       close(conn, pstmt, rs);
+//     while (rs.next()) {
+//       users.add(
+//         new User(
+//           rs.getLong("id"),
+//           rs.getString("uid"),
+//           rs.getString("name"),
+//           rs.getString("email"),
+//           rs.getString("desc"),
+//           rs.getDate("created"),
+//           rs.getDate("updated")
+//         )
+//       );
 //     }
-//     return users;
+//   } catch (Exception e) {
+//    throw new IllegalStateException(e);
+//   } finally {
+//     close(conn, pstmt, rs);
 //   }
+//   return users;
+// }
 
 //   @Override
 //   public User findById(Long id) {
@@ -87,14 +100,24 @@
 //       pstmt.setLong(1, id);
 //       rs = pstmt.executeQuery();
 
-//       if (rs.next()) user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
-//     } catch (Exception e) {
-//       throw new IllegalStateException(e);
-//     } finally {
-//       close(conn, pstmt, rs);
-//     }
-//     return user;
-//   }
+//  if (rs.next()) {
+//   user = new User(
+//     rs.getLong("id"),
+//     rs.getString("uid"),
+//     rs.getString("name"),
+//     rs.getString("email"),
+//     rs.getString("desc"),
+//     rs.getDate("created"),
+//     rs.getDate("updated")
+//   );
+// }
+// } catch (Exception e) {
+// throw new IllegalStateException(e);
+// } finally {
+// close(conn, pstmt, rs);
+// }
+// return user;
+// }
 
 //   @Override
 //   public User findByUid(String uid) {
@@ -109,14 +132,56 @@
 //       pstmt.setString(1, uid);
 //       rs = pstmt.executeQuery();
 
-//       if (rs.next()) user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
-//     } catch (Exception e) {
-//       throw new IllegalStateException(e);
-//     } finally {
-//       close(conn, pstmt, rs);
-//     }
-//     return user;
-//   }
+// if (rs.next()) {
+//   user = new User(
+//     rs.getLong("id"),
+//     rs.getString("uid"),
+//     rs.getString("name"),
+//     rs.getString("email"),
+//     rs.getString("desc"),
+//     rs.getDate("created"),
+//     rs.getDate("updated")
+//   );
+// }
+// } catch (Exception e) {
+// throw new IllegalStateException(e);
+// } finally {
+// close(conn, pstmt, rs);
+// }
+// return user;
+// }
+
+// @Override
+// public User findByEmail(String email) {
+// String sql = String.format("SELECT * FROM %s WHERE EMAIL=?", TABLE);
+// Connection conn = null;
+// PreparedStatement pstmt = null;
+// ResultSet rs = null;
+// User user = null;
+// try {
+// conn = getConnection();
+// pstmt = conn.prepareStatement(sql);
+// pstmt.setString(1, email);
+// rs = pstmt.executeQuery();
+
+// if (rs.next()) {
+//   user = new User(
+//     rs.getLong("id"),
+//     rs.getString("uid"),
+//     rs.getString("name"),
+//     rs.getString("email"),
+//     rs.getString("desc"),
+//     rs.getDate("created"),
+//     rs.getDate("updated")
+//   );
+// }
+// } catch (Exception e) {
+// throw new IllegalStateException(e);
+// } finally {
+// close(conn, pstmt, rs);
+// }
+// return user;
+// }
 
 //   @Override
 //   public User update(User user) {
@@ -147,21 +212,21 @@
 //     }
 //   }
 
-//   public User deleteById(Long id) {
-//     User user = this.findById(id);
-//     String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
-//     Connection conn = null;
-//     PreparedStatement pstmt = null;
-//     try {
-//       conn = getConnection();
-//       pstmt = conn.prepareStatement(sql);
-//       pstmt.setString(1, String.valueOf(id));
-//       pstmt.executeUpdate();
-//     } catch (Exception e) {
-//       throw new IllegalStateException(e);
-//     } finally {
-//       close(conn, pstmt);
-//     }
-//     return user;
+// private User deleteById(Long id) {
+//   User user = this.findById(id);
+//   String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
+//   Connection conn = null;
+//   PreparedStatement pstmt = null;
+//   try {
+//     conn = getConnection();
+//     pstmt = conn.prepareStatement(sql);
+//     pstmt.setString(1, String.valueOf(id));
+//     pstmt.executeUpdate();
+//   } catch (Exception e) {
+//     throw new IllegalStateException(e);
+//   } finally {
+//     close(conn, pstmt);
 //   }
+//   return user;
+// }
 // }

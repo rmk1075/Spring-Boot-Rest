@@ -10,6 +10,9 @@
 // import org.springframework.jdbc.core.RowMapper;
 // import org.springframework.stereotype.Repository;
 
+/**
+ * User Repository example class using JdbcTemplate.
+ */
 // @Repository("JdbcTemplateUserRepository")
 // public class JdbcTemplateUserRepository implements UserRepository {
 
@@ -38,29 +41,47 @@
 //     return users;
 //   }
 
-//   @Override
-//   public User findById(Long id) {
-//     String sql = String.format("SELECT * FROM %s WHERE ID=%s", TABLE, id);
-//     User user = null;
-//     try {
-//       user = jdbcTemplate.queryForObject(sql, userRowMapper());
-//     } catch (Exception e) {
-//       if (!EmptyResultDataAccessException.class.isInstance(e)) throw new IllegalStateException(e);
+// @Override
+// public User findById(Long id) {
+//   String sql = String.format("SELECT * FROM %s WHERE ID=%s", TABLE, id);
+//   User user = null;
+//   try {
+//     user = jdbcTemplate.queryForObject(sql, userRowMapper());
+//   } catch (Exception e) {
+//     if (!EmptyResultDataAccessException.class.isInstance(e)) {
+//       throw new IllegalStateException(e);
 //     }
-//     return user;
 //   }
+//   return user;
+// }
 
-//   @Override
-//   public User findByUid(String uid) {
-//     String sql = String.format("SELECT * FROM %s WHERE UID=%s", TABLE, uid);
-//     User user = null;
-//     try {
-//       user = jdbcTemplate.queryForObject(sql, userRowMapper());
-//     } catch (Exception e) {
-//       if (!EmptyResultDataAccessException.class.isInstance(e)) throw new IllegalStateException(e);
+// @Override
+// public User findByUid(String uid) {
+//   String sql = String.format("SELECT * FROM %s WHERE UID=%s", TABLE, uid);
+//   User user = null;
+//   try {
+//     user = jdbcTemplate.queryForObject(sql, userRowMapper());
+//   } catch (Exception e) {
+//     if (!EmptyResultDataAccessException.class.isInstance(e)) {
+//       throw new IllegalStateException(e);
 //     }
-//     return user;
 //   }
+//   return user;
+// }
+
+// @Override
+// public User findByEmail(String email) {
+//   String sql = String.format("SELECT * FROM %s WHERE EMAIL=%s", TABLE, email);
+//   User user = null;
+//   try {
+//     user = jdbcTemplate.queryForObject(sql, userRowMapper());
+//   } catch (Exception e) {
+//     if (!EmptyResultDataAccessException.class.isInstance(e)) {
+//       throw new IllegalStateException(e);
+//     }
+//   }
+//   return user;
+// }
 
 //   @Override
 //   public User update(User user) {
@@ -83,7 +104,7 @@
 //     }
 //   }
 
-//   public User deleteById(Long id) {
+//   private User deleteById(Long id) {
 //     User old = this.findById(id);
 //     String sql = String.format("DELETE FROM %s WHERE ID=?", TABLE);
 //     try {
@@ -96,7 +117,15 @@
 
 //   private RowMapper<User> userRowMapper() {
 //     return (rs, rowNum) -> {
-//       User user = new User(rs.getLong("id"), rs.getString("uid"), rs.getString("name"));
+//       User user = new User(
+//           rs.getLong("id"),
+//           rs.getString("uid"),
+//           rs.getString("name"),
+//           rs.getString("email"),
+//           rs.getString("desc"),
+//           rs.getDate("created"),
+//           rs.getDate("updated")
+//       );
 //       return user;
 //     };
 //   }

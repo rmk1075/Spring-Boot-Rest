@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * UserService implements class.
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -33,8 +36,9 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserInfo getUser(Long id) {
     User user = userRepository.findById(id);
-    if (user == null)
+    if (user == null) {
       throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
+    }
     return mapper.userToUserInfo(user);
   }
 
@@ -51,21 +55,49 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserInfo createUser(UserCreate userCreate) {
     User user = userRepository.findByUid(userCreate.getUid());
-    if (user != null)
+    if (user != null) {
       throw new IllegalArgumentException(
           String.format("User[uid=%s] is already exists.", user.getUid()));
+    }
 
-    UserInfo userInfo =
-        UserInfo.builder().uid(userCreate.getUid()).name(userCreate.getName()).build();
+    user = userRepository.findByEmail(userCreate.getEmail());
+    if (user != null) {
+      throw new IllegalArgumentException(
+          String.format("User[email=%s] is already exists.", user.getEmail()));
+    }
+
+    UserInfo userInfo = UserInfo.builder()
+        .uid(userCreate.getUid())
+        .name(userCreate.getName())
+        .email(userCreate.getEmail())
+        .desc(userCreate.getDesc())
+        .build();
     User created = userRepository.save(mapper.userInfoToUser(userInfo));
     return mapper.userToUserInfo(created);
   }
 
   @Override
   public UserInfo updateUser(Long id, UserUpdate userUpdate) {
-    UserInfo user = this.getUser(id);
-    user.setName(userUpdate.getName());
-    User updated = userRepository.update(mapper.userInfoToUser(user));
+    UserInfo userInfo = this.getUser(id);
+    if (userUpdate.getName() != null) {
+      userInfo.setName(userUpdate.getName());
+    }
+
+    if (userUpdate.getEmail() != null) {
+      String email = userUpdate.getEmail();
+      if (userRepository.findByEmail(email) != null) {
+        throw new IllegalArgumentException(
+          String.format("User[email=%s] is already exists.", email));
+      } else {
+        userInfo.setEmail(email);
+      }
+    }
+
+    if (userUpdate.getDesc() != null) {
+      userInfo.setDesc(userUpdate.getDesc());
+    }
+
+    User updated = userRepository.update(mapper.userInfoToUser(userInfo));
     return mapper.userToUserInfo(updated);
   }
 

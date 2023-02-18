@@ -40,7 +40,7 @@ public class DatasetRepositoryTest {
     for (int i = 0; i < length; i++) {
       String name = String.format("dataset-%d", i);
       String path = String.format("/datasets/%d", i);
-      DatasetCreate datasetCreate = DatasetCreate.builder().name(name).path(path).size(0).build();
+      DatasetCreate datasetCreate = new DatasetCreate(name, path, 0);
       Dataset dataset = modelMapper.map(datasetCreate, Dataset.class);
       dataset = datasetRepository.save(dataset);
       map.put(dataset.getId(), datasetCreate);

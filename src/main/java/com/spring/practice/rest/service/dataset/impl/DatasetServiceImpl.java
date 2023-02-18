@@ -25,6 +25,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * DatasetService implements class.
+ */
 @Service
 @Transactional
 public class DatasetServiceImpl implements DatasetService {
@@ -41,11 +44,12 @@ public class DatasetServiceImpl implements DatasetService {
   @Override
   public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
     String name = datasetUserCreate.getName();
-    if (datasetRepository.findByName(name) != null)
+    if (datasetRepository.findByName(name) != null) {
       throw new IllegalArgumentException(
           String.format("Dataset[name=%s] is already exists.", name));
+    }
 
-    DatasetCreate datasetCreate = DatasetCreate.builder().name(name).path(null).size(0).build();
+    DatasetCreate datasetCreate = new DatasetCreate(name);
     DatasetInfo datasetInfo = mapper.datasetCreateToDatasetInfo(datasetCreate);
     Dataset dataset = mapper.datasetInfoToDataset(datasetInfo);
     dataset = datasetRepository.save(dataset);
@@ -77,7 +81,9 @@ public class DatasetServiceImpl implements DatasetService {
     List<Dataset> datasets = datasetRepository.findAll();
     List<DatasetInfo> datasetInfos =
         datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
-    for (DatasetInfo datasetInfo : datasetInfos) deleteDatasetStorage(datasetInfo);
+    for (DatasetInfo datasetInfo : datasetInfos) {
+      deleteDatasetStorage(datasetInfo);
+    }
     datasetRepository.deleteAll();
     return datasetInfos;
   }
@@ -86,15 +92,17 @@ public class DatasetServiceImpl implements DatasetService {
       throws IllegalArgumentException, URISyntaxException, IOException {
     imageService.deleteImagesByDataset(dataset.getId());
     Path filePath = Path.of(dataset.getPath());
-    if (Files.exists(filePath) && Files.isDirectory(filePath))
+    if (Files.exists(filePath) && Files.isDirectory(filePath)) {
       FileUtils.deleteDirectory(filePath.toFile());
+    }
   }
 
   @Override
   public DatasetInfo getDataset(Long id) {
     Optional<Dataset> dataset = datasetRepository.findById(id);
-    if (!dataset.isPresent())
+    if (!dataset.isPresent()) {
       throw new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id));
+    }
     return mapper.datasetToDatasetInfo(dataset.get());
   }
 

@@ -11,6 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+/**
+ * User Repository class using jpa.
+ */
 @Repository("JpaUserRepository")
 public class JpaUserRepository implements UserRepository {
 
@@ -42,15 +45,22 @@ public class JpaUserRepository implements UserRepository {
 
   @Override
   public User findByUid(String uid) {
-    User user = repository.findByUid(uid);
-    return user;
+    Optional<User> user = repository.findByUid(uid);
+    return user.isPresent() ? user.get() : null;
+  }
+
+  @Override
+  public User findByEmail(String email) {
+    Optional<User> user = repository.findByEmail(email);
+    return user.isPresent() ? user.get() : null;
   }
 
   @Override
   public User update(User user) {
     Optional<User> u = repository.findById(user.getId());
-    if (!u.isPresent())
+    if (!u.isPresent()) {
       throw new NoSuchElementException(String.format("User is not exists. id=%s", user.getId()));
+    }
     User result = repository.save(user);
     return result;
   }

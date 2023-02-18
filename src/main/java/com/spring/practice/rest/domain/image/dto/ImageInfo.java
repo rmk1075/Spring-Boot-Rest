@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * ImageInfo dto class.
+ * Mapping with Image entity.
+ */
 @Builder
 @Data
 @NoArgsConstructor

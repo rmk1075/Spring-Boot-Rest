@@ -27,6 +27,7 @@ public class UserServiceImplTest {
   private Long ID;
   private final String UID = "testId";
   private final String NAME = "testName";
+  private final String EMAIL = "test@email.com";
 
   @Autowired private UserService userService;
 
@@ -36,7 +37,7 @@ public class UserServiceImplTest {
 
   @BeforeEach
   void setup() {
-    User user = userRepository.save(new User(UID, NAME));
+    User user = userRepository.save(new User(UID, NAME, EMAIL, ""));
     ID = user.getId();
     System.out.println(user);
   }
@@ -44,7 +45,9 @@ public class UserServiceImplTest {
   @AfterEach
   void tearDown() {
     User user = userRepository.findByUid(UID);
-    if (user != null) user = userRepository.delete(user);
+    if (user != null) {
+      user = userRepository.delete(user);
+    }
     System.out.println(user);
   }
 
@@ -52,7 +55,8 @@ public class UserServiceImplTest {
   void testCreateUser() {
     String uid = "testtest";
     String name = "created";
-    UserCreate create = UserCreate.builder().uid(uid).name(name).build();
+    String email = "test@gmail.com";
+    UserCreate create = new UserCreate(uid, name, email);
     UserInfo user = userService.createUser(create);
 
     assertTrue(user.getUid().equals(create.getUid()));

@@ -5,6 +5,9 @@ import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import java.util.List;
 
+/**
+ * UserService interface.
+ */
 public interface UserService {
   public UserInfo getUser(Long id);
 

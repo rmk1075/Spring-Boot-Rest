@@ -10,9 +10,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+/**
+ * Dataset Entity class.
+ */
 @Data
 @NoArgsConstructor
 @Entity
@@ -23,8 +27,11 @@ public class Dataset {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NonNull
   private String name;
+
   private String path;
+
   private int size;
 
   @CreationTimestamp

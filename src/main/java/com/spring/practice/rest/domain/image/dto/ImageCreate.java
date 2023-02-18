@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * ImageCreate dto class.
+ */
 @Builder
 @Data
 @NoArgsConstructor
