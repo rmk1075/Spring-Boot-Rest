@@ -7,7 +7,6 @@ import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
-import java.util.NoSuchElementException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -82,8 +81,8 @@ public class UserController {
    */
   @PutMapping("/{id}")
   public UserInfo updateUser(@PathVariable Long id, @RequestBody UserUpdate userUpdate) {
-    UserInfo updated = userService.updateUser(id, userUpdate);
-    return updated;
+    User user = userService.updateUser(id, userUpdate);
+    return mapper.userToUserInfo(user);
   }
 
   /**

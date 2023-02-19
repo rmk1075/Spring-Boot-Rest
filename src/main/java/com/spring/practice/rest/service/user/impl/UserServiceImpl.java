@@ -76,14 +76,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserInfo updateUser(Long id, UserUpdate userUpdate) {
+  public User updateUser(Long id, UserUpdate userUpdate) {
     User user = this.getUser(id);
-    if (userUpdate.getName() != null) {
-      user.setName(userUpdate.getName());
+
+    // name validation
+    String name = userUpdate.getName();
+    if (name != null) {
+      if (userRepository.findByName(name) != null) {
+        throw new IllegalArgumentException(
+          String.format("User[name=%s] is already exists", name)
+        );
+      }
+      user.setName(name);
     }
 
-    if (userUpdate.getEmail() != null) {
-      String email = userUpdate.getEmail();
+    // email validation
+    String email = userUpdate.getEmail();
+    if (email != null) {
       if (userRepository.findByEmail(email) != null) {
         throw new IllegalArgumentException(
           String.format("User[email=%s] is already exists.", email));
@@ -92,12 +101,14 @@ public class UserServiceImpl implements UserService {
       }
     }
 
-    if (userUpdate.getDesc() != null) {
-      user.setDesc(userUpdate.getDesc());
+    // desc validation
+    String desc = userUpdate.getDesc();
+    if (desc != null) {
+      user.setDesc(desc);
     }
 
     User updated = userRepository.update(user);
-    return mapper.userToUserInfo(updated);
+    return updated;
   }
 
   @Override

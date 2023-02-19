@@ -17,7 +17,7 @@ public interface UserService {
 
   public User createUser(UserCreate userCreate);
 
-  public UserInfo updateUser(Long id, UserUpdate userUpdate);
+  public User updateUser(Long id, UserUpdate userUpdate);
 
   public UserInfo deleteUser(Long id);
 }

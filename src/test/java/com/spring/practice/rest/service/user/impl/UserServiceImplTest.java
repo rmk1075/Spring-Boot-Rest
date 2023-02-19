@@ -21,14 +21,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+/**
+ * Test code for UserServiecImpl.
+ */
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 public class UserServiceImplTest {
 
-  private Long ID;
-  private final String UID = "testId";
-  private final String NAME = "testName";
-  private final String EMAIL = "test@email.com";
+  private Long testId;
+  private final String testUid = "testId";
+  private final String testName = "testName";
+  private final String testEmail = "test@email.com";
 
   @Autowired private UserService userService;
 
@@ -40,14 +43,14 @@ public class UserServiceImplTest {
 
   @BeforeEach
   void setup() {
-    User user = userRepository.save(new User(UID, NAME, EMAIL, ""));
-    ID = user.getId();
+    User user = userRepository.save(new User(testUid, testName, testEmail, ""));
+    testId = user.getId();
     System.out.println(user);
   }
 
   @AfterEach
   void tearDown() {
-    User user = userRepository.findByUid(UID);
+    User user = userRepository.findByUid(testUid);
     if (user != null) {
       user = userRepository.delete(user);
     }
@@ -68,20 +71,20 @@ public class UserServiceImplTest {
 
   @Test
   void testDeleteUser() {
-    UserInfo user = userService.deleteUser(ID);
+    UserInfo user = userService.deleteUser(testId);
 
-    assertTrue(user.getUid().equals(UID));
-    assertTrue(user.getName().equals(NAME));
+    assertTrue(user.getUid().equals(testUid));
+    assertTrue(user.getName().equals(testName));
 
-    assertNull(userRepository.findByUid(UID));
+    assertNull(userRepository.findByUid(testUid));
   }
 
   @Test
   void testGetUser() {
-    User user = userService.getUser(ID);
+    User user = userService.getUser(testId);
 
-    assertTrue(user.getUid().equals(UID));
-    assertTrue(user.getName().equals(NAME));
+    assertTrue(user.getUid().equals(testUid));
+    assertTrue(user.getName().equals(testName));
   }
 
   @Test
@@ -101,11 +104,11 @@ public class UserServiceImplTest {
     UserUpdate update = new UserUpdate();
     update.setName("updated");
 
-    UserInfo user = userService.updateUser(ID, update);
+    UserInfo user = mapper.userToUserInfo(userService.updateUser(testId, update));
 
     assertNotNull(user);
-    assertTrue(user.getUid().equals(UID));
-    assertFalse(user.getName().equals(NAME));
+    assertTrue(user.getUid().equals(testUid));
+    assertFalse(user.getName().equals(testName));
     assertTrue(user.getName().equals(update.getName()));
   }
 }
