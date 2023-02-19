@@ -7,6 +7,9 @@ import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+/**
+ * User Repository class using jpa entity manager.
+ */
 @Repository("JpaUserEmRepository")
 public class JpaUserEmRepository {
 
@@ -29,12 +32,24 @@ public class JpaUserEmRepository {
     return Optional.ofNullable(result);
   }
 
+  /**
+   * Find User by uid (user id).
+   *
+   * @param uid User uid.
+   * @return User entity.
+   */
   public Optional<User> findByUid(String uid) {
     String query = String.format("SELECT u FROM %s as u WHERE UID = :id", ENTITY);
     List<User> result = em.createQuery(query, User.class).setParameter("id", uid).getResultList();
     return Optional.ofNullable(result.size() == 0 ? null : result.get(0));
   }
 
+  /**
+   * Update User.
+   *
+   * @param user User eneity.
+   * @return Updated User entity.
+   */
   public User update(User user) {
     String query = String.format("UPDATE %s as u SET NAME=:name WHERE ID = :id", ENTITY);
     em.createQuery(query).setParameter("name", user.getName()).setParameter("id", user.getId());
