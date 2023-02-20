@@ -12,6 +12,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
+/**
+ * Object mapper using mapstruct.
+ */
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CommonMapper {
   UserInfo userToUserInfo(User user);
@@ -19,6 +22,11 @@ public interface CommonMapper {
   User userInfoToUser(UserInfo userInfo);
 
   // TODO: datasetCreateToDataset
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "created", ignore = true)
+  @Mapping(target = "updated", ignore = true)
+  Dataset datasetCreateToDataset(DatasetCreate datasetCreate);
+
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "created", ignore = true)
   @Mapping(target = "updated", ignore = true)

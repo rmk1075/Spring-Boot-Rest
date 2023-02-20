@@ -3,6 +3,7 @@ package com.spring.practice.rest.service.dataset;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
@@ -39,6 +40,8 @@ public class DatasetServiceTest {
 
   @Autowired StorageService storageService;
 
+  @Autowired CommonMapper mapper;
+
   private static final String NAME = "dataset";
 
   private static final String TEST_FILE_NAME = "test.txt";
@@ -63,8 +66,8 @@ public class DatasetServiceTest {
 
   private DatasetInfo createDataset() throws IOException {
     DatasetUserCreate datasetUserCreate = DatasetUserCreate.builder().name(NAME).build();
-    DatasetInfo datasetInfo = datasetService.createDataset(datasetUserCreate);
-    return datasetInfo;
+    Dataset dataset = datasetService.createDataset(datasetUserCreate);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 
   @Test

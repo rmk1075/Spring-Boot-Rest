@@ -71,8 +71,8 @@ public class DatasetController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
   public DatasetInfo createDataset(@RequestBody DatasetUserCreate userCreate) throws IOException {
-    DatasetInfo dataset = datasetService.createDataset(userCreate);
-    return dataset;
+    Dataset dataset = datasetService.createDataset(userCreate);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 
   /**

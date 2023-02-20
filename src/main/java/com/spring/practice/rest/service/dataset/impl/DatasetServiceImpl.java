@@ -42,7 +42,7 @@ public class DatasetServiceImpl implements DatasetService {
   @Autowired private CommonMapper mapper;
 
   @Override
-  public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
+  public Dataset createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
     String name = datasetUserCreate.getName();
     if (datasetRepository.findByName(name) != null) {
       throw new IllegalArgumentException(
@@ -50,20 +50,18 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     DatasetCreate datasetCreate = new DatasetCreate(name);
-    DatasetInfo datasetInfo = mapper.datasetCreateToDatasetInfo(datasetCreate);
-    Dataset dataset = mapper.datasetInfoToDataset(datasetInfo);
+    Dataset dataset = mapper.datasetCreateToDataset(datasetCreate);
     dataset = datasetRepository.save(dataset);
-    datasetInfo = mapper.datasetToDatasetInfo(dataset);
 
     // create dataset directory
-    String path = this.generateDatasetPath(datasetInfo);
+    String path = this.generateDatasetPath(dataset);
     Path filePath = Path.of(path);
     FileUtils.deleteDirectory(filePath.toFile());
     Files.createDirectories(filePath);
 
     dataset.setPath(path);
     dataset = datasetRepository.save(dataset);
-    return mapper.datasetToDatasetInfo(dataset);
+    return dataset;
   }
 
   @Override
@@ -141,7 +139,7 @@ public class DatasetServiceImpl implements DatasetService {
     return mapper.datasetToDatasetInfo(dataset);
   }
 
-  private String generateDatasetPath(DatasetInfo dataset) {
+  private String generateDatasetPath(Dataset dataset) {
     return String.join("/", PATH, String.valueOf(dataset.getId()));
   }
 

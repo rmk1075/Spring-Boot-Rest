@@ -17,7 +17,7 @@ public interface DatasetService {
 
   public List<Dataset> getDatasets(int start, int limit);
 
-  public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException;
+  public Dataset createDataset(DatasetUserCreate datasetUserCreate) throws IOException;
 
   // public UserInfo updateUser(Long id, UserUpdate userUpdate);
 
