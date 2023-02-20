@@ -1,5 +1,7 @@
 package com.spring.practice.rest.controller;
 
+import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.dto.ImageInfo;
@@ -30,6 +32,8 @@ public class DatasetController {
 
   @Autowired private DatasetService datasetService;
 
+  @Autowired private CommonMapper mapper;
+
   /**
    * Get Datasets info.
    *
@@ -41,8 +45,8 @@ public class DatasetController {
   public List<DatasetInfo> getDatasets(
       @RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "100") int limit) {
-    List<DatasetInfo> datasets = datasetService.getDatasets(start, limit);
-    return datasets;
+    List<Dataset> datasets = datasetService.getDatasets(start, limit);
+    return datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
   }
 
   /**

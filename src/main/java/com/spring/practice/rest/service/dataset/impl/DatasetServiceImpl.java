@@ -107,13 +107,9 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public List<DatasetInfo> getDatasets(int start, int limit) {
+  public List<Dataset> getDatasets(int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<DatasetInfo> datasets =
-        datasetRepository
-            .findAll(pageable)
-            .map(dataset -> mapper.datasetToDatasetInfo(dataset))
-            .getContent();
+    List<Dataset> datasets = datasetRepository.findAll(pageable).getContent();
     return datasets;
   }
 

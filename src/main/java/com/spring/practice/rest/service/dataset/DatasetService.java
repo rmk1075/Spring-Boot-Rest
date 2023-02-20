@@ -1,9 +1,9 @@
 package com.spring.practice.rest.service.dataset;
 
+import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.dto.ImageInfo;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface DatasetService {
   public DatasetInfo getDataset(Long id);
 
-  public List<DatasetInfo> getDatasets(int start, int limit);
+  public List<Dataset> getDatasets(int start, int limit);
 
   public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException;
 

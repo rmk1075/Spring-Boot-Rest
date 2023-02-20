@@ -3,6 +3,7 @@ package com.spring.practice.rest.service.dataset;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.dto.ImageInfo;
@@ -102,10 +103,10 @@ public class DatasetServiceTest {
   @Test
   void testGetDatasets() throws IOException {
     DatasetInfo created = this.createDataset();
-    List<DatasetInfo> datasets = datasetService.getDatasets(0, 100);
+    List<Dataset> datasets = datasetService.getDatasets(0, 100);
     assertEquals(datasets.size(), 1);
 
-    DatasetInfo dataset = datasets.get(0);
+    Dataset dataset = datasets.get(0);
     assertEquals(created.getId(), dataset.getId());
     assertEquals(created.getName(), dataset.getName());
     assertEquals(created.getPath(), dataset.getPath());
