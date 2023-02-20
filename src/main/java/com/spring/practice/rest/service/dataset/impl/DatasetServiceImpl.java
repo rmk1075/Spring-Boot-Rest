@@ -74,14 +74,14 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public List<DatasetInfo> deleteAllDatasets()
+  public List<Dataset> deleteAllDatasets()
       throws IllegalArgumentException, URISyntaxException, IOException {
     List<Dataset> datasets = datasetRepository.findAll();
     for (Dataset dataset : datasets) {
       deleteDatasetStorage(dataset);
     }
     datasetRepository.deleteAll();
-    return datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
+    return datasets;
   }
 
   private void deleteDatasetStorage(Dataset dataset)

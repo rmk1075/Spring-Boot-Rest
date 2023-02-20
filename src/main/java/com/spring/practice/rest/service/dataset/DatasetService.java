@@ -1,7 +1,6 @@
 package com.spring.practice.rest.service.dataset;
 
 import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public interface DatasetService {
   public Dataset deleteDataset(Long id)
       throws IllegalArgumentException, URISyntaxException, IOException;
 
-  public List<DatasetInfo> deleteAllDatasets()
+  public List<Dataset> deleteAllDatasets()
       throws IllegalArgumentException, URISyntaxException, IOException;
 
   public List<Image> getImages(Long id, int start, int limit);
