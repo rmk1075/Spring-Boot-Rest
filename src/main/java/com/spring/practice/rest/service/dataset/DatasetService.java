@@ -21,7 +21,7 @@ public interface DatasetService {
 
   // public UserInfo updateUser(Long id, UserUpdate userUpdate);
 
-  public DatasetInfo deleteDataset(Long id)
+  public Dataset deleteDataset(Long id)
       throws IllegalArgumentException, URISyntaxException, IOException;
 
   public List<DatasetInfo> deleteAllDatasets()

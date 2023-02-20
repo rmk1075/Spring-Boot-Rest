@@ -65,12 +65,12 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public DatasetInfo deleteDataset(Long id)
+  public Dataset deleteDataset(Long id)
       throws IllegalArgumentException, URISyntaxException, IOException {
     Dataset dataset = this.getDataset(id);
     deleteDatasetStorage(dataset);
     datasetRepository.delete(dataset);
-    return mapper.datasetToDatasetInfo(dataset);
+    return dataset;
   }
 
   @Override
