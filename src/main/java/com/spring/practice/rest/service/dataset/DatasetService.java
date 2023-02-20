@@ -29,6 +29,6 @@ public interface DatasetService {
 
   public List<Image> getImages(Long id, int start, int limit);
 
-  public DatasetInfo uploadImages(Long id, MultipartFile[] files)
+  public Dataset uploadImages(Long id, MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException;
 }

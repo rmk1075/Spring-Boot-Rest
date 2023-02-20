@@ -116,7 +116,7 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public DatasetInfo uploadImages(Long id, MultipartFile[] files)
+  public Dataset uploadImages(Long id, MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
     Dataset dataset = this.getDataset(id);
     int size = 0;
@@ -135,8 +135,8 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     dataset.setSize(size);
-    datasetRepository.save(dataset);
-    return mapper.datasetToDatasetInfo(dataset);
+    dataset = datasetRepository.save(dataset);
+    return dataset;
   }
 
   private String generateDatasetPath(Dataset dataset) {

@@ -114,7 +114,7 @@ public class DatasetController {
   @PostMapping("/{id}/images")
   public DatasetInfo uploadImages(@PathVariable Long id, @RequestPart MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    DatasetInfo dataset = datasetService.uploadImages(id, files);
-    return dataset;
+    Dataset dataset = datasetService.uploadImages(id, files);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 }
