@@ -7,7 +7,7 @@ import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
-import com.spring.practice.rest.domain.image.dto.ImageInfo;
+import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.storage.StorageService;
 import java.io.IOException;
@@ -126,14 +126,14 @@ public class DatasetServiceTest {
         };
     DatasetInfo dataset = datasetService.uploadImages(created.getId(), files);
     
-    List<ImageInfo> images = datasetService.getImages(dataset.getId(), 0, 100);
-    Map<String, ImageInfo> imageMap = new HashMap<>();
-    for (ImageInfo image : images) {
+    List<Image> images = datasetService.getImages(dataset.getId(), 0, 100);
+    Map<String, Image> imageMap = new HashMap<>();
+    for (Image image : images) {
       imageMap.put(image.getName(), image);
     }
 
     for (MultipartFile file : files) {
-      ImageInfo imageInfo = imageMap.get(file.getOriginalFilename());
+      Image imageInfo = imageMap.get(file.getOriginalFilename());
       assertNotNull(imageInfo);
       assertEquals(
         new String(file.getBytes()),

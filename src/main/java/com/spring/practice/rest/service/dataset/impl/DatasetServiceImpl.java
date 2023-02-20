@@ -5,8 +5,8 @@ import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;
-import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import com.spring.practice.rest.service.image.ImageService;
@@ -110,8 +110,8 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public List<ImageInfo> getImages(Long id, int start, int limit) {
-    List<ImageInfo> images = imageService.getImagesByDataset(id, start, limit);
+  public List<Image> getImages(Long id, int start, int limit) {
+    List<Image> images = imageService.getImagesByDataset(id, start, limit);
     return images;
   }
 

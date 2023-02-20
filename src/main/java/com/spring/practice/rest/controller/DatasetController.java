@@ -4,6 +4,7 @@ import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import java.io.IOException;
@@ -95,8 +96,8 @@ public class DatasetController {
       @PathVariable Long id,
       @RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "100") int limit) {
-    List<ImageInfo> images = datasetService.getImages(id, start, limit);
-    return images;
+    List<Image> images = datasetService.getImages(id, start, limit);
+    return images.stream().map(image -> mapper.imageToImageInfo(image)).toList();
   }
 
   // TODO: consider async upload

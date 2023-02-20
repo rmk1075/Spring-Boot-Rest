@@ -50,13 +50,9 @@ public class ImageService {
    * @param limit pagination limit
    * @return List of Images.
    */
-  public List<ImageInfo> getImagesByDataset(Long datasetId, int start, int limit) {
+  public List<Image> getImagesByDataset(Long datasetId, int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<ImageInfo> images = imageRepository
-        .findAllByDatasetId(datasetId, pageable)
-        .stream()
-        .map(image -> mapper.imageToImageInfo(image))
-        .toList();
+    List<Image> images = imageRepository.findAllByDatasetId(datasetId, pageable);
     return images;
   }
 
