@@ -34,12 +34,12 @@ public class ImageService {
    * @param id Image id.
    * @return ImageInfo.
    */
-  public ImageInfo getImage(Long id) {
+  public Image getImage(Long id) {
     Optional<Image> image = imageRepository.findById(id);
     if (image.isEmpty()) {
       throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
     }
-    return mapper.imageToImageInfo(image.get());
+    return image.get();
   }
 
   /**
