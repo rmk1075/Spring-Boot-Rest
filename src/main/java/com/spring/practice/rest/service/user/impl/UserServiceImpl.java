@@ -112,9 +112,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserInfo deleteUser(Long id) {
+  public User deleteUser(Long id) {
     User user = this.getUser(id);
     User deleted = userRepository.delete(user);
-    return mapper.userToUserInfo(deleted);
+    return deleted;
   }
 }

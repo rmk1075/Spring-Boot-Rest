@@ -2,7 +2,6 @@ package com.spring.practice.rest.service.user;
 
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
-import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,5 +18,5 @@ public interface UserService {
 
   public User updateUser(Long id, UserUpdate userUpdate);
 
-  public UserInfo deleteUser(Long id);
+  public User deleteUser(Long id);
 }

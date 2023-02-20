@@ -71,7 +71,7 @@ public class UserServiceImplTest {
 
   @Test
   void testDeleteUser() {
-    UserInfo user = userService.deleteUser(testId);
+    User user = userService.deleteUser(testId);
 
     assertTrue(user.getUid().equals(testUid));
     assertTrue(user.getName().equals(testName));

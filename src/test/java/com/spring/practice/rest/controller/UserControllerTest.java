@@ -50,10 +50,10 @@ public class UserControllerTest {
     // email duplication check
     String uid = "testId2";
     userCreate.setUid(uid);
-    // assertThrows(
-    //     IllegalArgumentException.class,
-    //     () -> userController.createUser(userCreate)
-    // );
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> userController.createUser(userCreate)
+    );
 
     String email = "test2@email.com";
     userCreate.setEmail(email);
