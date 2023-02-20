@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
  * DatasetService interface.
  */
 public interface DatasetService {
-  public DatasetInfo getDataset(Long id);
+  public Dataset getDataset(Long id);
 
   public List<Dataset> getDatasets(int start, int limit);
 

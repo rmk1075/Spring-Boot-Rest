@@ -69,26 +69,24 @@ public class DatasetServiceImpl implements DatasetService {
   @Override
   public DatasetInfo deleteDataset(Long id)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    DatasetInfo dataset = this.getDataset(id);
+    Dataset dataset = this.getDataset(id);
     deleteDatasetStorage(dataset);
-    datasetRepository.delete(mapper.datasetInfoToDataset(dataset));
-    return dataset;
+    datasetRepository.delete(dataset);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 
   @Override
   public List<DatasetInfo> deleteAllDatasets()
       throws IllegalArgumentException, URISyntaxException, IOException {
     List<Dataset> datasets = datasetRepository.findAll();
-    List<DatasetInfo> datasetInfos =
-        datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
-    for (DatasetInfo datasetInfo : datasetInfos) {
-      deleteDatasetStorage(datasetInfo);
+    for (Dataset dataset : datasets) {
+      deleteDatasetStorage(dataset);
     }
     datasetRepository.deleteAll();
-    return datasetInfos;
+    return datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
   }
 
-  private void deleteDatasetStorage(DatasetInfo dataset)
+  private void deleteDatasetStorage(Dataset dataset)
       throws IllegalArgumentException, URISyntaxException, IOException {
     imageService.deleteImagesByDataset(dataset.getId());
     Path filePath = Path.of(dataset.getPath());
@@ -98,12 +96,12 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public DatasetInfo getDataset(Long id) {
+  public Dataset getDataset(Long id) {
     Optional<Dataset> dataset = datasetRepository.findById(id);
     if (!dataset.isPresent()) {
       throw new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id));
     }
-    return mapper.datasetToDatasetInfo(dataset.get());
+    return dataset.get();
   }
 
   @Override
@@ -122,11 +120,11 @@ public class DatasetServiceImpl implements DatasetService {
   @Override
   public DatasetInfo uploadImages(Long id, MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    DatasetInfo datasetInfo = this.getDataset(id);
+    Dataset dataset = this.getDataset(id);
     int size = 0;
     for (MultipartFile multipartFile : files) {
       String name = multipartFile.getOriginalFilename();
-      String url = this.generateFileUrl(datasetInfo, name);
+      String url = this.generateFileUrl(dataset, name);
       ImageCreate imageCreate =
           ImageCreate.builder()
               .datasetId(id)
@@ -138,7 +136,6 @@ public class DatasetServiceImpl implements DatasetService {
       size++;
     }
 
-    Dataset dataset = datasetRepository.findById(id).get();
     dataset.setSize(size);
     datasetRepository.save(dataset);
     return mapper.datasetToDatasetInfo(dataset);
@@ -148,7 +145,7 @@ public class DatasetServiceImpl implements DatasetService {
     return String.join("/", PATH, String.valueOf(dataset.getId()));
   }
 
-  private String generateFileUrl(DatasetInfo dataset, String filepath) {
+  private String generateFileUrl(Dataset dataset, String filepath) {
     return String.join("/", String.format("%s:/", SCHEME), dataset.getPath(), filepath);
   }
 }

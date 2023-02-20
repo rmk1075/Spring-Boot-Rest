@@ -57,8 +57,8 @@ public class DatasetController {
    */
   @GetMapping("/{id}")
   public DatasetInfo getDataset(@PathVariable Long id) {
-    DatasetInfo dataset = datasetService.getDataset(id);
-    return dataset;
+    Dataset dataset = datasetService.getDataset(id);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 
   /**

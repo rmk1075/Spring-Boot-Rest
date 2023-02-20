@@ -93,7 +93,7 @@ public class DatasetServiceTest {
   @Test
   void testGetDataset() throws IOException {
     DatasetInfo created = this.createDataset();
-    DatasetInfo dataset = datasetService.getDataset(created.getId());
+    Dataset dataset = datasetService.getDataset(created.getId());
     assertEquals(created.getId(), dataset.getId());
     assertEquals(created.getName(), dataset.getName());
     assertEquals(created.getPath(), dataset.getPath());
