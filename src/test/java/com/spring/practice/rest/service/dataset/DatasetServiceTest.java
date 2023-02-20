@@ -64,29 +64,29 @@ public class DatasetServiceTest {
     datasetService.deleteAllDatasets();
   }
 
-  private DatasetInfo createDataset() throws IOException {
+  private Dataset createDataset() throws IOException {
     DatasetUserCreate datasetUserCreate = DatasetUserCreate.builder().name(NAME).build();
     Dataset dataset = datasetService.createDataset(datasetUserCreate);
-    return mapper.datasetToDatasetInfo(dataset);
+    return dataset;
   }
 
   @Test
   void testCreateDataset() throws IOException {
-    DatasetInfo datasetInfo = this.createDataset();
-    assertEquals(datasetInfo.getName(), NAME);
+    Dataset dataset = this.createDataset();
+    assertEquals(dataset.getName(), NAME);
     assertEquals(
-        datasetInfo.getPath(),
+        dataset.getPath(),
         String.join(
             "/",
             System.getProperty("user.dir") + "/resources/storage",
-            String.valueOf(datasetInfo.getId())));
-    assertEquals(datasetInfo.getSize(), 0);
+            String.valueOf(dataset.getId())));
+    assertEquals(dataset.getSize(), 0);
   }
 
   @Test
   void testDeleteDataset() throws IOException, IllegalArgumentException, URISyntaxException {
-    DatasetInfo created = this.createDataset();
-    DatasetInfo deleted = datasetService.deleteDataset(created.getId());
+    Dataset created = this.createDataset();
+    Dataset deleted = datasetService.deleteDataset(created.getId());
     assertEquals(created.getId(), deleted.getId());
     assertEquals(created.getName(), deleted.getName());
     assertEquals(created.getPath(), deleted.getPath());
@@ -95,7 +95,7 @@ public class DatasetServiceTest {
 
   @Test
   void testGetDataset() throws IOException {
-    DatasetInfo created = this.createDataset();
+    Dataset created = this.createDataset();
     Dataset dataset = datasetService.getDataset(created.getId());
     assertEquals(created.getId(), dataset.getId());
     assertEquals(created.getName(), dataset.getName());
@@ -105,7 +105,7 @@ public class DatasetServiceTest {
 
   @Test
   void testGetDatasets() throws IOException {
-    DatasetInfo created = this.createDataset();
+    Dataset created = this.createDataset();
     List<Dataset> datasets = datasetService.getDatasets(0, 100);
     assertEquals(datasets.size(), 1);
 
@@ -118,7 +118,7 @@ public class DatasetServiceTest {
 
   @Test
   void testGetImages() throws IOException, IllegalArgumentException, URISyntaxException {
-    DatasetInfo created = this.createDataset();
+    Dataset created = this.createDataset();
 
     MultipartFile[] files =
         new MultipartFile[] {
@@ -144,7 +144,7 @@ public class DatasetServiceTest {
 
   @Test
   void testUploadImages() throws IOException, IllegalArgumentException, URISyntaxException {
-    DatasetInfo created = this.createDataset();
+    Dataset created = this.createDataset();
 
     MultipartFile[] files =
         new MultipartFile[] {
@@ -154,6 +154,6 @@ public class DatasetServiceTest {
     System.out.println(dataset.toString());
     assertEquals(dataset.getSize(), files.length);
 
-    dataset = datasetService.deleteDataset(dataset.getId());
+    dataset = mapper.datasetToDatasetInfo(datasetService.deleteDataset(dataset.getId()));
   }
 }
