@@ -3,14 +3,12 @@ package com.spring.practice.rest.service.image;
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;
-import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.repository.image.ImageRepository;
 import com.spring.practice.rest.service.storage.StorageService;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,11 +33,10 @@ public class ImageService {
    * @return ImageInfo.
    */
   public Image getImage(Long id) {
-    Optional<Image> image = imageRepository.findById(id);
-    if (image.isEmpty()) {
-      throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
-    }
-    return image.get();
+    Image image = imageRepository.findById(id).orElseThrow(
+      () -> new NoSuchElementException(String.format("Image[id=%d] is not exists.", id))
+    );
+    return image;
   }
 
   /**
