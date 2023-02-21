@@ -88,17 +88,15 @@ public class ImageService {
    * @throws URISyntaxException Invalid uri.
    * @throws IOException Image file delete error.
    */
-  public ImageInfo deleteImage(Long id)
+  public Image deleteImage(Long id)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    Optional<Image> image = imageRepository.findById(id);
-    if (image.isEmpty()) {
-      throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
-    }
+    Image image = imageRepository.findById(id).orElseThrow(
+        () -> new NoSuchElementException(String.format("Image[id=%d] is not exists.", id))
+    );
 
-    ImageInfo imageInfo = mapper.imageToImageInfo(image.get());
-    storageService.delete(imageInfo.getUrl());
-    imageRepository.delete(image.get());
-    return imageInfo;
+    storageService.delete(image.getUrl());
+    imageRepository.delete(image);
+    return image;
   }
 
   /**

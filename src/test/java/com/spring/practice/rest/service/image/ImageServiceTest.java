@@ -99,8 +99,8 @@ public class ImageServiceTest {
 
   @Test
   void testDeleteImage() throws IllegalArgumentException, URISyntaxException, IOException {
-    ImageInfo imageInfo = imageService.deleteImage(testImage.getId());
-    assertThrows(NoSuchFileException.class, () -> storageService.get(imageInfo.getUrl()));
+    Image image = imageService.deleteImage(testImage.getId());
+    assertThrows(NoSuchFileException.class, () -> storageService.get(image.getUrl()));
   }
 
   @Test
