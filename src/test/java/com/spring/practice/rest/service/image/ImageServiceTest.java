@@ -31,7 +31,7 @@ public class ImageServiceTest {
   private final String testUrl = generateTestImageUrl(testDatasetId, testName);
   private final byte[] testFile = "Hello World".getBytes();
 
-  private ImageInfo testImageInfo;
+  private Image testImage;
 
   @Autowired ImageService imageService;
 
@@ -48,14 +48,14 @@ public class ImageServiceTest {
             .url(testUrl)
             .file(testFile)
             .build();
-    testImageInfo = imageService.createImage(imageCreate);
+    testImage = imageService.createImage(imageCreate);
   }
 
   @AfterEach
   void tearDown() {
     try {
-      imageService.getImage(testImageInfo.getId());
-      imageService.deleteImage(testImageInfo.getId());
+      imageService.getImage(testImage.getId());
+      imageService.deleteImage(testImage.getId());
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -86,27 +86,27 @@ public class ImageServiceTest {
             .file(contents.getBytes())
             .build();
 
-    ImageInfo imageInfo = imageService.createImage(imageCreate);
-    assertEquals(imageInfo.getName(), name);
-    assertEquals(imageInfo.getUrl(), url);
+    Image image = imageService.createImage(imageCreate);
+    assertEquals(image.getName(), name);
+    assertEquals(image.getUrl(), url);
 
-    byte[] bytes = storageService.get(imageInfo.getUrl());
+    byte[] bytes = storageService.get(image.getUrl());
     assertEquals(new String(bytes), contents);
 
-    storageService.delete(imageInfo.getUrl());
-    assertThrows(IOException.class, () -> storageService.get(imageInfo.getUrl()));
+    storageService.delete(image.getUrl());
+    assertThrows(IOException.class, () -> storageService.get(image.getUrl()));
   }
 
   @Test
   void testDeleteImage() throws IllegalArgumentException, URISyntaxException, IOException {
-    ImageInfo imageInfo = imageService.deleteImage(testImageInfo.getId());
+    ImageInfo imageInfo = imageService.deleteImage(testImage.getId());
     assertThrows(NoSuchFileException.class, () -> storageService.get(imageInfo.getUrl()));
   }
 
   @Test
   void testGetImage() {
-    Image image = imageService.getImage(testImageInfo.getId());
-    assertEquals(mapper.imageToImageInfo(image), testImageInfo);
+    Image image = imageService.getImage(testImage.getId());
+    assertEquals(mapper.imageToImageInfo(image), mapper.imageToImageInfo(testImage));
   }
 
   private String generateTestImageUrl(Long datasetId, String filename) {

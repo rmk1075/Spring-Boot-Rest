@@ -34,8 +34,8 @@ public class DatasetRepositoryTest {
         .addMappings(
             mapper -> {
               mapper.map(obj -> null, Dataset::setId);
-              mapper.map(obj -> null, Dataset::setCreated);
-              mapper.map(obj -> null, Dataset::setUpdated);
+              mapper.map(obj -> null, Dataset::setCreatedAt);
+              mapper.map(obj -> null, Dataset::setUpdatedAt);
             });
 
     int length = 10;
