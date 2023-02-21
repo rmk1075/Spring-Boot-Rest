@@ -3,7 +3,6 @@ package com.spring.practice.rest.service.dataset.impl;
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
-import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;

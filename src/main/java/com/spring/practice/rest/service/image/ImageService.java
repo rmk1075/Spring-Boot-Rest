@@ -65,7 +65,7 @@ public class ImageService {
    * @throws URISyntaxException Invalid uri. 
    * @throws IOException Image file create error.
    */
-  public ImageInfo createImage(ImageCreate imageCreate)
+  public Image createImage(ImageCreate imageCreate)
       throws IllegalArgumentException, URISyntaxException, IOException {
     String name = imageCreate.getName();
     if (imageRepository.findByName(name).isPresent()) {
@@ -76,8 +76,7 @@ public class ImageService {
 
     Image image = mapper.imageCreateToImage(imageCreate);
     image = imageRepository.save(image);
-    image = imageRepository.findById(image.getId()).get();
-    return mapper.imageToImageInfo(image);
+    return image;
   }
 
   /**
