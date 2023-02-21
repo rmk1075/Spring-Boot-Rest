@@ -29,17 +29,17 @@ public class ImageService {
   @Autowired CommonMapper mapper;
 
   /**
-   * Get ImageInfo.
+   * Get Image.
    *
    * @param id Image id.
    * @return ImageInfo.
    */
-  public ImageInfo getImage(Long id) {
+  public Image getImage(Long id) {
     Optional<Image> image = imageRepository.findById(id);
     if (image.isEmpty()) {
       throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
     }
-    return mapper.imageToImageInfo(image.get());
+    return image.get();
   }
 
   /**
@@ -50,13 +50,9 @@ public class ImageService {
    * @param limit pagination limit
    * @return List of Images.
    */
-  public List<ImageInfo> getImagesByDataset(Long datasetId, int start, int limit) {
+  public List<Image> getImagesByDataset(Long datasetId, int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<ImageInfo> images = imageRepository
-        .findAllByDatasetId(datasetId, pageable)
-        .stream()
-        .map(image -> mapper.imageToImageInfo(image))
-        .toList();
+    List<Image> images = imageRepository.findAllByDatasetId(datasetId, pageable);
     return images;
   }
 
@@ -69,7 +65,7 @@ public class ImageService {
    * @throws URISyntaxException Invalid uri. 
    * @throws IOException Image file create error.
    */
-  public ImageInfo createImage(ImageCreate imageCreate)
+  public Image createImage(ImageCreate imageCreate)
       throws IllegalArgumentException, URISyntaxException, IOException {
     String name = imageCreate.getName();
     if (imageRepository.findByName(name).isPresent()) {
@@ -80,8 +76,7 @@ public class ImageService {
 
     Image image = mapper.imageCreateToImage(imageCreate);
     image = imageRepository.save(image);
-    image = imageRepository.findById(image.getId()).get();
-    return mapper.imageToImageInfo(image);
+    return image;
   }
 
   /**
@@ -93,21 +88,19 @@ public class ImageService {
    * @throws URISyntaxException Invalid uri.
    * @throws IOException Image file delete error.
    */
-  public ImageInfo deleteImage(Long id)
+  public Image deleteImage(Long id)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    Optional<Image> image = imageRepository.findById(id);
-    if (image.isEmpty()) {
-      throw new NoSuchElementException(String.format("Image[id=%d] is not exists.", id));
-    }
+    Image image = imageRepository.findById(id).orElseThrow(
+        () -> new NoSuchElementException(String.format("Image[id=%d] is not exists.", id))
+    );
 
-    ImageInfo imageInfo = mapper.imageToImageInfo(image.get());
-    storageService.delete(imageInfo.getUrl());
-    imageRepository.delete(image.get());
-    return imageInfo;
+    storageService.delete(image.getUrl());
+    imageRepository.delete(image);
+    return image;
   }
 
   /**
-   * Delete Images contained the dataset.
+   * Delete Images in the dataset.
    *
    * @param datasetId Dataset id.
    * @return Deleted image list.
@@ -115,13 +108,13 @@ public class ImageService {
    * @throws URISyntaxException Invalid uri.
    * @throws IOException Image file delete error.
    */
-  public List<ImageInfo> deleteImagesByDataset(Long datasetId)
+  public List<Image> deleteImagesByDataset(Long datasetId)
       throws IllegalArgumentException, URISyntaxException, IOException {
     List<Image> images = imageRepository.findAllByDatasetId(datasetId);
     for (Image image : images) {
       storageService.delete(image.getUrl());
     }
     imageRepository.deleteAllByDatasetId(datasetId);
-    return images.stream().map(image -> mapper.imageToImageInfo(image)).toList();
+    return images;
   }
 }

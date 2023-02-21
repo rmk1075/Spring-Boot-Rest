@@ -1,13 +1,11 @@
 package com.spring.practice.rest.controller;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.AfterEach;
-
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +50,10 @@ public class UserControllerTest {
     // email duplication check
     String uid = "testId2";
     userCreate.setUid(uid);
-    // assertThrows(
-    //     IllegalArgumentException.class,
-    //     () -> userController.createUser(userCreate)
-    // );
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> userController.createUser(userCreate)
+    );
 
     String email = "test2@email.com";
     userCreate.setEmail(email);

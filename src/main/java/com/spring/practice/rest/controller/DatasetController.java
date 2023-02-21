@@ -1,7 +1,10 @@
 package com.spring.practice.rest.controller;
 
+import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import java.io.IOException;
@@ -30,6 +33,8 @@ public class DatasetController {
 
   @Autowired private DatasetService datasetService;
 
+  @Autowired private CommonMapper mapper;
+
   /**
    * Get Datasets info.
    *
@@ -41,8 +46,8 @@ public class DatasetController {
   public List<DatasetInfo> getDatasets(
       @RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "100") int limit) {
-    List<DatasetInfo> datasets = datasetService.getDatasets(start, limit);
-    return datasets;
+    List<Dataset> datasets = datasetService.getDatasets(start, limit);
+    return datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
   }
 
   /**
@@ -53,8 +58,8 @@ public class DatasetController {
    */
   @GetMapping("/{id}")
   public DatasetInfo getDataset(@PathVariable Long id) {
-    DatasetInfo dataset = datasetService.getDataset(id);
-    return dataset;
+    Dataset dataset = datasetService.getDataset(id);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 
   /**
@@ -67,8 +72,8 @@ public class DatasetController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
   public DatasetInfo createDataset(@RequestBody DatasetUserCreate userCreate) throws IOException {
-    DatasetInfo dataset = datasetService.createDataset(userCreate);
-    return dataset;
+    Dataset dataset = datasetService.createDataset(userCreate);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 
   /**
@@ -91,8 +96,8 @@ public class DatasetController {
       @PathVariable Long id,
       @RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "100") int limit) {
-    List<ImageInfo> images = datasetService.getImages(id, start, limit);
-    return images;
+    List<Image> images = datasetService.getImages(id, start, limit);
+    return images.stream().map(image -> mapper.imageToImageInfo(image)).toList();
   }
 
   // TODO: consider async upload
@@ -109,7 +114,7 @@ public class DatasetController {
   @PostMapping("/{id}/images")
   public DatasetInfo uploadImages(@PathVariable Long id, @RequestPart MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    DatasetInfo dataset = datasetService.uploadImages(id, files);
-    return dataset;
+    Dataset dataset = datasetService.uploadImages(id, files);
+    return mapper.datasetToDatasetInfo(dataset);
   }
 }

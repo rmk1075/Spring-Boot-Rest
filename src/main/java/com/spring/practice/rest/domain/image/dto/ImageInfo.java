@@ -1,6 +1,6 @@
 package com.spring.practice.rest.domain.image.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +21,6 @@ public class ImageInfo {
   private String name;
   private String url;
 
-  private Date created;
-  private Date updated;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 }

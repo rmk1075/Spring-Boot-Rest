@@ -34,26 +34,25 @@ public class UserServiceImpl implements UserService {
   @Autowired private CommonMapper mapper;
 
   @Override
-  public UserInfo getUser(Long id) {
+  public User getUser(Long id) throws NoSuchElementException {
     User user = userRepository.findById(id);
     if (user == null) {
       throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
     }
-    return mapper.userToUserInfo(user);
+    return user;
   }
 
   @Override
-  public List<UserInfo> getUsers(int start, int limit) {
+  public List<User> getUsers(int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<UserInfo> users = userRepository
+    List<User> users = userRepository
             .findAll(pageable)
-            .map(user -> mapper.userToUserInfo(user))
             .getContent();
     return users;
   }
 
   @Override
-  public UserInfo createUser(UserCreate userCreate) {
+  public User createUser(UserCreate userCreate) {
     User user = userRepository.findByUid(userCreate.getUid());
     if (user != null) {
       throw new IllegalArgumentException(
@@ -73,38 +72,49 @@ public class UserServiceImpl implements UserService {
         .desc(userCreate.getDesc())
         .build();
     User created = userRepository.save(mapper.userInfoToUser(userInfo));
-    return mapper.userToUserInfo(created);
+    return created;
   }
 
   @Override
-  public UserInfo updateUser(Long id, UserUpdate userUpdate) {
-    UserInfo userInfo = this.getUser(id);
-    if (userUpdate.getName() != null) {
-      userInfo.setName(userUpdate.getName());
+  public User updateUser(Long id, UserUpdate userUpdate) {
+    User user = this.getUser(id);
+
+    // name validation
+    String name = userUpdate.getName();
+    if (name != null) {
+      if (userRepository.findByName(name) != null) {
+        throw new IllegalArgumentException(
+          String.format("User[name=%s] is already exists", name)
+        );
+      }
+      user.setName(name);
     }
 
-    if (userUpdate.getEmail() != null) {
-      String email = userUpdate.getEmail();
+    // email validation
+    String email = userUpdate.getEmail();
+    if (email != null) {
       if (userRepository.findByEmail(email) != null) {
         throw new IllegalArgumentException(
           String.format("User[email=%s] is already exists.", email));
       } else {
-        userInfo.setEmail(email);
+        user.setEmail(email);
       }
     }
 
-    if (userUpdate.getDesc() != null) {
-      userInfo.setDesc(userUpdate.getDesc());
+    // desc validation
+    String desc = userUpdate.getDesc();
+    if (desc != null) {
+      user.setDesc(desc);
     }
 
-    User updated = userRepository.update(mapper.userInfoToUser(userInfo));
-    return mapper.userToUserInfo(updated);
+    User updated = userRepository.update(user);
+    return updated;
   }
 
   @Override
-  public UserInfo deleteUser(Long id) {
-    UserInfo user = this.getUser(id);
-    User deleted = userRepository.delete(mapper.userInfoToUser(user));
-    return mapper.userToUserInfo(deleted);
+  public User deleteUser(Long id) {
+    User user = this.getUser(id);
+    User deleted = userRepository.delete(user);
+    return deleted;
   }
 }

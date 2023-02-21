@@ -23,6 +23,8 @@ public interface UserRepository {
 
   public User findByUid(String uid);
 
+  public User findByName(String name);
+
   public User findByEmail(String email);
 
   public User update(User user);

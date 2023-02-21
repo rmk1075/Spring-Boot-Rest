@@ -20,7 +20,8 @@ public class JpaUserRepository implements UserRepository {
   // @Autowired
   // private JpaUserEmRepository repository;
 
-  @Autowired private JpaUserInterfaceRepository repository;
+  @Autowired
+  private JpaUserInterfaceRepository repository;
 
   @Override
   public User save(User user) {
@@ -46,6 +47,12 @@ public class JpaUserRepository implements UserRepository {
   @Override
   public User findByUid(String uid) {
     Optional<User> user = repository.findByUid(uid);
+    return user.isPresent() ? user.get() : null;
+  }
+
+  @Override
+  public User findByName(String name) {
+    Optional<User> user = repository.findByName(name);
     return user.isPresent() ? user.get() : null;
   }
 

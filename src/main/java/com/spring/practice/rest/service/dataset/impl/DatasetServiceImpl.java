@@ -3,10 +3,9 @@ package com.spring.practice.rest.service.dataset.impl;
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
-import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;
-import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import com.spring.practice.rest.service.image.ImageService;
@@ -42,7 +41,7 @@ public class DatasetServiceImpl implements DatasetService {
   @Autowired private CommonMapper mapper;
 
   @Override
-  public DatasetInfo createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
+  public Dataset createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
     String name = datasetUserCreate.getName();
     if (datasetRepository.findByName(name) != null) {
       throw new IllegalArgumentException(
@@ -50,45 +49,41 @@ public class DatasetServiceImpl implements DatasetService {
     }
 
     DatasetCreate datasetCreate = new DatasetCreate(name);
-    DatasetInfo datasetInfo = mapper.datasetCreateToDatasetInfo(datasetCreate);
-    Dataset dataset = mapper.datasetInfoToDataset(datasetInfo);
+    Dataset dataset = mapper.datasetCreateToDataset(datasetCreate);
     dataset = datasetRepository.save(dataset);
-    datasetInfo = mapper.datasetToDatasetInfo(dataset);
 
     // create dataset directory
-    String path = this.generateDatasetPath(datasetInfo);
+    String path = this.generateDatasetPath(dataset);
     Path filePath = Path.of(path);
     FileUtils.deleteDirectory(filePath.toFile());
     Files.createDirectories(filePath);
 
     dataset.setPath(path);
     dataset = datasetRepository.save(dataset);
-    return mapper.datasetToDatasetInfo(dataset);
-  }
-
-  @Override
-  public DatasetInfo deleteDataset(Long id)
-      throws IllegalArgumentException, URISyntaxException, IOException {
-    DatasetInfo dataset = this.getDataset(id);
-    deleteDatasetStorage(dataset);
-    datasetRepository.delete(mapper.datasetInfoToDataset(dataset));
     return dataset;
   }
 
   @Override
-  public List<DatasetInfo> deleteAllDatasets()
+  public Dataset deleteDataset(Long id)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    List<Dataset> datasets = datasetRepository.findAll();
-    List<DatasetInfo> datasetInfos =
-        datasets.stream().map(dataset -> mapper.datasetToDatasetInfo(dataset)).toList();
-    for (DatasetInfo datasetInfo : datasetInfos) {
-      deleteDatasetStorage(datasetInfo);
-    }
-    datasetRepository.deleteAll();
-    return datasetInfos;
+    Dataset dataset = this.getDataset(id);
+    deleteDatasetStorage(dataset);
+    datasetRepository.delete(dataset);
+    return dataset;
   }
 
-  private void deleteDatasetStorage(DatasetInfo dataset)
+  @Override
+  public List<Dataset> deleteAllDatasets()
+      throws IllegalArgumentException, URISyntaxException, IOException {
+    List<Dataset> datasets = datasetRepository.findAll();
+    for (Dataset dataset : datasets) {
+      deleteDatasetStorage(dataset);
+    }
+    datasetRepository.deleteAll();
+    return datasets;
+  }
+
+  private void deleteDatasetStorage(Dataset dataset)
       throws IllegalArgumentException, URISyntaxException, IOException {
     imageService.deleteImagesByDataset(dataset.getId());
     Path filePath = Path.of(dataset.getPath());
@@ -98,39 +93,35 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public DatasetInfo getDataset(Long id) {
+  public Dataset getDataset(Long id) {
     Optional<Dataset> dataset = datasetRepository.findById(id);
     if (!dataset.isPresent()) {
       throw new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id));
     }
-    return mapper.datasetToDatasetInfo(dataset.get());
+    return dataset.get();
   }
 
   @Override
-  public List<DatasetInfo> getDatasets(int start, int limit) {
+  public List<Dataset> getDatasets(int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<DatasetInfo> datasets =
-        datasetRepository
-            .findAll(pageable)
-            .map(dataset -> mapper.datasetToDatasetInfo(dataset))
-            .getContent();
+    List<Dataset> datasets = datasetRepository.findAll(pageable).getContent();
     return datasets;
   }
 
   @Override
-  public List<ImageInfo> getImages(Long id, int start, int limit) {
-    List<ImageInfo> images = imageService.getImagesByDataset(id, start, limit);
+  public List<Image> getImages(Long id, int start, int limit) {
+    List<Image> images = imageService.getImagesByDataset(id, start, limit);
     return images;
   }
 
   @Override
-  public DatasetInfo uploadImages(Long id, MultipartFile[] files)
+  public Dataset uploadImages(Long id, MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
-    DatasetInfo datasetInfo = this.getDataset(id);
+    Dataset dataset = this.getDataset(id);
     int size = 0;
     for (MultipartFile multipartFile : files) {
       String name = multipartFile.getOriginalFilename();
-      String url = this.generateFileUrl(datasetInfo, name);
+      String url = this.generateFileUrl(dataset, name);
       ImageCreate imageCreate =
           ImageCreate.builder()
               .datasetId(id)
@@ -142,17 +133,16 @@ public class DatasetServiceImpl implements DatasetService {
       size++;
     }
 
-    Dataset dataset = datasetRepository.findById(id).get();
     dataset.setSize(size);
-    datasetRepository.save(dataset);
-    return mapper.datasetToDatasetInfo(dataset);
+    dataset = datasetRepository.save(dataset);
+    return dataset;
   }
 
-  private String generateDatasetPath(DatasetInfo dataset) {
+  private String generateDatasetPath(Dataset dataset) {
     return String.join("/", PATH, String.valueOf(dataset.getId()));
   }
 
-  private String generateFileUrl(DatasetInfo dataset, String filepath) {
+  private String generateFileUrl(Dataset dataset, String filepath) {
     return String.join("/", String.format("%s:/", SCHEME), dataset.getPath(), filepath);
   }
 }

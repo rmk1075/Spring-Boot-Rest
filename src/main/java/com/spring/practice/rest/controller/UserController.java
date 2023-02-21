@@ -1,11 +1,12 @@
 package com.spring.practice.rest.controller;
 
+import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
-import java.util.NoSuchElementException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ public class UserController {
 
   @Autowired private UserService userService;
 
+  @Autowired private CommonMapper mapper;
+
   /**
    * Get Users info.
    *
@@ -38,8 +41,8 @@ public class UserController {
   public List<UserInfo> getUsers(
       @RequestParam(required = false, defaultValue = "0") int start,
       @RequestParam(required = false, defaultValue = "100") int limit) {
-    List<UserInfo> users = userService.getUsers(start, limit);
-    return users;
+    List<User> users = userService.getUsers(start, limit);
+    return users.stream().map(user -> mapper.userToUserInfo(user)).toList();
   }
 
   /**
@@ -50,12 +53,8 @@ public class UserController {
    */
   @GetMapping("/{id}")
   public UserInfo getUser(@PathVariable Long id) {
-    UserInfo user = userService.getUser(id);
-    if (user == null) {
-      throw new NoSuchElementException(
-        String.format("User[id=%s] is not exists.", String.valueOf(id)));
-    }
-    return user;
+    User user = userService.getUser(id);
+    return mapper.userToUserInfo(user);
   }
 
   /**
@@ -69,8 +68,8 @@ public class UserController {
   public UserInfo createUser(
       @Valid @RequestBody UserCreate userCreate
   ) {
-    UserInfo created = userService.createUser(userCreate);
-    return created;
+    User user = userService.createUser(userCreate);
+    return mapper.userToUserInfo(user);
   }
 
   /**
@@ -82,8 +81,8 @@ public class UserController {
    */
   @PutMapping("/{id}")
   public UserInfo updateUser(@PathVariable Long id, @RequestBody UserUpdate userUpdate) {
-    UserInfo updated = userService.updateUser(id, userUpdate);
-    return updated;
+    User user = userService.updateUser(id, userUpdate);
+    return mapper.userToUserInfo(user);
   }
 
   /**
