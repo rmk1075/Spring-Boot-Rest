@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,11 +93,10 @@ public class DatasetServiceImpl implements DatasetService {
 
   @Override
   public Dataset getDataset(Long id) {
-    Optional<Dataset> dataset = datasetRepository.findById(id);
-    if (!dataset.isPresent()) {
-      throw new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id));
-    }
-    return dataset.get();
+    Dataset dataset = datasetRepository.findById(id).orElseThrow(
+      () -> new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id))
+    );
+    return dataset;
   }
 
   @Override
