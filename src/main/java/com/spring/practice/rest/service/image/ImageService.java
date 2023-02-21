@@ -29,7 +29,7 @@ public class ImageService {
   @Autowired CommonMapper mapper;
 
   /**
-   * Get ImageInfo.
+   * Get Image.
    *
    * @param id Image id.
    * @return ImageInfo.
@@ -100,7 +100,7 @@ public class ImageService {
   }
 
   /**
-   * Delete Images contained the dataset.
+   * Delete Images in the dataset.
    *
    * @param datasetId Dataset id.
    * @return Deleted image list.
@@ -108,13 +108,13 @@ public class ImageService {
    * @throws URISyntaxException Invalid uri.
    * @throws IOException Image file delete error.
    */
-  public List<ImageInfo> deleteImagesByDataset(Long datasetId)
+  public List<Image> deleteImagesByDataset(Long datasetId)
       throws IllegalArgumentException, URISyntaxException, IOException {
     List<Image> images = imageRepository.findAllByDatasetId(datasetId);
     for (Image image : images) {
       storageService.delete(image.getUrl());
     }
     imageRepository.deleteAllByDatasetId(datasetId);
-    return images.stream().map(image -> mapper.imageToImageInfo(image)).toList();
+    return images;
   }
 }
