@@ -23,13 +23,13 @@ public interface CommonMapper {
 
   // TODO: datasetCreateToDataset
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "created", ignore = true)
-  @Mapping(target = "updated", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
   Dataset datasetCreateToDataset(DatasetCreate datasetCreate);
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "created", ignore = true)
-  @Mapping(target = "updated", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
   DatasetInfo datasetCreateToDatasetInfo(DatasetCreate datasetCreate);
 
   DatasetInfo datasetToDatasetInfo(Dataset dataset);
@@ -41,7 +41,7 @@ public interface CommonMapper {
   Image imageInfoToImage(ImageInfo imageInfo);
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "created", ignore = true)
-  @Mapping(target = "updated", ignore = true)
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "updatedAt", ignore = true)
   Image imageCreateToImage(ImageCreate imageCreate);
 }

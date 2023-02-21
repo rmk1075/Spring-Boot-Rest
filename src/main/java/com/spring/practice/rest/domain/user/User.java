@@ -1,21 +1,22 @@
 package com.spring.practice.rest.domain.user;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * User Entity class.
@@ -45,11 +46,10 @@ public class User {
   @NonNull
   private String desc;
 
-  @CreationTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date created;
+  @CreatedDate
+  @Column(updatable = false)
+  private LocalDateTime createdAt;
 
-  @UpdateTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date updated;
+  @LastModifiedDate
+  private LocalDateTime updatedAt;
 }
