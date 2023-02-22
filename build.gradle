@@ -5,6 +5,9 @@ plugins {
 
 	// google-java-format plugin: https://github.com/sherter/google-java-format-gradle-plugin
 	id 'com.github.sherter.google-java-format' version '0.9'
+
+	// jacoco plugin: https://docs.gradle.org/current/userguide/jacoco_plugin.html
+	id 'jacoco'
 }
 
 group = 'com.spring.practice'
@@ -42,3 +45,43 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+test {
+	finalizedBy 'jacocoTestReport'
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+    }
+
+		finalizedBy 'jacocoTestCoverageVerification'
+}
+
+// jacocoTestCoverageVerification {
+// 	// test coverage rule
+// 	violationRules {
+// 		// rule unit
+// 		// 'element' attribute 가 없으면 따로 타겟을 지정하지 않은 것으로, 전체 테스트 파일을 합친 값을 기준으로 하는 규칙이 된다.
+// 		rule {
+// 			// 'counter' 의 default: 'INSTRUCTION'
+// 			// 'value' 의 default: 'COVEREDRATIO'
+// 			limit {
+// 				minimum = 0.5
+// 			}
+// 		}
+
+// 		rule {
+// 			enabled = true // rule 의 적용여부
+// 			element = 'CLASS' // rule 체크 단위 - element: BUNDLE, PACKAGE, CLASS, SOURCEFILE, METHOD
+// 			includes = ['org.gradle.*'] // 
+
+// 			limit {
+// 				counter = 'LINE' // line 커버리지 - counter: INSTRUCTION, LINE, BRANCH, COMPLEXITY, METHOD and CLASS
+// 				value = 'TOTALCOUNT' //  TOTALCOUNT, MISSEDCOUNT, COVEREDCOUNT, MISSEDRATIO and COVEREDRATIO
+// 				maximum = 0.3
+// 			}
+// 		}
+// 	}
+// }
