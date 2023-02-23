@@ -1,5 +1,6 @@
 package com.spring.practice.rest.service.user.impl;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -9,6 +10,7 @@ import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserPatch;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
@@ -100,15 +102,37 @@ public class UserServiceImplTest {
   }
 
   @Test
+  void testPatchUser() {
+    UserPatch patch = new UserPatch();
+    patch.setName("updated");
+
+    UserInfo user = mapper.userToUserInfo(userService.patchUser(testId, patch));
+
+    assertNotNull(user);
+    assertTrue(user.getUid().equals(testUid));
+    assertFalse(user.getName().equals(testName));
+    assertTrue(user.getName().equals(patch.getName()));
+  }
+
+  @Test
   void testUpdateUser() {
     UserUpdate update = new UserUpdate();
     update.setName("updated");
 
+    assertThrows(
+      IllegalArgumentException.class,
+      () -> userService.updateUser(testId, update)
+    );
+
+    update.setEmail("update@email.com");
+    update.setDesc("updated desc");
     UserInfo user = mapper.userToUserInfo(userService.updateUser(testId, update));
 
     assertNotNull(user);
     assertTrue(user.getUid().equals(testUid));
     assertFalse(user.getName().equals(testName));
     assertTrue(user.getName().equals(update.getName()));
+    assertTrue(user.getEmail().equals(update.getEmail()));
+    assertTrue(user.getDesc().equals(update.getDesc()));
   }
 }
