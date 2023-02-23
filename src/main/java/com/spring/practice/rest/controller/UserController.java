@@ -4,6 +4,7 @@ import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserPatch;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -65,10 +67,14 @@ public class UserController {
    */
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
-  public UserInfo createUser(
-      @Valid @RequestBody UserCreate userCreate
-  ) {
+  public UserInfo createUser(@Valid @RequestBody UserCreate userCreate) {
     User user = userService.createUser(userCreate);
+    return mapper.userToUserInfo(user);
+  }
+
+  @PatchMapping("/{id}")
+  public UserInfo patchUser(@PathVariable Long id, @RequestBody UserPatch userPatch) {
+    User user = userService.patchUser(id, userPatch);
     return mapper.userToUserInfo(user);
   }
 
@@ -80,7 +86,7 @@ public class UserController {
    * @return Updated UserInfo.
    */
   @PutMapping("/{id}")
-  public UserInfo updateUser(@PathVariable Long id, @RequestBody UserUpdate userUpdate) {
+  public UserInfo updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdate userUpdate) {
     User user = userService.updateUser(id, userUpdate);
     return mapper.userToUserInfo(user);
   }
