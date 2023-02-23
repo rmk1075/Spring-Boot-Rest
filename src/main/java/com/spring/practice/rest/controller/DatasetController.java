@@ -129,7 +129,10 @@ public class DatasetController {
   }
 
   @PutMapping("/{id}")
-  public DatasetInfo updateDataset(@PathVariable Long id, @RequestBody DatasetUpdate datasetUpdate) {
+  public DatasetInfo updateDataset(
+      @PathVariable Long id,
+      @RequestBody DatasetUpdate datasetUpdate
+  ) {
     Dataset dataset = datasetService.updateDataset(id, datasetUpdate);
     return mapper.datasetToDatasetInfo(dataset);
   }
