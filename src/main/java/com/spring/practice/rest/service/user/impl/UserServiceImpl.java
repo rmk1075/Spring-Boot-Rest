@@ -4,6 +4,7 @@ import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserPatch;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
@@ -76,11 +77,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User updateUser(Long id, UserUpdate userUpdate) {
+  public User patchUser(Long id, UserPatch userPatch) {
     User user = this.getUser(id);
 
     // name validation
-    String name = userUpdate.getName();
+    String name = userPatch.getName();
     if (name != null) {
       if (userRepository.findByName(name) != null) {
         throw new IllegalArgumentException(
@@ -91,21 +92,64 @@ public class UserServiceImpl implements UserService {
     }
 
     // email validation
-    String email = userUpdate.getEmail();
+    String email = userPatch.getEmail();
     if (email != null) {
       if (userRepository.findByEmail(email) != null) {
         throw new IllegalArgumentException(
           String.format("User[email=%s] is already exists.", email));
-      } else {
-        user.setEmail(email);
       }
+      user.setEmail(email);
     }
 
     // desc validation
-    String desc = userUpdate.getDesc();
+    String desc = userPatch.getDesc();
     if (desc != null) {
       user.setDesc(desc);
     }
+
+    User updated = userRepository.update(user);
+    return updated;
+  }
+
+  @Override
+  public User updateUser(Long id, UserUpdate userUpdate) {
+    User user = this.getUser(id);
+
+    // name validation
+    String name = userUpdate.getName();
+    if (name == null) {
+      throw new IllegalArgumentException(
+        String.format("User update name is null.")
+      );
+    }
+    if (userRepository.findByName(name) != null) {
+      throw new IllegalArgumentException(
+        String.format("User[name=%s] is already exists", name)
+      );
+    }
+    user.setName(name);
+
+    // email validation
+    String email = userUpdate.getEmail();
+    if (email == null) {
+      throw new IllegalArgumentException(
+        String.format("User update email is null.")
+      );
+    }
+    if (userRepository.findByEmail(email) != null) {
+      throw new IllegalArgumentException(
+        String.format("User[email=%s] is already exists.", email));
+    }
+    user.setEmail(email);
+
+    // desc validation
+    String desc = userUpdate.getDesc();
+    if (desc == null) {
+      throw new IllegalArgumentException(
+        String.format("User update desc is null.")
+      );
+    }
+    user.setDesc(desc);
 
     User updated = userRepository.update(user);
     return updated;
