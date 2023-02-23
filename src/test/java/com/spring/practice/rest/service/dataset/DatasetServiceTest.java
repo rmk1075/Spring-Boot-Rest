@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
+import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
@@ -154,5 +155,18 @@ public class DatasetServiceTest {
     assertEquals(dataset.getSize(), files.length);
 
     dataset = datasetService.deleteDataset(dataset.getId());
+  }
+
+  @Test
+  void testPatchDataset() throws IOException {
+    Dataset created = this.createDataset();
+
+    DatasetPatch datasetPatch = new DatasetPatch();
+    datasetPatch.setName("updated");
+
+    Dataset patched = datasetService.patchDataset(created.getId(), datasetPatch);
+    created = datasetService.getDataset(created.getId());
+
+    assertEquals(created, patched);
   }
 }
