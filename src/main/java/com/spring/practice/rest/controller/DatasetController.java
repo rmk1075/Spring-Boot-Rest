@@ -13,7 +13,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -115,12 +119,34 @@ public class DatasetController {
    * @throws URISyntaxException Invalid image file url.
    * @throws IOException Image file create error.
    */
-  @PostMapping("/{id}/images")
+  @PostMapping("/{id}/files")
   public DatasetInfo uploadImages(@PathVariable Long id, @RequestPart MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
     Dataset dataset = datasetService.uploadImages(id, files);
     return mapper.datasetToDatasetInfo(dataset);
   }
+
+  /**
+   * Download image zip file from dataset.
+   *
+   * @param id Dataset id.
+   * @return ResponseEntity with Dataset zip file.
+   * @throws IllegalArgumentException Unsupported url scheme in dataset directory url.
+   * @throws URISyntaxException Invalid dataset directory url.
+   * @throws IOException File archive IO error.
+   */
+  @GetMapping("/{id}/files")
+  public ResponseEntity<?> downloadImages(@PathVariable Long id)
+      throws IllegalArgumentException, URISyntaxException, IOException {
+    Resource resource = datasetService.downloadImages(id);
+    String contentType = "application/octet-stream";
+    String contentDisposition = "attachment; filename=\"" + resource.getFilename() + "\"";
+    return ResponseEntity.ok()
+      .contentType(MediaType.parseMediaType(contentType))
+      .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+      .body(resource);
+  }
+
 
   @PatchMapping("/{id}")
   public DatasetInfo patchDataset(@PathVariable Long id, @RequestBody DatasetPatch datasetPatch) {
