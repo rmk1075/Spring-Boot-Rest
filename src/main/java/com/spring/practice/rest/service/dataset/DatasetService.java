@@ -2,6 +2,7 @@ package com.spring.practice.rest.service.dataset;
 
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
+import com.spring.practice.rest.domain.dataset.dto.DatasetUpdate;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import java.io.IOException;
@@ -33,4 +34,6 @@ public interface DatasetService {
       throws IllegalArgumentException, URISyntaxException, IOException;
 
   public Dataset patchDataset(Long id, DatasetPatch datasetPatch);
+
+  public Dataset updateDataset(Long id, DatasetUpdate datasetUpdate);
 }

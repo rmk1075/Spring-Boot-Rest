@@ -4,6 +4,7 @@ import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
+import com.spring.practice.rest.domain.dataset.dto.DatasetUpdate;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;
@@ -149,6 +150,28 @@ public class DatasetServiceImpl implements DatasetService {
           String.format("Dataset[name=%s] is already exists", name)
         );
       }
+    }
+    dataset.setName(name);
+
+    Dataset updated = datasetRepository.save(dataset);
+    return updated;
+  }
+
+  @Override
+  public Dataset updateDataset(Long id, DatasetUpdate datasetUpdate) {
+    Dataset dataset = this.getDataset(id);
+    
+    // name validation
+    String name = datasetUpdate.getName();
+    if (name == null) {
+      throw new IllegalArgumentException(
+        String.format("Dataset update name is null")
+      );
+    }
+    if (datasetRepository.findByName(name) != null) {
+      throw new IllegalArgumentException(
+        String.format("Dataset[name=%s] is already exists", name)
+      );
     }
     dataset.setName(name);
 
