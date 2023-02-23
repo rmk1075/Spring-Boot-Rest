@@ -169,4 +169,17 @@ public class DatasetServiceTest {
 
     assertEquals(created, patched);
   }
+
+  @Test
+  void testUpdateDataset() throws IOException {
+    Dataset created = this.createDataset();
+
+    DatasetPatch datasetPatch = new DatasetPatch();
+    datasetPatch.setName("updated");
+
+    Dataset updated = datasetService.patchDataset(created.getId(), datasetPatch);
+    created = datasetService.getDataset(created.getId());
+
+    assertEquals(created, updated);
+  }
 }
