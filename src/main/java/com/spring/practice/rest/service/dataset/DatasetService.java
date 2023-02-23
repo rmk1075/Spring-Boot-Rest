@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.dataset;
 
 import com.spring.practice.rest.domain.dataset.Dataset;
+import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import java.io.IOException;
@@ -30,4 +31,6 @@ public interface DatasetService {
 
   public Dataset uploadImages(Long id, MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException;
+
+  public Dataset patchDataset(Long id, DatasetPatch datasetPatch);
 }

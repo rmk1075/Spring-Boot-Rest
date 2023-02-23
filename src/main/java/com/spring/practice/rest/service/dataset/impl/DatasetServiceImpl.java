@@ -3,6 +3,7 @@ package com.spring.practice.rest.service.dataset.impl;
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
+import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;
@@ -94,7 +95,7 @@ public class DatasetServiceImpl implements DatasetService {
   @Override
   public Dataset getDataset(Long id) {
     Dataset dataset = datasetRepository.findById(id).orElseThrow(
-      () -> new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id))
+        () -> new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id))
     );
     return dataset;
   }
@@ -134,6 +135,25 @@ public class DatasetServiceImpl implements DatasetService {
     dataset.setSize(size);
     dataset = datasetRepository.save(dataset);
     return dataset;
+  }
+
+  @Override
+  public Dataset patchDataset(Long id, DatasetPatch datasetPatch) {
+    Dataset dataset = this.getDataset(id);
+
+    // name validation
+    String name = datasetPatch.getName();
+    if (name != null) {
+      if (datasetRepository.findByName(name) != null) {
+        throw new IllegalArgumentException(
+          String.format("Dataset[name=%s] is already exists", name)
+        );
+      }
+    }
+    dataset.setName(name);
+
+    Dataset updated = datasetRepository.save(dataset);
+    return updated;
   }
 
   private String generateDatasetPath(Dataset dataset) {

@@ -3,6 +3,7 @@ package com.spring.practice.rest.controller;
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.dataset.Dataset;
 import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
+import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
 import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageInfo;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -115,6 +117,12 @@ public class DatasetController {
   public DatasetInfo uploadImages(@PathVariable Long id, @RequestPart MultipartFile[] files)
       throws IllegalArgumentException, URISyntaxException, IOException {
     Dataset dataset = datasetService.uploadImages(id, files);
+    return mapper.datasetToDatasetInfo(dataset);
+  }
+
+  @PatchMapping("/{id}")
+  public DatasetInfo patchDataset(@PathVariable Long id, @RequestBody DatasetPatch datasetPatch) {
+    Dataset dataset = datasetService.patchDataset(id, datasetPatch);
     return mapper.datasetToDatasetInfo(dataset);
   }
 }
