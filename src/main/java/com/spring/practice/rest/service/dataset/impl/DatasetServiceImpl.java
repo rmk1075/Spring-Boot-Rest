@@ -11,6 +11,8 @@ import com.spring.practice.rest.domain.image.dto.ImageCreate;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import com.spring.practice.rest.service.image.ImageService;
+import com.spring.practice.rest.service.storage.StorageService;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -20,6 +22,8 @@ import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,6 +42,8 @@ public class DatasetServiceImpl implements DatasetService {
   @Autowired private DatasetRepository datasetRepository;
 
   @Autowired private ImageService imageService;
+
+  @Autowired private StorageService storageService;
 
   @Autowired private CommonMapper mapper;
 
@@ -136,6 +142,20 @@ public class DatasetServiceImpl implements DatasetService {
     dataset.setSize(size);
     dataset = datasetRepository.save(dataset);
     return dataset;
+  }
+
+  @Override
+  public Resource downloadImages(Long id)
+      throws IllegalArgumentException, URISyntaxException, IOException {
+    Dataset dataset = this.getDataset(id);
+    String url = String.join("/", String.format("%s:/", SCHEME), dataset.getPath());
+
+    File zip = storageService.getZip(url);
+    File replace = new File(String.join("/", zip.getParent(), dataset.getName() + ".zip"));
+    zip.renameTo(replace);
+
+    String zipUrl = String.join("/", String.format("%s:/", SCHEME), replace.getPath());
+    return new UrlResource(zipUrl);
   }
 
   @Override

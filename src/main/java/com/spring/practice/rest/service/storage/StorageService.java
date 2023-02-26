@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.storage;
 
 import com.spring.practice.rest.service.storage.impl.FileSystemAdapter;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -8,6 +9,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Storage Service for store and load objects.
+ */
 @Service
 public class StorageService {
 
@@ -17,8 +21,9 @@ public class StorageService {
       throws URISyntaxException, IllegalArgumentException {
     URI uri = new URI(url);
     String scheme = uri.getScheme();
-    if (fileSystemService.getScheme().equals(scheme)) return fileSystemService;
-    else {
+    if (fileSystemService.getScheme().equals(scheme)) {
+      return fileSystemService;
+    } else {
       String exception =
           String.format(
               "Scheme[%s] is not supported. Supported schemes are [%s]",
@@ -29,6 +34,10 @@ public class StorageService {
 
   public byte[] get(String url) throws IllegalArgumentException, URISyntaxException, IOException {
     return this.adapter(url).get(url);
+  }
+
+  public File getZip(String url) throws IllegalArgumentException, URISyntaxException, IOException {
+    return this.adapter(url).getZip(url);
   }
 
   public String create(String url, byte[] bytes)

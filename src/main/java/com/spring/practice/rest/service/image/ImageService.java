@@ -34,7 +34,7 @@ public class ImageService {
    */
   public Image getImage(Long id) {
     Image image = imageRepository.findById(id).orElseThrow(
-      () -> new NoSuchElementException(String.format("Image[id=%d] is not exists.", id))
+        () -> new NoSuchElementException(String.format("Image[id=%d] is not exists.", id))
     );
     return image;
   }
