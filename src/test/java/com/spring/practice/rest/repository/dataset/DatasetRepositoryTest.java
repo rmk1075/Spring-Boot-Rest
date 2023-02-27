@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+/**
+ * DatasetRepository test code.
+ */
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 public class DatasetRepositoryTest {
@@ -31,8 +34,8 @@ public class DatasetRepositoryTest {
         .addMappings(
             mapper -> {
               mapper.map(obj -> null, Dataset::setId);
-              mapper.map(obj -> null, Dataset::setCreated);
-              mapper.map(obj -> null, Dataset::setUpdated);
+              mapper.map(obj -> null, Dataset::setCreatedAt);
+              mapper.map(obj -> null, Dataset::setUpdatedAt);
             });
 
     int length = 10;
@@ -40,7 +43,7 @@ public class DatasetRepositoryTest {
     for (int i = 0; i < length; i++) {
       String name = String.format("dataset-%d", i);
       String path = String.format("/datasets/%d", i);
-      DatasetCreate datasetCreate = DatasetCreate.builder().name(name).path(path).size(0).build();
+      DatasetCreate datasetCreate = new DatasetCreate(name, path, 0);
       Dataset dataset = modelMapper.map(datasetCreate, Dataset.class);
       dataset = datasetRepository.save(dataset);
       map.put(dataset.getId(), datasetCreate);

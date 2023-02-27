@@ -4,17 +4,22 @@ import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserPatch;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * UserService implements class.
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -30,47 +35,130 @@ public class UserServiceImpl implements UserService {
   @Autowired private CommonMapper mapper;
 
   @Override
-  public UserInfo getUser(Long id) {
+  public User getUser(Long id) throws NoSuchElementException {
     User user = userRepository.findById(id);
-    if (user == null)
+    if (user == null) {
       throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
-    return mapper.userToUserInfo(user);
+    }
+    return user;
   }
 
   @Override
-  public List<UserInfo> getUsers() {
-    List<UserInfo> users =
-        this.userRepository.findAll().stream()
-            .map(user -> mapper.userToUserInfo(user))
-            .collect(Collectors.toList());
+  public List<User> getUsers(int start, int limit) {
+    Pageable pageable = PageRequest.of(start, limit);
+    List<User> users = userRepository
+            .findAll(pageable)
+            .getContent();
     return users;
   }
 
   @Override
-  public UserInfo createUser(UserCreate userCreate) {
+  public User createUser(UserCreate userCreate) {
     User user = userRepository.findByUid(userCreate.getUid());
-    if (user != null)
+    if (user != null) {
       throw new IllegalArgumentException(
           String.format("User[uid=%s] is already exists.", user.getUid()));
+    }
 
-    UserInfo userInfo =
-        UserInfo.builder().uid(userCreate.getUid()).name(userCreate.getName()).build();
+    user = userRepository.findByEmail(userCreate.getEmail());
+    if (user != null) {
+      throw new IllegalArgumentException(
+          String.format("User[email=%s] is already exists.", user.getEmail()));
+    }
+
+    UserInfo userInfo = UserInfo.builder()
+        .uid(userCreate.getUid())
+        .name(userCreate.getName())
+        .email(userCreate.getEmail())
+        .desc(userCreate.getDesc())
+        .build();
     User created = userRepository.save(mapper.userInfoToUser(userInfo));
-    return mapper.userToUserInfo(created);
+    return created;
   }
 
   @Override
-  public UserInfo updateUser(Long id, UserUpdate userUpdate) {
-    UserInfo user = this.getUser(id);
-    user.setName(userUpdate.getName());
-    User updated = userRepository.update(mapper.userInfoToUser(user));
-    return mapper.userToUserInfo(updated);
+  public User patchUser(Long id, UserPatch userPatch) {
+    User user = this.getUser(id);
+
+    // name validation
+    String name = userPatch.getName();
+    if (name != null) {
+      if (userRepository.findByName(name) != null) {
+        throw new IllegalArgumentException(
+          String.format("User[name=%s] is already exists", name)
+        );
+      }
+      user.setName(name);
+    }
+
+    // email validation
+    String email = userPatch.getEmail();
+    if (email != null) {
+      if (userRepository.findByEmail(email) != null) {
+        throw new IllegalArgumentException(
+          String.format("User[email=%s] is already exists.", email));
+      }
+      user.setEmail(email);
+    }
+
+    // desc validation
+    String desc = userPatch.getDesc();
+    if (desc != null) {
+      user.setDesc(desc);
+    }
+
+    User updated = userRepository.update(user);
+    return updated;
   }
 
   @Override
-  public UserInfo deleteUser(Long id) {
-    UserInfo user = this.getUser(id);
-    User deleted = userRepository.delete(mapper.userInfoToUser(user));
-    return mapper.userToUserInfo(deleted);
+  public User updateUser(Long id, UserUpdate userUpdate) {
+    User user = this.getUser(id);
+
+    // name validation
+    String name = userUpdate.getName();
+    if (name == null) {
+      throw new IllegalArgumentException(
+        String.format("User update name is null.")
+      );
+    }
+    if (userRepository.findByName(name) != null) {
+      throw new IllegalArgumentException(
+        String.format("User[name=%s] is already exists", name)
+      );
+    }
+    user.setName(name);
+
+    // email validation
+    String email = userUpdate.getEmail();
+    if (email == null) {
+      throw new IllegalArgumentException(
+        String.format("User update email is null.")
+      );
+    }
+    if (userRepository.findByEmail(email) != null) {
+      throw new IllegalArgumentException(
+        String.format("User[email=%s] is already exists.", email));
+    }
+    user.setEmail(email);
+
+    // desc validation
+    String desc = userUpdate.getDesc();
+    if (desc == null) {
+      throw new IllegalArgumentException(
+        String.format("User update desc is null.")
+      );
+    }
+    user.setDesc(desc);
+
+    User updated = userRepository.update(user);
+    return updated;
+  }
+
+  @Override
+  public User deleteUser(Long id) {
+    User user = this.getUser(id);
+    User deleted = userRepository.delete(user);
+    return deleted;
   }
 }

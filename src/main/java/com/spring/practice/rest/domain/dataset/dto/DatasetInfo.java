@@ -1,11 +1,15 @@
 package com.spring.practice.rest.domain.dataset.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DatasetInfo dto class.
+ * Mapping with Dataset entity.
+ */
 @Builder
 @Data
 @NoArgsConstructor
@@ -17,6 +21,6 @@ public class DatasetInfo {
   private String path;
   private int size;
 
-  private Date created;
-  private Date updated;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
 }
