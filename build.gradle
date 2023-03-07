@@ -25,6 +25,8 @@ dependencies {
 	// implementation 'org.springframework.boot:spring-boot-starter-jdbc' // spring-boot-starter-data-jpa 에서 jdbc 를 포함하기 때문에 제거
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	runtimeOnly 'com.h2database:h2' // 실행시에만 필요한 라이브러리이기 때문에 runtimeOnly 로 지정
 
@@ -40,6 +42,9 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:3.1.1'
 
 	implementation 'org.apache.commons:commons-io:1.3.2'
+
+	// jjwt library for jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 tasks.named('test') {
