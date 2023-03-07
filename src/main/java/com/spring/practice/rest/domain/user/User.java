@@ -1,6 +1,9 @@
 package com.spring.practice.rest.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +17,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * User Entity class.
@@ -32,10 +37,13 @@ public class User {
   
   @NonNull
   private String uid;
-
+  
   @NonNull
   private String password;
 
+  @NonNull
+  private String role;
+  
   @NonNull
   private String name;
 
@@ -52,4 +60,8 @@ public class User {
 
   @LastModifiedDate
   private LocalDateTime updatedAt;
+
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role));
+  }
 }
