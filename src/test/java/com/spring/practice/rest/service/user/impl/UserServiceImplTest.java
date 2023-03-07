@@ -32,6 +32,7 @@ public class UserServiceImplTest {
 
   private Long testId;
   private final String testUid = "testId";
+  private final String testPwd = "$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK";
   private final String testName = "testName";
   private final String testEmail = "test@email.com";
 
@@ -45,7 +46,7 @@ public class UserServiceImplTest {
 
   @BeforeEach
   void setup() {
-    User user = userRepository.save(new User(testUid, testName, testEmail, ""));
+    User user = userRepository.save(new User(testUid, testPwd, testName, testEmail, ""));
     testId = user.getId();
     System.out.println(user);
   }
