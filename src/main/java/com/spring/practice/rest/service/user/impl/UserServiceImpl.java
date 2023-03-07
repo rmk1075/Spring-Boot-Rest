@@ -38,7 +38,16 @@ public class UserServiceImpl implements UserService {
   public User getUser(Long id) throws NoSuchElementException {
     User user = userRepository.findById(id);
     if (user == null) {
-      throw new NoSuchElementException(String.format("User[id=%s] is not exists.", id));
+      throw new NoSuchElementException(String.format("User[id=%d] is not exists.", id));
+    }
+    return user;
+  }
+
+  @Override
+  public User getUserByUid(String uid) {
+    User user = userRepository.findByUid(uid);
+    if (user == null) {
+      throw new NoSuchElementException(String.format("User[uid=%s] is not exists.", uid));
     }
     return user;
   }

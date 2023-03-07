@@ -13,6 +13,8 @@ import java.util.NoSuchElementException;
 public interface UserService {
   public User getUser(Long id) throws NoSuchElementException;
 
+  public User getUserByUid(String uid);
+
   public List<User> getUsers(int start, int limit);
 
   public User createUser(UserCreate userCreate);
