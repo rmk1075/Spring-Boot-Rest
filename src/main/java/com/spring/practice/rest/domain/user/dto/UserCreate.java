@@ -21,6 +21,10 @@ public class UserCreate {
 
   @NonNull
   @NotNull
+  private String password;
+
+  @NonNull
+  @NotNull
   private String name;
 
   @NonNull

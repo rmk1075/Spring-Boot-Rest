@@ -7,16 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * UserInfo dto class.
+ * UserDB dto class.
+ * Mapping with User entity.
  */
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfo {
+public class UserDB {
 
   private Long id;
   private String uid;
+  private String password;
+  private String role;
   private String name;
   private String email;
   private String desc;

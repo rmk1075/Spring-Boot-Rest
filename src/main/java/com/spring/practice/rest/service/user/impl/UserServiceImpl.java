@@ -3,7 +3,7 @@ package com.spring.practice.rest.service.user.impl;
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.domain.user.User;
 import com.spring.practice.rest.domain.user.dto.UserCreate;
-import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.domain.user.dto.UserDB;
 import com.spring.practice.rest.domain.user.dto.UserPatch;
 import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
@@ -75,13 +75,15 @@ public class UserServiceImpl implements UserService {
           String.format("User[email=%s] is already exists.", user.getEmail()));
     }
 
-    UserInfo userInfo = UserInfo.builder()
+    UserDB userDB = UserDB.builder()
         .uid(userCreate.getUid())
+        .password(userCreate.getPassword())
+        .role("USER")
         .name(userCreate.getName())
         .email(userCreate.getEmail())
         .desc(userCreate.getDesc())
         .build();
-    User created = userRepository.save(mapper.userInfoToUser(userInfo));
+    User created = userRepository.save(mapper.userDBToUser(userDB));
     return created;
   }
 
