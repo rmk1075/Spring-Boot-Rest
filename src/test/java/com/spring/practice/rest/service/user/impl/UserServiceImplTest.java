@@ -64,9 +64,10 @@ public class UserServiceImplTest {
   @Test
   void testCreateUser() {
     String uid = "testtest";
+    String password = "$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK";
     String name = "created";
     String email = "test@gmail.com";
-    UserCreate create = new UserCreate(uid, name, email);
+    UserCreate create = new UserCreate(uid, password, name, email);
     User user = userService.createUser(create);
 
     assertTrue(user.getUid().equals(create.getUid()));

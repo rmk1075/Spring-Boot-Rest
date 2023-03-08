@@ -24,12 +24,13 @@ public class UserControllerTest {
 
   private Long testId;
   private final String testUid = "testId";
+  private final String testPwd = "$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK";
   private final String testName = "testName";
   private final String testEmail = "test@email.com";
 
   @BeforeEach
   void setup() {
-    UserInfo testUser = userController.createUser(new UserCreate(testUid, testName, testEmail));
+    UserInfo testUser = userController.createUser(new UserCreate(testUid, testPwd, testName, testEmail));
     testId = testUser.getId();
   }
 
@@ -41,7 +42,7 @@ public class UserControllerTest {
   @Test
   void testCreateUser() {
     // uid duplication check
-    UserCreate userCreate = new UserCreate(testUid, testName, testEmail);
+    UserCreate userCreate = new UserCreate(testUid, testPwd, testName, testEmail);
     assertThrows(
         IllegalArgumentException.class,
         () -> userController.createUser(userCreate)
