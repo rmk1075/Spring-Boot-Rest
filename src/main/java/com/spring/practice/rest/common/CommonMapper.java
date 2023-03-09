@@ -7,7 +7,7 @@ import com.spring.practice.rest.domain.image.Image;
 import com.spring.practice.rest.domain.image.dto.ImageCreate;
 import com.spring.practice.rest.domain.image.dto.ImageInfo;
 import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.domain.user.dto.UserDB;
+import com.spring.practice.rest.domain.user.dto.UserDb;
 import com.spring.practice.rest.domain.user.dto.UserInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,8 +20,7 @@ import org.mapstruct.MappingConstants;
 public interface CommonMapper {
   UserInfo userToUserInfo(User user);
 
-  @Mapping(target = "authorities", ignore = true)
-  User userDBToUser(UserDB userDB);
+  User userDbToUser(UserDb userDb);
 
   // TODO: datasetCreateToDataset
   @Mapping(target = "id", ignore = true)
