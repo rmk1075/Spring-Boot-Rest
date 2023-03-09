@@ -1,5 +1,5 @@
 INSERT INTO USERS (UID, PASSWORD, ROLE, NAME, EMAIL, DESCRIPTION)
-VALUES ('uid1', '$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK', 'USER', 'user-1', 'user1@mail.com', '')
+VALUES ('uid1', '$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK', 'ADMIN', 'user-1', 'user1@mail.com', '')
     ,  ('uid2', '$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK', 'USER', 'user-2', 'user2@mail.com', '')
     ,  ('uid3', '$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK', 'USER', 'user-3', 'user3@mail.com', '')
     ,  ('uid4', '$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK', 'USER', 'user-4', 'user4@mail.com', '')

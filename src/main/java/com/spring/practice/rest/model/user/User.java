@@ -20,6 +20,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.spring.practice.rest.common.constants.RoleAuthority;
+
 /**
  * User Entity class.
  */
@@ -62,6 +64,6 @@ public class User {
   private LocalDateTime updatedAt;
 
   public Collection<? extends GrantedAuthority> getAuthorities(String rolePrefix) {
-    return List.of(new SimpleGrantedAuthority(rolePrefix + role));
+    return RoleAuthority.getAuthorities(this.role).stream().map(authority -> new SimpleGrantedAuthority(rolePrefix + authority)).toList();
   }
 }

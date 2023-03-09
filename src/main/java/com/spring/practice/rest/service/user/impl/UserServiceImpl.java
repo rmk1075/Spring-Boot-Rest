@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.user.impl;
 
 import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.common.constants.Role;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
 import com.spring.practice.rest.model.user.dto.UserDb;
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
     UserDb userDb = UserDb.builder()
         .uid(userCreate.getUid())
         .password(userCreate.getPassword())
-        .role("USER")
+        .role(Role.USER.name())
         .name(userCreate.getName())
         .email(userCreate.getEmail())
         .desc(userCreate.getDesc())
