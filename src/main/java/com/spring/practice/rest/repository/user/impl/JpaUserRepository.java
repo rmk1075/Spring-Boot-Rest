@@ -1,6 +1,6 @@
 package com.spring.practice.rest.repository.user.impl;
 
-import com.spring.practice.rest.domain.user.User;
+import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.repository.user.impl.jpa.JpaUserInterfaceRepository;
 import java.util.List;

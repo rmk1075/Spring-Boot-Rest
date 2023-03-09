@@ -1,13 +1,13 @@
 package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
-import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
-import com.spring.practice.rest.domain.dataset.dto.DatasetUpdate;
-import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
-import com.spring.practice.rest.domain.image.Image;
-import com.spring.practice.rest.domain.image.dto.ImageInfo;
+import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetInfo;
+import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
+import com.spring.practice.rest.model.dataset.dto.DatasetUpdate;
+import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.model.image.Image;
+import com.spring.practice.rest.model.image.dto.ImageInfo;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import java.io.IOException;
 import java.net.URISyntaxException;

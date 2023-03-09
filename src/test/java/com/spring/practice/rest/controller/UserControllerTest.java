@@ -3,14 +3,15 @@ package com.spring.practice.rest.controller;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.spring.practice.rest.domain.user.dto.UserCreate;
-import com.spring.practice.rest.domain.user.dto.UserInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+import com.spring.practice.rest.model.user.dto.UserCreate;
+import com.spring.practice.rest.model.user.dto.UserInfo;
 
 /**
  * Test code for UserController.

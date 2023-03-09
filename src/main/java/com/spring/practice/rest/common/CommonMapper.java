@@ -1,17 +1,18 @@
 package com.spring.practice.rest.common;
 
-import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
-import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
-import com.spring.practice.rest.domain.image.Image;
-import com.spring.practice.rest.domain.image.dto.ImageCreate;
-import com.spring.practice.rest.domain.image.dto.ImageInfo;
-import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.domain.user.dto.UserDb;
-import com.spring.practice.rest.domain.user.dto.UserInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+
+import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
+import com.spring.practice.rest.model.dataset.dto.DatasetInfo;
+import com.spring.practice.rest.model.image.Image;
+import com.spring.practice.rest.model.image.dto.ImageCreate;
+import com.spring.practice.rest.model.image.dto.ImageInfo;
+import com.spring.practice.rest.model.user.User;
+import com.spring.practice.rest.model.user.dto.UserDb;
+import com.spring.practice.rest.model.user.dto.UserInfo;
 
 /**
  * Object mapper using mapstruct.

@@ -1,11 +1,12 @@
 package com.spring.practice.rest.service.user;
 
-import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.domain.user.dto.UserCreate;
-import com.spring.practice.rest.domain.user.dto.UserPatch;
-import com.spring.practice.rest.domain.user.dto.UserUpdate;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import com.spring.practice.rest.model.user.User;
+import com.spring.practice.rest.model.user.dto.UserCreate;
+import com.spring.practice.rest.model.user.dto.UserPatch;
+import com.spring.practice.rest.model.user.dto.UserUpdate;
 
 /**
  * UserService interface.

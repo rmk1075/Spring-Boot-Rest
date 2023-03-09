@@ -2,8 +2,6 @@ package com.spring.practice.rest.repository.dataset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+
+import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
 
 /**
  * DatasetRepository test code.

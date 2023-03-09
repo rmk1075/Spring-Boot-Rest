@@ -1,11 +1,11 @@
 package com.spring.practice.rest.service.user.impl;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.domain.user.dto.UserCreate;
-import com.spring.practice.rest.domain.user.dto.UserDb;
-import com.spring.practice.rest.domain.user.dto.UserPatch;
-import com.spring.practice.rest.domain.user.dto.UserUpdate;
+import com.spring.practice.rest.model.user.User;
+import com.spring.practice.rest.model.user.dto.UserCreate;
+import com.spring.practice.rest.model.user.dto.UserDb;
+import com.spring.practice.rest.model.user.dto.UserPatch;
+import com.spring.practice.rest.model.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;

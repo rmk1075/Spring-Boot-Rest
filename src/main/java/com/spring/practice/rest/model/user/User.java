@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.user;
+package com.spring.practice.rest.model.user;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

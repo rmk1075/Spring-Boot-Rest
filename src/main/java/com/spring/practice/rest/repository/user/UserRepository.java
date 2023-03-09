@@ -1,9 +1,10 @@
 package com.spring.practice.rest.repository.user;
 
-import com.spring.practice.rest.domain.user.User;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.spring.practice.rest.model.user.User;
 
 /**
  * User Repository interface.

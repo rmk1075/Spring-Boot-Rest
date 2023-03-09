@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.dataset.dto;
+package com.spring.practice.rest.model.dataset.dto;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

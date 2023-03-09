@@ -1,11 +1,12 @@
 package com.spring.practice.rest.repository.user.impl.jpa;
 
-import com.spring.practice.rest.domain.user.User;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.spring.practice.rest.model.user.User;
 
 /**
  * User Repository class using jpa entity manager.

@@ -1,6 +1,6 @@
 package com.spring.practice.rest.common.utils;
 
-import com.spring.practice.rest.domain.user.User;
+import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

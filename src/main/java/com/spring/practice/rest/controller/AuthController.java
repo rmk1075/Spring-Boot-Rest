@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.practice.rest.common.utils.JwtUtil;
-import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.domain.user.dto.UserLogin;
-import com.spring.practice.rest.domain.user.dto.UserToken;
+import com.spring.practice.rest.model.user.User;
+import com.spring.practice.rest.model.user.dto.UserLogin;
+import com.spring.practice.rest.model.user.dto.UserToken;
 import com.spring.practice.rest.service.user.UserService;
 
 @RestController

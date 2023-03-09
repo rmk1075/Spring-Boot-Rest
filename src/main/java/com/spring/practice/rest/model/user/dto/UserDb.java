@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.dataset.dto;
+package com.spring.practice.rest.model.user.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -7,19 +7,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DatasetInfo dto class.
- * Mapping with Dataset entity.
+ * UserDB dto class.
+ * Mapping with User entity.
  */
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DatasetInfo {
+public class UserDb {
 
   private Long id;
+  private String uid;
+  private String password;
+  private String role;
   private String name;
-  private String path;
-  private int size;
+  private String email;
+  private String desc;
 
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;

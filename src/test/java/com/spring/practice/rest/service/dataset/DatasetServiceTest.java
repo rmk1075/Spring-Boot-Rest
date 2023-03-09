@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
-import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
-import com.spring.practice.rest.domain.image.Image;
+import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
+import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.storage.StorageService;
 import java.io.IOException;

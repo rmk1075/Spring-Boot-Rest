@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.image;
+package com.spring.practice.rest.model.dataset;
 
 import java.time.LocalDateTime;
 
@@ -14,24 +14,27 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
- * Image Entity class.
+ * Dataset Entity class.
  */
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "image")
-public class Image {
+@Table(name = "dataset")
+public class Dataset {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private Long datasetId;
-
+  @NonNull
   private String name;
-  private String url;
+
+  private String path;
+
+  private int size;
 
   @CreatedDate
   @Column(updatable = false)
