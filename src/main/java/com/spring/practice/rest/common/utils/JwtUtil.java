@@ -1,23 +1,23 @@
 package com.spring.practice.rest.common.utils;
 
+import com.spring.practice.rest.domain.user.User;
+import com.spring.practice.rest.service.user.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Base64;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.service.user.UserService;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
+/**
+ * JwtUtil class.
+ * Provide token related features.
+ */
 @Component
 public class JwtUtil {
 
@@ -36,11 +36,13 @@ public class JwtUtil {
   }
 
   public String createToken(String sub, String tokenType) {
-    Claims claims = Jwts.claims().setSubject(sub);
     Date now = new Date();
-    Date exp = new Date(now.getTime() + (tokenType.equals(accessTokenType) ? accessTokenExp : refreshTokenExp));
+    Date exp = new Date(now.getTime()
+        + (tokenType.equals(accessTokenType) ? accessTokenExp : refreshTokenExp));
     return Jwts.builder()
-            .setClaims(claims)
+            .setHeaderParam("alg", "HS256")
+            .setHeaderParam("typ", "JWT")
+            .setSubject(sub)
             .setIssuedAt(now)
             .setExpiration(exp)
             .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -48,12 +50,13 @@ public class JwtUtil {
   }
 
   public Authentication getAuthentication(String token) {
-    User user = userService.getUserByUid(this.getUserId(token));
-    return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
+    User user = userService.getUser(this.getUserId(token));
+    return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities("ROLE_"));
   }
 
-  public String getUserId(String token) {
-    return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+  public Long getUserId(String token) {
+    return Long.valueOf(
+      Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
   }
 
   public String resolveToken(HttpServletRequest request) {

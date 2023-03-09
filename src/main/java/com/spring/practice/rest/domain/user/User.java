@@ -61,7 +61,7 @@ public class User {
   @LastModifiedDate
   private LocalDateTime updatedAt;
 
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role));
+  public Collection<? extends GrantedAuthority> getAuthorities(String rolePrefix) {
+    return List.of(new SimpleGrantedAuthority(rolePrefix + role));
   }
 }
