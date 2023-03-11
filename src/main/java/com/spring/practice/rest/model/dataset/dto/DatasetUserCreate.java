@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DatasetUserCreate dto class.
+ * The Dataset is created by user using api.
+ */
 @Builder
 @Data
 @NoArgsConstructor

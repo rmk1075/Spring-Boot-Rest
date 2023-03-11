@@ -1,9 +1,8 @@
 package com.spring.practice.rest.model.user;
 
+import com.spring.practice.rest.common.constants.RoleAuthority;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +18,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import com.spring.practice.rest.common.constants.RoleAuthority;
 
 /**
  * User Entity class.
@@ -63,7 +60,17 @@ public class User {
   @LastModifiedDate
   private LocalDateTime updatedAt;
 
+  /**
+   * Return authority list of user.
+   *
+   * @param rolePrefix "ROLE_" for Spring Security authorization
+   * @return Authority list
+   */
   public Collection<? extends GrantedAuthority> getAuthorities(String rolePrefix) {
-    return RoleAuthority.getAuthorities(this.role).stream().map(authority -> new SimpleGrantedAuthority(rolePrefix + authority)).toList();
+    return RoleAuthority
+      .getAuthorities(this.role)
+      .stream()
+      .map(authority -> new SimpleGrantedAuthority(rolePrefix + authority))
+      .toList();
   }
 }

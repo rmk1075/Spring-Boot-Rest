@@ -1,9 +1,5 @@
 package com.spring.practice.rest.common;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
-
 import com.spring.practice.rest.model.dataset.Dataset;
 import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.model.dataset.dto.DatasetInfo;
@@ -13,6 +9,9 @@ import com.spring.practice.rest.model.image.dto.ImageInfo;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserDb;
 import com.spring.practice.rest.model.user.dto.UserInfo;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
 
 /**
  * Object mapper using mapstruct.
@@ -23,7 +22,6 @@ public interface CommonMapper {
 
   User userDbToUser(UserDb userDb);
 
-  // TODO: datasetCreateToDataset
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)

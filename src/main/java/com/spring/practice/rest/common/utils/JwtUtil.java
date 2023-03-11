@@ -35,6 +35,13 @@ public class JwtUtil {
     secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
   }
 
+  /**
+   * Create new Token.
+   *
+   * @param sub subject
+   * @param tokenType token type: ["ACCESS", "REFRESH"]
+   * @return Created JWT
+   */
   public String createToken(String sub, String tokenType) {
     Date now = new Date();
     Date exp = new Date(now.getTime()
@@ -63,6 +70,12 @@ public class JwtUtil {
     return request.getHeader("Authorization");
   }
 
+  /**
+   * Validate token expiration.
+   *
+   * @param token JWT
+   * @return Whether valid or not
+   */
   public boolean validateToken(String token) {
     try {
       Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
