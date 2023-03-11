@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.image.dto;
+package com.spring.practice.rest.model.image.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

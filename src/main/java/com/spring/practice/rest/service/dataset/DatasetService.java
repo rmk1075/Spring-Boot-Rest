@@ -1,10 +1,10 @@
 package com.spring.practice.rest.service.dataset;
 
-import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
-import com.spring.practice.rest.domain.dataset.dto.DatasetUpdate;
-import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
-import com.spring.practice.rest.domain.image.Image;
+import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
+import com.spring.practice.rest.model.dataset.dto.DatasetUpdate;
+import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.model.image.Image;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;

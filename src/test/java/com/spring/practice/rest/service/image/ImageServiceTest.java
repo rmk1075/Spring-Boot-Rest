@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.domain.image.Image;
-import com.spring.practice.rest.domain.image.dto.ImageCreate;
+import com.spring.practice.rest.model.image.Image;
+import com.spring.practice.rest.model.image.dto.ImageCreate;
 import com.spring.practice.rest.service.storage.StorageService;
 import java.io.IOException;
 import java.net.URISyntaxException;

@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.domain.user.dto.UserCreate;
-import com.spring.practice.rest.domain.user.dto.UserInfo;
-import com.spring.practice.rest.domain.user.dto.UserPatch;
-import com.spring.practice.rest.domain.user.dto.UserUpdate;
+import com.spring.practice.rest.model.user.User;
+import com.spring.practice.rest.model.user.dto.UserCreate;
+import com.spring.practice.rest.model.user.dto.UserInfo;
+import com.spring.practice.rest.model.user.dto.UserPatch;
+import com.spring.practice.rest.model.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
@@ -32,6 +32,8 @@ public class UserServiceImplTest {
 
   private Long testId;
   private final String testUid = "testId";
+  private final String testPwd = "$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK";
+  private final String testRole = "USER";
   private final String testName = "testName";
   private final String testEmail = "test@email.com";
 
@@ -45,7 +47,7 @@ public class UserServiceImplTest {
 
   @BeforeEach
   void setup() {
-    User user = userRepository.save(new User(testUid, testName, testEmail, ""));
+    User user = userRepository.save(new User(testUid, testPwd, testRole, testName, testEmail, ""));
     testId = user.getId();
     System.out.println(user);
   }
@@ -62,9 +64,10 @@ public class UserServiceImplTest {
   @Test
   void testCreateUser() {
     String uid = "testtest";
+    String password = "$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK";
     String name = "created";
     String email = "test@gmail.com";
-    UserCreate create = new UserCreate(uid, name, email);
+    UserCreate create = new UserCreate(uid, password, name, email);
     User user = userService.createUser(create);
 
     assertTrue(user.getUid().equals(create.getUid()));

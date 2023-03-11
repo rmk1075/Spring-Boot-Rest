@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.user.dto;
+package com.spring.practice.rest.model.user.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

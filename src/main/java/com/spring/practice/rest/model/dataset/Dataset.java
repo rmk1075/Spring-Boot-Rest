@@ -1,37 +1,37 @@
-package com.spring.practice.rest.domain.image;
+package com.spring.practice.rest.model.dataset;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
- * Image Entity class.
+ * Dataset Entity class.
  */
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "image")
-public class Image {
+@Table(name = "dataset")
+public class Dataset {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private Long datasetId;
-
+  @NonNull
   private String name;
-  private String url;
+
+  private String path;
+
+  private int size;
 
   @CreatedDate
   @Column(updatable = false)
