@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -24,6 +21,8 @@ import springfox.documentation.spring.web.plugins.Docket;
  */
 @Configuration
 public class SwaggerConfig {
+
+  private static final String AUTHORIZATION = "Authorization";
 
   /**
    * Docket for swagger related configuration.
@@ -70,10 +69,10 @@ public class SwaggerConfig {
     AuthorizationScope authorizationScope = new AuthorizationScope("USER", "accessEverything");
     AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
     authorizationScopes[0] = authorizationScope;
-    return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
+    return Arrays.asList(new SecurityReference(AUTHORIZATION, authorizationScopes));
   }
 
   private ApiKey apiKey() {
-    return new ApiKey("Authorization", "Authorization", "header");
+    return new ApiKey(AUTHORIZATION, AUTHORIZATION, "header");
   }
 }
