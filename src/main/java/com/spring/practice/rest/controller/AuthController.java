@@ -31,10 +31,9 @@ public class AuthController {
   @PostMapping("/login")
   public UserToken loginUser(@RequestBody UserLogin userLogin) {
     User user = userService.getUserByUid(userLogin.getUid());
-    UserToken userToken = new UserToken(
-        jwtUtil.createToken(user.getId().toString(), JwtUtil.accessTokenType),
-        jwtUtil.createToken(user.getId().toString(), JwtUtil.refreshTokenType)
+    return new UserToken(
+        jwtUtil.createToken(user.getId().toString(), JwtUtil.ACCESS_TOKEN_TYPE),
+        jwtUtil.createToken(user.getId().toString(), JwtUtil.REFRESH_TOKEN_TYPE)
     );
-    return userToken;
   }
 }
