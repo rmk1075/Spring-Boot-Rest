@@ -23,11 +23,15 @@ public interface CommonMapper {
   User userDbToUser(UserDb userDb);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdBy", source = "userId")
+  @Mapping(target = "updatedBy", source = "userId")
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   Dataset datasetCreateToDataset(DatasetCreate datasetCreate);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdBy", source = "userId")
+  @Mapping(target = "updatedBy", source = "userId")
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   DatasetInfo datasetCreateToDatasetInfo(DatasetCreate datasetCreate);

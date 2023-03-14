@@ -33,6 +33,11 @@ public class Dataset {
 
   private int size;
 
+  @Column(updatable = false)
+  private Long createdBy;
+  
+  private Long updatedBy;
+
   @CreatedDate
   @Column(updatable = false)
   private LocalDateTime createdAt;

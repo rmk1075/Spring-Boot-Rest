@@ -16,4 +16,6 @@ import lombok.NoArgsConstructor;
 public class DatasetUserCreate {
 
   private String name;
+
+  private Long userId;
 }

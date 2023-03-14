@@ -8,6 +8,7 @@ import com.spring.practice.rest.model.dataset.dto.DatasetUpdate;
 import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.model.image.dto.ImageInfo;
+import com.spring.practice.rest.model.user.dto.UserInfo;
 import com.spring.practice.rest.service.dataset.DatasetService;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -79,7 +81,10 @@ public class DatasetController {
    */
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
-  public DatasetInfo createDataset(@RequestBody DatasetUserCreate userCreate) throws IOException {
+  public DatasetInfo createDataset(
+      @RequestBody DatasetUserCreate userCreate,
+      @AuthenticationPrincipal UserInfo userInfo) throws IOException {
+    userCreate.setUserId(userInfo.getId());
     Dataset dataset = datasetService.createDataset(userCreate);
     return mapper.datasetToDatasetInfo(dataset);
   }
@@ -136,7 +141,7 @@ public class DatasetController {
    * @throws IOException File archive IO error.
    */
   @GetMapping("/{id}/files")
-  public ResponseEntity<?> downloadImages(@PathVariable Long id)
+  public ResponseEntity<Resource> downloadImages(@PathVariable Long id)
       throws IllegalArgumentException, URISyntaxException, IOException {
     Resource resource = datasetService.downloadImages(id);
     String contentType = "application/octet-stream";
