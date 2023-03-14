@@ -65,7 +65,7 @@ public class DatasetServiceTest {
   }
 
   private Dataset createDataset() throws IOException {
-    DatasetUserCreate datasetUserCreate = DatasetUserCreate.builder().name(NAME).build();
+    DatasetUserCreate datasetUserCreate = DatasetUserCreate.builder().name(NAME).userId(0L).build();
     Dataset dataset = datasetService.createDataset(datasetUserCreate);
     return dataset;
   }
@@ -73,14 +73,14 @@ public class DatasetServiceTest {
   @Test
   void testCreateDataset() throws IOException {
     Dataset dataset = this.createDataset();
-    assertEquals(dataset.getName(), NAME);
+    assertEquals(NAME, dataset.getName());
     assertEquals(
         dataset.getPath(),
         String.join(
             "/",
             System.getProperty("user.dir") + "/resources/storage",
             String.valueOf(dataset.getId())));
-    assertEquals(dataset.getSize(), 0);
+    assertEquals(0, dataset.getSize());
   }
 
   @Test
@@ -107,7 +107,7 @@ public class DatasetServiceTest {
   void testGetDatasets() throws IOException {
     Dataset created = this.createDataset();
     List<Dataset> datasets = datasetService.getDatasets(0, 100);
-    assertEquals(datasets.size(), 1);
+    assertEquals(1, datasets.size());
 
     Dataset dataset = datasets.get(0);
     assertEquals(created.getId(), dataset.getId());
