@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -34,6 +36,7 @@ public class SwaggerConfig {
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.OAS_30)
+        .ignoredParameterTypes(AuthenticationPrincipal.class) // @AuthenticationPrincipal 을 제외
         .securityContexts(Arrays.asList(securityContext()))
         .securitySchemes(Arrays.asList(apiKey()))
         .useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드 (200, 401, 403, 404) 등의 노출 여부
