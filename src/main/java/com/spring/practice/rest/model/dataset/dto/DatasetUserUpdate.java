@@ -7,18 +7,14 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * DatasetUpdate dto class.
+ * DatasetUserUpdate dto class.
  */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class DatasetUpdate {
+public class DatasetUserUpdate {
 
   @NonNull
   @NotNull
   private String name;
-
-  @NonNull
-  @NotNull
-  private Long userId;
 }

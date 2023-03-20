@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
-import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.storage.StorageService;
@@ -65,8 +65,8 @@ public class DatasetServiceTest {
   }
 
   private Dataset createDataset() throws IOException {
-    DatasetUserCreate datasetUserCreate = DatasetUserCreate.builder().name(NAME).userId(0L).build();
-    Dataset dataset = datasetService.createDataset(datasetUserCreate);
+    DatasetCreate datasetCreate = new DatasetCreate(NAME, 0L);
+    Dataset dataset = datasetService.createDataset(datasetCreate);
     return dataset;
   }
 

@@ -5,7 +5,6 @@ import com.spring.practice.rest.model.dataset.Dataset;
 import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
 import com.spring.practice.rest.model.dataset.dto.DatasetUpdate;
-import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.model.image.dto.ImageCreate;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
@@ -48,14 +47,13 @@ public class DatasetServiceImpl implements DatasetService {
   @Autowired private CommonMapper mapper;
 
   @Override
-  public Dataset createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
-    String name = datasetUserCreate.getName();
+  public Dataset createDataset(DatasetCreate datasetCreate) throws IOException {
+    String name = datasetCreate.getName();
     if (datasetRepository.findByName(name) != null) {
       throw new IllegalArgumentException(
           String.format("Dataset[name=%s] is already exists.", name));
     }
 
-    DatasetCreate datasetCreate = new DatasetCreate(name, datasetUserCreate.getUserId());
     Dataset dataset = mapper.datasetCreateToDataset(datasetCreate);
     dataset = datasetRepository.save(dataset);
 

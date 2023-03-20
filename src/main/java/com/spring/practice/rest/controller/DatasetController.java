@@ -1,11 +1,15 @@
 package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.common.exceptions.UnauthorizedException;
 import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.model.dataset.dto.DatasetInfo;
 import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
 import com.spring.practice.rest.model.dataset.dto.DatasetUpdate;
 import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
+import com.spring.practice.rest.model.dataset.dto.DatasetUserPatch;
+import com.spring.practice.rest.model.dataset.dto.DatasetUserUpdate;
 import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.model.image.dto.ImageInfo;
 import com.spring.practice.rest.model.user.dto.UserInfo;
@@ -84,8 +88,11 @@ public class DatasetController {
   public DatasetInfo createDataset(
       @RequestBody DatasetUserCreate userCreate,
       @AuthenticationPrincipal UserInfo userInfo) throws IOException {
-    userCreate.setUserId(userInfo.getId());
-    Dataset dataset = datasetService.createDataset(userCreate);
+    DatasetCreate datasetCreate = new DatasetCreate(
+      userCreate.getName(),
+      userInfo.getId()
+    );
+    Dataset dataset = datasetService.createDataset(datasetCreate);
     return mapper.datasetToDatasetInfo(dataset);
   }
 
@@ -96,11 +103,24 @@ public class DatasetController {
    * @throws IllegalArgumentException Input uri with unsupported scheme.
    * @throws URISyntaxException Invalid uri.
    * @throws IOException Image file delete error.
+   * @throws UnauthorizedException
    */
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
-  public void deleteDataset(@PathVariable Long id)
-      throws IllegalArgumentException, URISyntaxException, IOException {
+  public void deleteDataset(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo)
+      throws IllegalArgumentException, URISyntaxException, IOException, UnauthorizedException {
+    Dataset dataset = datasetService.getDataset(id);
+    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+      throw new UnauthorizedException(
+        String.format(
+          "User[id=%d] is unauthorized. User[id=%d] is expected.",
+          userInfo.getId(),
+          dataset.getCreatedBy()
+        )
+      );
+    }
     datasetService.deleteDataset(id);
   }
 
@@ -123,11 +143,26 @@ public class DatasetController {
    * @throws IllegalArgumentException Duplicated image file.
    * @throws URISyntaxException Invalid image file url.
    * @throws IOException Image file create error.
+   * @throws UnauthorizedException
    */
   @PostMapping("/{id}/files")
-  public DatasetInfo uploadImages(@PathVariable Long id, @RequestPart MultipartFile[] files)
-      throws IllegalArgumentException, URISyntaxException, IOException {
-    Dataset dataset = datasetService.uploadImages(id, files);
+  public DatasetInfo uploadImages(
+      @PathVariable Long id,
+      @RequestPart MultipartFile[] files,
+      @AuthenticationPrincipal UserInfo userInfo)
+      throws IllegalArgumentException, URISyntaxException, IOException, UnauthorizedException {
+    Dataset dataset = datasetService.getDataset(id);
+    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+      throw new UnauthorizedException(
+        String.format(
+          "User[id=%d] is unauthorized. User[id=%d] is expected.",
+          userInfo.getId(),
+          dataset.getCreatedBy()
+        )
+      );
+    }
+
+    dataset = datasetService.uploadImages(id, files);
     return mapper.datasetToDatasetInfo(dataset);
   }
 
@@ -154,17 +189,52 @@ public class DatasetController {
 
 
   @PatchMapping("/{id}")
-  public DatasetInfo patchDataset(@PathVariable Long id, @RequestBody DatasetPatch datasetPatch) {
-    Dataset dataset = datasetService.patchDataset(id, datasetPatch);
+  public DatasetInfo patchDataset(
+    @PathVariable Long id,
+    @RequestBody DatasetUserPatch datasetUserPatch,
+    @AuthenticationPrincipal UserInfo userInfo
+  ) throws UnauthorizedException {
+    Dataset dataset = datasetService.getDataset(id);
+    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+      throw new UnauthorizedException(
+        String.format(
+          "User[id=%d] is unauthorized. User[id=%d] is expected.",
+          userInfo.getId(),
+          dataset.getCreatedBy()
+        )
+      );
+    }
+
+    DatasetPatch datasetPatch = new DatasetPatch(userInfo.getId());
+    if (datasetUserPatch.getName() != null) {
+      datasetPatch.setName(datasetUserPatch.getName());
+    }
+    dataset = datasetService.patchDataset(id, datasetPatch);
     return mapper.datasetToDatasetInfo(dataset);
   }
 
   @PutMapping("/{id}")
   public DatasetInfo updateDataset(
       @PathVariable Long id,
-      @RequestBody DatasetUpdate datasetUpdate
-  ) {
-    Dataset dataset = datasetService.updateDataset(id, datasetUpdate);
+      @RequestBody DatasetUserUpdate datasetUserUpdate,
+      @AuthenticationPrincipal UserInfo userInfo
+  ) throws UnauthorizedException {
+    Dataset dataset = datasetService.getDataset(id);
+    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+      throw new UnauthorizedException(
+        String.format(
+          "User[id=%d] is unauthorized. User[id=%d] is expected.",
+          userInfo.getId(),
+          dataset.getCreatedBy()
+        )
+      );
+    }
+
+    DatasetUpdate datasetUpdate = new DatasetUpdate(
+      datasetUserUpdate.getName(),
+      userInfo.getId()
+    );
+    dataset = datasetService.updateDataset(id, datasetUpdate);
     return mapper.datasetToDatasetInfo(dataset);
   }
 }
