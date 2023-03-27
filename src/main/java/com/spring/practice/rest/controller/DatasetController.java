@@ -112,7 +112,7 @@ public class DatasetController {
       @AuthenticationPrincipal UserInfo userInfo)
       throws IllegalArgumentException, URISyntaxException, IOException, UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
         String.format(
           "User[id=%d] is unauthorized. User[id=%d] is expected.",
@@ -152,7 +152,7 @@ public class DatasetController {
       @AuthenticationPrincipal UserInfo userInfo)
       throws IllegalArgumentException, URISyntaxException, IOException, UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
         String.format(
           "User[id=%d] is unauthorized. User[id=%d] is expected.",
@@ -195,7 +195,7 @@ public class DatasetController {
     @AuthenticationPrincipal UserInfo userInfo
   ) throws UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
         String.format(
           "User[id=%d] is unauthorized. User[id=%d] is expected.",
@@ -220,7 +220,7 @@ public class DatasetController {
       @AuthenticationPrincipal UserInfo userInfo
   ) throws UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(userInfo.getId().equals(dataset.getCreatedBy())) {
+    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
         String.format(
           "User[id=%d] is unauthorized. User[id=%d] is expected.",
