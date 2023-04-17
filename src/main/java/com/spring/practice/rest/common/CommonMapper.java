@@ -25,8 +25,6 @@ public interface CommonMapper {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "createdBy", source = "userId")
   @Mapping(target = "updatedBy", source = "userId")
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
   Dataset datasetCreateToDataset(DatasetCreate datasetCreate);
 
   @Mapping(target = "id", ignore = true)

@@ -168,6 +168,7 @@ public class DatasetServiceImpl implements DatasetService {
     if (name != null) {
       dataset.setName(name);
     }
+    dataset.setUpdatedBy(datasetPatch.getUserId());
 
     return datasetRepository.save(dataset);
   }
@@ -184,6 +185,7 @@ public class DatasetServiceImpl implements DatasetService {
       );
     }
     dataset.setName(name);
+    dataset.setUpdatedBy(datasetUpdate.getUserId());
 
     return datasetRepository.save(dataset);
   }
