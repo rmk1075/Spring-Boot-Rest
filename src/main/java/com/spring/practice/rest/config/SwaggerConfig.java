@@ -4,9 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -25,6 +24,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 public class SwaggerConfig {
 
+  private static final String AUTHORIZATION = "Authorization";
+
   /**
    * Docket for swagger related configuration.
    *
@@ -35,6 +36,7 @@ public class SwaggerConfig {
   @Bean
   public Docket api() {
     return new Docket(DocumentationType.OAS_30)
+        .ignoredParameterTypes(AuthenticationPrincipal.class) // @AuthenticationPrincipal 을 제외
         .securityContexts(Arrays.asList(securityContext()))
         .securitySchemes(Arrays.asList(apiKey()))
         .useDefaultResponseMessages(true) // Swagger 에서 제공해주는 기본 응답 코드 (200, 401, 403, 404) 등의 노출 여부
@@ -70,10 +72,10 @@ public class SwaggerConfig {
     AuthorizationScope authorizationScope = new AuthorizationScope("USER", "accessEverything");
     AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
     authorizationScopes[0] = authorizationScope;
-    return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
+    return Arrays.asList(new SecurityReference(AUTHORIZATION, authorizationScopes));
   }
 
   private ApiKey apiKey() {
-    return new ApiKey("Authorization", "Authorization", "header");
+    return new ApiKey(AUTHORIZATION, AUTHORIZATION, "header");
   }
 }

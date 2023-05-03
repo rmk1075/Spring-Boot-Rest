@@ -21,6 +21,9 @@ public class DatasetInfo {
   private String path;
   private int size;
 
+  private Long createdBy;
+  private Long updatedBy;
+
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 }

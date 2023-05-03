@@ -21,25 +21,33 @@ public class CommonRestControllerAdvice {
 
   // BAD_REQUEST (400)
   @ExceptionHandler({IllegalArgumentException.class})
-  public ResponseEntity<?> badRequestHandler(Exception exception) {
+  public ResponseEntity<String> badRequestHandler(Exception exception) {
     HttpStatus status = HttpStatus.BAD_REQUEST;
     this.error(status, exception);
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    return ResponseEntity.status(status).body(exception.getMessage());
+  }
+
+  // FORBIDDEN (403)
+  @ExceptionHandler({UnauthorizedException.class})
+  public ResponseEntity<String> unAuthorizedExceptionHandler(Exception exception) {
+    HttpStatus status = HttpStatus.FORBIDDEN;
+    this.error(status, exception);
+    return ResponseEntity.status(status).body(exception.getMessage());
   }
 
   // NOT_FOUND (404)
   @ExceptionHandler({NoSuchElementException.class})
-  public ResponseEntity<?> notFoundExceptionHandler(Exception exception) {
+  public ResponseEntity<String> notFoundExceptionHandler(Exception exception) {
     HttpStatus status = HttpStatus.NOT_FOUND;
     this.error(status, exception);
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    return ResponseEntity.status(status).body(exception.getMessage());
   }
 
   // INTERNAL_SERVER_ERROR (500)
   @ExceptionHandler({IllegalStateException.class})
-  public ResponseEntity<?> internalServerErrorHandler(Exception exception) {
+  public ResponseEntity<String> internalServerErrorHandler(Exception exception) {
     HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
     this.error(status, exception);
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+    return ResponseEntity.status(status).body(exception.getMessage());
   }
 }

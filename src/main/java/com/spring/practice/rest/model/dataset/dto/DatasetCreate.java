@@ -23,4 +23,8 @@ public class DatasetCreate {
   private String path = null;
 
   private int size = 0;
+
+  @NonNull
+  @NotNull
+  private Long userId;
 }

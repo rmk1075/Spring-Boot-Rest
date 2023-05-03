@@ -28,15 +28,13 @@ public class DatasetRepositoryTest {
   @Test
   void testDatasetRepository() {
     List<Dataset> datasets = datasetRepository.findAll();
-    assertEquals(datasets.size(), 0);
+    assertEquals(0, datasets.size());
 
     modelMapper
         .typeMap(DatasetCreate.class, Dataset.class)
         .addMappings(
             mapper -> {
               mapper.map(obj -> null, Dataset::setId);
-              mapper.map(obj -> null, Dataset::setCreatedAt);
-              mapper.map(obj -> null, Dataset::setUpdatedAt);
             });
 
     int length = 10;
@@ -44,7 +42,7 @@ public class DatasetRepositoryTest {
     for (int i = 0; i < length; i++) {
       String name = String.format("dataset-%d", i);
       String path = String.format("/datasets/%d", i);
-      DatasetCreate datasetCreate = new DatasetCreate(name, path, 0);
+      DatasetCreate datasetCreate = new DatasetCreate(name, path, 0, 0L);
       Dataset dataset = modelMapper.map(datasetCreate, Dataset.class);
       dataset = datasetRepository.save(dataset);
       map.put(dataset.getId(), datasetCreate);

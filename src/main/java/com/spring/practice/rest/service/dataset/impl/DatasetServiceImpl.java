@@ -5,7 +5,6 @@ import com.spring.practice.rest.model.dataset.Dataset;
 import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
 import com.spring.practice.rest.model.dataset.dto.DatasetUpdate;
-import com.spring.practice.rest.model.dataset.dto.DatasetUserCreate;
 import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.model.image.dto.ImageCreate;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
@@ -48,14 +47,13 @@ public class DatasetServiceImpl implements DatasetService {
   @Autowired private CommonMapper mapper;
 
   @Override
-  public Dataset createDataset(DatasetUserCreate datasetUserCreate) throws IOException {
-    String name = datasetUserCreate.getName();
+  public Dataset createDataset(DatasetCreate datasetCreate) throws IOException {
+    String name = datasetCreate.getName();
     if (datasetRepository.findByName(name) != null) {
       throw new IllegalArgumentException(
           String.format("Dataset[name=%s] is already exists.", name));
     }
 
-    DatasetCreate datasetCreate = new DatasetCreate(name);
     Dataset dataset = mapper.datasetCreateToDataset(datasetCreate);
     dataset = datasetRepository.save(dataset);
 
@@ -101,23 +99,20 @@ public class DatasetServiceImpl implements DatasetService {
 
   @Override
   public Dataset getDataset(Long id) {
-    Dataset dataset = datasetRepository.findById(id).orElseThrow(
+    return datasetRepository.findById(id).orElseThrow(
         () -> new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id))
     );
-    return dataset;
   }
 
   @Override
   public List<Dataset> getDatasets(int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<Dataset> datasets = datasetRepository.findAll(pageable).getContent();
-    return datasets;
+    return datasetRepository.findAll(pageable).getContent();
   }
 
   @Override
   public List<Image> getImages(Long id, int start, int limit) {
-    List<Image> images = imageService.getImagesByDataset(id, start, limit);
-    return images;
+    return imageService.getImagesByDataset(id, start, limit);
   }
 
   @Override
@@ -164,17 +159,18 @@ public class DatasetServiceImpl implements DatasetService {
 
     // name validation
     String name = datasetPatch.getName();
-    if (name != null) {
-      if (datasetRepository.findByName(name) != null) {
-        throw new IllegalArgumentException(
-          String.format("Dataset[name=%s] is already exists", name)
-        );
-      }
+    if (name != null && datasetRepository.findByName(name) != null) {
+      throw new IllegalArgumentException(
+        String.format("Dataset[name=%s] is already exists", name)
+      );
     }
-    dataset.setName(name);
 
-    Dataset updated = datasetRepository.save(dataset);
-    return updated;
+    if (name != null) {
+      dataset.setName(name);
+    }
+    dataset.setUpdatedBy(datasetPatch.getUserId());
+
+    return datasetRepository.save(dataset);
   }
 
   @Override
@@ -183,20 +179,15 @@ public class DatasetServiceImpl implements DatasetService {
     
     // name validation
     String name = datasetUpdate.getName();
-    if (name == null) {
-      throw new IllegalArgumentException(
-        String.format("Dataset update name is null")
-      );
-    }
     if (datasetRepository.findByName(name) != null) {
       throw new IllegalArgumentException(
         String.format("Dataset[name=%s] is already exists", name)
       );
     }
     dataset.setName(name);
+    dataset.setUpdatedBy(datasetUpdate.getUserId());
 
-    Dataset updated = datasetRepository.save(dataset);
-    return updated;
+    return datasetRepository.save(dataset);
   }
 
   private String generateDatasetPath(Dataset dataset) {
