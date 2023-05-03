@@ -1,13 +1,14 @@
 package com.spring.practice.rest.common;
 
-import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetCreate;
-import com.spring.practice.rest.domain.dataset.dto.DatasetInfo;
-import com.spring.practice.rest.domain.image.Image;
-import com.spring.practice.rest.domain.image.dto.ImageCreate;
-import com.spring.practice.rest.domain.image.dto.ImageInfo;
-import com.spring.practice.rest.domain.user.User;
-import com.spring.practice.rest.domain.user.dto.UserInfo;
+import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
+import com.spring.practice.rest.model.dataset.dto.DatasetInfo;
+import com.spring.practice.rest.model.image.Image;
+import com.spring.practice.rest.model.image.dto.ImageCreate;
+import com.spring.practice.rest.model.image.dto.ImageInfo;
+import com.spring.practice.rest.model.user.User;
+import com.spring.practice.rest.model.user.dto.UserDb;
+import com.spring.practice.rest.model.user.dto.UserInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
@@ -19,15 +20,16 @@ import org.mapstruct.MappingConstants;
 public interface CommonMapper {
   UserInfo userToUserInfo(User user);
 
-  User userInfoToUser(UserInfo userInfo);
+  User userDbToUser(UserDb userDb);
 
-  // TODO: datasetCreateToDataset
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
+  @Mapping(target = "createdBy", source = "userId")
+  @Mapping(target = "updatedBy", source = "userId")
   Dataset datasetCreateToDataset(DatasetCreate datasetCreate);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdBy", source = "userId")
+  @Mapping(target = "updatedBy", source = "userId")
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   DatasetInfo datasetCreateToDatasetInfo(DatasetCreate datasetCreate);

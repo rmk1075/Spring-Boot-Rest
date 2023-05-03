@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.dataset.dto;
+package com.spring.practice.rest.model.dataset.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -20,6 +20,9 @@ public class DatasetInfo {
   private String name;
   private String path;
   private int size;
+
+  private Long createdBy;
+  private Long updatedBy;
 
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;

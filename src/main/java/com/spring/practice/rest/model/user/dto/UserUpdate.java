@@ -1,26 +1,30 @@
-package com.spring.practice.rest.domain.dataset.dto;
+package com.spring.practice.rest.model.user.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * DatasetCreate dto class.
+ * UserUpdate dto class.
  */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@AllArgsConstructor
-public class DatasetCreate {
+public class UserUpdate {
 
   @NonNull
   @NotNull
   private String name;
 
-  private String path = null;
+  @NonNull
+  @NotNull
+  @Email
+  private String email;
 
-  private int size = 0;
+  @NonNull
+  @NotNull
+  private String desc;
 }

@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.domain.dataset.Dataset;
-import com.spring.practice.rest.domain.dataset.dto.DatasetPatch;
-import com.spring.practice.rest.domain.dataset.dto.DatasetUserCreate;
-import com.spring.practice.rest.domain.image.Image;
+import com.spring.practice.rest.model.dataset.Dataset;
+import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
+import com.spring.practice.rest.model.dataset.dto.DatasetPatch;
+import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.repository.dataset.DatasetRepository;
 import com.spring.practice.rest.service.storage.StorageService;
 import java.io.IOException;
@@ -65,22 +65,22 @@ public class DatasetServiceTest {
   }
 
   private Dataset createDataset() throws IOException {
-    DatasetUserCreate datasetUserCreate = DatasetUserCreate.builder().name(NAME).build();
-    Dataset dataset = datasetService.createDataset(datasetUserCreate);
+    DatasetCreate datasetCreate = new DatasetCreate(NAME, 0L);
+    Dataset dataset = datasetService.createDataset(datasetCreate);
     return dataset;
   }
 
   @Test
   void testCreateDataset() throws IOException {
     Dataset dataset = this.createDataset();
-    assertEquals(dataset.getName(), NAME);
+    assertEquals(NAME, dataset.getName());
     assertEquals(
         dataset.getPath(),
         String.join(
             "/",
             System.getProperty("user.dir") + "/resources/storage",
             String.valueOf(dataset.getId())));
-    assertEquals(dataset.getSize(), 0);
+    assertEquals(0, dataset.getSize());
   }
 
   @Test
@@ -107,7 +107,7 @@ public class DatasetServiceTest {
   void testGetDatasets() throws IOException {
     Dataset created = this.createDataset();
     List<Dataset> datasets = datasetService.getDatasets(0, 100);
-    assertEquals(datasets.size(), 1);
+    assertEquals(1, datasets.size());
 
     Dataset dataset = datasets.get(0);
     assertEquals(created.getId(), dataset.getId());

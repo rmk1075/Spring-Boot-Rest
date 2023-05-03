@@ -1,50 +1,34 @@
-package com.spring.practice.rest.domain.user;
+package com.spring.practice.rest.model.image;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 /**
- * User Entity class.
+ * Image Entity class.
  */
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "USERS")
-public class User {
+@Table(name = "image")
+public class Image {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NonNull
-  private String uid;
+  private Long datasetId;
 
-  @NonNull
   private String name;
-
-  @NonNull
-  private String email;
-
-  @Column(name = "DESCRIPTION")
-  @NonNull
-  private String desc;
+  private String url;
 
   @CreatedDate
   @Column(updatable = false)

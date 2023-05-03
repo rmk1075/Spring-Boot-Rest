@@ -1,4 +1,4 @@
-package com.spring.practice.rest.domain.user.dto;
+package com.spring.practice.rest.model.image.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -7,20 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * UserInfo dto class.
- * Mapping with User entity.
+ * ImageInfo dto class.
+ * Mapping with Image entity.
  */
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfo {
+public class ImageInfo {
 
   private Long id;
-  private String uid;
+  private Long datasetId;
   private String name;
-  private String email;
-  private String desc;
+  private String url;
 
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;

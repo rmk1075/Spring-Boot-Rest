@@ -1,6 +1,4 @@
-package com.spring.practice.rest.domain.dataset;
-
-import java.time.LocalDateTime;
+package com.spring.practice.rest.model.dataset;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,13 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+
+import com.spring.practice.rest.model.BaseEntity;
 
 /**
  * Dataset Entity class.
@@ -23,7 +19,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Entity
 @Table(name = "dataset")
-public class Dataset {
+public class Dataset extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +32,8 @@ public class Dataset {
 
   private int size;
 
-  @CreatedDate
   @Column(updatable = false)
-  private LocalDateTime createdAt;
-
-  @LastModifiedDate
-  private LocalDateTime updatedAt;
+  private Long createdBy;
+  
+  private Long updatedBy;
 }

@@ -1,6 +1,5 @@
-package com.spring.practice.rest.domain.user.dto;
+package com.spring.practice.rest.model.dataset.dto;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,16 +7,12 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * UserCreate dto class.
+ * DatasetUpdate dto class.
  */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class UserCreate {
-
-  @NonNull
-  @NotNull
-  private String uid;
+public class DatasetUpdate {
 
   @NonNull
   @NotNull
@@ -25,8 +20,5 @@ public class UserCreate {
 
   @NonNull
   @NotNull
-  @Email
-  private String email;
-
-  private String desc = "";
+  private Long userId;
 }
