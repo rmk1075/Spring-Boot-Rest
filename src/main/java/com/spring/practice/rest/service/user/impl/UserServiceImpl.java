@@ -11,8 +11,9 @@ import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,54 +27,46 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   @Autowired
-  // @Qualifier("JdbcTemplateUserRepository") // 중복된 타입의 bean 이 존재하는 경우 @Qualifier 어노테이션을 통해서 사용할
-  // bean name 을 지정할 수 있다.
-  // @Qualifier("MockUserRepository")
-  // @Qualifier("JdbcUserRepository")
-  @Qualifier("JpaUserRepository")
   private UserRepository userRepository;
 
   @Autowired private CommonMapper mapper;
 
   @Override
   public User getUser(Long id) throws NoSuchElementException {
-    User user = userRepository.findById(id);
-    if (user == null) {
+    Optional<User> user = userRepository.findById(id);
+    if (user.isEmpty()) {
       throw new NoSuchElementException(String.format("User[id=%d] is not exists.", id));
     }
-    return user;
+    return user.get();
   }
 
   @Override
   public User getUserByUid(String uid) {
-    User user = userRepository.findByUid(uid);
-    if (user == null) {
+    Optional<User> user = userRepository.findByUid(uid);
+    if (user.isEmpty()) {
       throw new NoSuchElementException(String.format("User[uid=%s] is not exists.", uid));
     }
-    return user;
+    return user.get();
   }
 
   @Override
   public List<User> getUsers(int start, int limit) {
     Pageable pageable = PageRequest.of(start, limit);
-    List<User> users = userRepository
+    return userRepository
             .findAll(pageable)
             .getContent();
-    return users;
   }
 
   @Override
   public User createUser(UserCreate userCreate) {
-    User user = userRepository.findByUid(userCreate.getUid());
-    if (user != null) {
+    if (userRepository.findByUid(userCreate.getUid()).isPresent()) {
       throw new IllegalArgumentException(
-          String.format("User[uid=%s] is already exists.", user.getUid()));
+          String.format("User[uid=%s] is already exists.", userCreate.getUid()));
     }
 
-    user = userRepository.findByEmail(userCreate.getEmail());
-    if (user != null) {
+    if (userRepository.findByEmail(userCreate.getEmail()).isPresent()) {
       throw new IllegalArgumentException(
-          String.format("User[email=%s] is already exists.", user.getEmail()));
+          String.format("User[email=%s] is already exists.", userCreate.getEmail()));
     }
 
     UserDb userDb = UserDb.builder()
@@ -84,8 +77,7 @@ public class UserServiceImpl implements UserService {
         .email(userCreate.getEmail())
         .desc(userCreate.getDesc())
         .build();
-    User created = userRepository.save(mapper.userDbToUser(userDb));
-    return created;
+    return userRepository.save(mapper.userDbToUser(userDb));
   }
 
   @Override
@@ -95,7 +87,7 @@ public class UserServiceImpl implements UserService {
     // name validation
     String name = userPatch.getName();
     if (name != null) {
-      if (userRepository.findByName(name) != null) {
+      if (userRepository.findByName(name).isPresent()) {
         throw new IllegalArgumentException(
           String.format("User[name=%s] is already exists", name)
         );
@@ -106,7 +98,7 @@ public class UserServiceImpl implements UserService {
     // email validation
     String email = userPatch.getEmail();
     if (email != null) {
-      if (userRepository.findByEmail(email) != null) {
+      if (userRepository.findByEmail(email).isPresent()) {
         throw new IllegalArgumentException(
           String.format("User[email=%s] is already exists.", email));
       }
@@ -119,8 +111,7 @@ public class UserServiceImpl implements UserService {
       user.setDesc(desc);
     }
 
-    User updated = userRepository.update(user);
-    return updated;
+    return userRepository.save(user);
   }
 
   @Override
@@ -129,12 +120,7 @@ public class UserServiceImpl implements UserService {
 
     // name validation
     String name = userUpdate.getName();
-    if (name == null) {
-      throw new IllegalArgumentException(
-        String.format("User update name is null.")
-      );
-    }
-    if (userRepository.findByName(name) != null) {
+    if (userRepository.findByName(name).isPresent()) {
       throw new IllegalArgumentException(
         String.format("User[name=%s] is already exists", name)
       );
@@ -143,12 +129,7 @@ public class UserServiceImpl implements UserService {
 
     // email validation
     String email = userUpdate.getEmail();
-    if (email == null) {
-      throw new IllegalArgumentException(
-        String.format("User update email is null.")
-      );
-    }
-    if (userRepository.findByEmail(email) != null) {
+    if (userRepository.findByEmail(email).isPresent()) {
       throw new IllegalArgumentException(
         String.format("User[email=%s] is already exists.", email));
     }
@@ -156,21 +137,15 @@ public class UserServiceImpl implements UserService {
 
     // desc validation
     String desc = userUpdate.getDesc();
-    if (desc == null) {
-      throw new IllegalArgumentException(
-        String.format("User update desc is null.")
-      );
-    }
     user.setDesc(desc);
 
-    User updated = userRepository.update(user);
-    return updated;
+    return userRepository.save(user);
   }
 
   @Override
   public User deleteUser(Long id) {
     User user = this.getUser(id);
-    User deleted = userRepository.delete(user);
-    return deleted;
+    userRepository.delete(user);
+    return user;
   }
 }

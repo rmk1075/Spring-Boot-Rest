@@ -1,9 +1,9 @@
 package com.spring.practice.rest.service.user.impl;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spring.practice.rest.common.CommonMapper;
@@ -15,11 +15,12 @@ import com.spring.practice.rest.model.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
 import com.spring.practice.rest.service.user.UserService;
 import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
@@ -42,7 +43,6 @@ public class UserServiceImplTest {
   @Autowired private CommonMapper mapper;
 
   @Autowired
-  @Qualifier("JpaUserRepository")
   private UserRepository userRepository;
 
   @BeforeEach
@@ -54,11 +54,11 @@ public class UserServiceImplTest {
 
   @AfterEach
   void tearDown() {
-    User user = userRepository.findByUid(testUid);
-    if (user != null) {
-      user = userRepository.delete(user);
+    Optional<User> user = userRepository.findByUid(testUid);
+    if (user.isPresent()) {
+      userRepository.delete(user.get());
+      System.out.println(user.get());
     }
-    System.out.println(user);
   }
 
   @Test
@@ -70,26 +70,25 @@ public class UserServiceImplTest {
     UserCreate create = new UserCreate(uid, password, name, email);
     User user = userService.createUser(create);
 
-    assertTrue(user.getUid().equals(create.getUid()));
-    assertTrue(user.getName().equals(create.getName()));
+    assertEquals(user.getUid(), create.getUid());
+    assertEquals(user.getName(), create.getName());
   }
 
   @Test
   void testDeleteUser() {
     User user = userService.deleteUser(testId);
 
-    assertTrue(user.getUid().equals(testUid));
-    assertTrue(user.getName().equals(testName));
-
-    assertNull(userRepository.findByUid(testUid));
+    assertEquals(testUid, user.getUid());
+    assertEquals(testName, user.getName());
+    assertEquals(true, userRepository.findByUid(testUid).isEmpty());
   }
 
   @Test
   void testGetUser() {
     User user = userService.getUser(testId);
 
-    assertTrue(user.getUid().equals(testUid));
-    assertTrue(user.getName().equals(testName));
+    assertEquals(user.getUid(), testUid);
+    assertEquals(user.getName(), testName);
   }
 
   @Test
@@ -112,9 +111,9 @@ public class UserServiceImplTest {
     UserInfo user = mapper.userToUserInfo(userService.patchUser(testId, patch));
 
     assertNotNull(user);
-    assertTrue(user.getUid().equals(testUid));
-    assertFalse(user.getName().equals(testName));
-    assertTrue(user.getName().equals(patch.getName()));
+    assertEquals(user.getUid(), testUid);
+    assertNotEquals(user.getName(), testName);
+    assertEquals(user.getName(), patch.getName());
   }
 
   @Test
@@ -123,7 +122,7 @@ public class UserServiceImplTest {
     update.setName("updated");
 
     assertThrows(
-      IllegalArgumentException.class,
+      NullPointerException.class,
       () -> userService.updateUser(testId, update)
     );
 
@@ -132,10 +131,10 @@ public class UserServiceImplTest {
     UserInfo user = mapper.userToUserInfo(userService.updateUser(testId, update));
 
     assertNotNull(user);
-    assertTrue(user.getUid().equals(testUid));
-    assertFalse(user.getName().equals(testName));
-    assertTrue(user.getName().equals(update.getName()));
-    assertTrue(user.getEmail().equals(update.getEmail()));
-    assertTrue(user.getDesc().equals(update.getDesc()));
+    assertEquals(user.getUid(), testUid);
+    assertNotEquals(user.getName(), testName);
+    assertEquals(user.getName(), update.getName());
+    assertEquals(user.getEmail(), update.getEmail());
+    assertEquals(user.getDesc(), update.getDesc());
   }
 }
