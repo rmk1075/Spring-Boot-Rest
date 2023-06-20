@@ -60,6 +60,13 @@ public class JwtUtil {
         .compact();
   }
 
+  /**
+   * Get Authentication object from token.
+   *
+   * @param token JWT
+   * @return User Authentication info
+   * @throws UnauthenticatedException When token has invalid info
+   */
   public Authentication getAuthentication(String token) throws UnauthenticatedException {
     try {
       User user = userService.getUser(this.getUserId(token));
