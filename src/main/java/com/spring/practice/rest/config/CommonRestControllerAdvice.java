@@ -1,5 +1,7 @@
-package com.spring.practice.rest.common.exceptions;
+package com.spring.practice.rest.config;
 
+import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
+import com.spring.practice.rest.common.exceptions.UnauthorizedException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

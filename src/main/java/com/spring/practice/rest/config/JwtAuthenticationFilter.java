@@ -1,4 +1,4 @@
-package com.spring.practice.rest.common.filters;
+package com.spring.practice.rest.config;
 
 import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
 import com.spring.practice.rest.common.utils.JwtUtil;
