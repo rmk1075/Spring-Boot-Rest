@@ -34,13 +34,26 @@ public class CommonRestControllerAdvice {
   }
 
   /**
+   * Return ResponseEntity with UNAUTHORIZED (401) status code.
+   *
+   * @param exception UnauthenticatedException
+   * @return UNAUTHORIZED (401)
+   */
+  @ExceptionHandler({UnauthenticatedException.class})
+  public ResponseEntity<String> unauthorizedHandler(Exception exception) {
+    HttpStatus status = HttpStatus.UNAUTHORIZED;
+    this.error(status, exception);
+    return ResponseEntity.status(status).body(exception.getMessage());
+  }
+
+  /**
    * Return ResponseEntity with FORBIDDEN (403) status code.
    *
    * @param exception UnauthorizedException
    * @return FORBIDDEN (403)
    */
   @ExceptionHandler({UnauthorizedException.class})
-  public ResponseEntity<String> unAuthorizedExceptionHandler(Exception exception) {
+  public ResponseEntity<String> forbiddenHandler(Exception exception) {
     HttpStatus status = HttpStatus.FORBIDDEN;
     this.error(status, exception);
     return ResponseEntity.status(status).body(exception.getMessage());
@@ -53,7 +66,7 @@ public class CommonRestControllerAdvice {
    * @return NOT_FOUND (404)
    */
   @ExceptionHandler({NoSuchElementException.class})
-  public ResponseEntity<String> notFoundExceptionHandler(Exception exception) {
+  public ResponseEntity<String> notFoundHandler(Exception exception) {
     HttpStatus status = HttpStatus.NOT_FOUND;
     this.error(status, exception);
     return ResponseEntity.status(status).body(exception.getMessage());
