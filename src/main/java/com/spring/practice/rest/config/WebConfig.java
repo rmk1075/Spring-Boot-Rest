@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/** WebConfig class. Add resource handler for appliaction resource storage. */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
   @Override
@@ -13,7 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
     // registry.addResourceHandler("/webjars/**")
     //   .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
-    registry.addResourceHandler("storage/**")
-      .addResourceLocations("file:" + System.getProperty("user.dir") + "/resources/storage/");
+    registry
+        .addResourceHandler("storage/**")
+        .addResourceLocations("file:" + System.getProperty("user.dir") + "/resources/storage/");
   }
 }

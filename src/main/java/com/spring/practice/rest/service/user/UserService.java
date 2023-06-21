@@ -7,13 +7,11 @@ import com.spring.practice.rest.model.user.dto.UserUpdate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-/**
- * UserService interface.
- */
+/** UserService interface. */
 public interface UserService {
   public User getUser(Long id) throws NoSuchElementException;
 
-  public User getUserByUid(String uid);
+  public User getUserByUid(String uid) throws NoSuchElementException;
 
   public List<User> getUsers(int start, int limit);
 

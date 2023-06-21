@@ -38,9 +38,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * Controller for DatasetService.
- */
+/** Controller for DatasetService. */
 @RestController
 @RequestMapping("/datasets")
 public class DatasetController {
@@ -86,12 +84,9 @@ public class DatasetController {
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
   public DatasetInfo createDataset(
-      @RequestBody DatasetUserCreate userCreate,
-      @AuthenticationPrincipal UserInfo userInfo) throws IOException {
-    DatasetCreate datasetCreate = new DatasetCreate(
-      userCreate.getName(),
-      userInfo.getId()
-    );
+      @RequestBody DatasetUserCreate userCreate, @AuthenticationPrincipal UserInfo userInfo)
+      throws IOException {
+    DatasetCreate datasetCreate = new DatasetCreate(userCreate.getName(), userInfo.getId());
     Dataset dataset = datasetService.createDataset(datasetCreate);
     return mapper.datasetToDatasetInfo(dataset);
   }
@@ -107,19 +102,12 @@ public class DatasetController {
    */
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
-  public void deleteDataset(
-      @PathVariable Long id,
-      @AuthenticationPrincipal UserInfo userInfo)
+  public void deleteDataset(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo)
       throws IllegalArgumentException, URISyntaxException, IOException, UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
+    if (!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
-        String.format(
-          "User[id=%d] is unauthorized. User[id=%d] is expected.",
-          userInfo.getId(),
-          dataset.getCreatedBy()
-        )
-      );
+          String.format("User[id=%d] is unauthorized.", userInfo.getId(), dataset.getCreatedBy()));
     }
     datasetService.deleteDataset(id);
   }
@@ -152,14 +140,9 @@ public class DatasetController {
       @AuthenticationPrincipal UserInfo userInfo)
       throws IllegalArgumentException, URISyntaxException, IOException, UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
+    if (!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
-        String.format(
-          "User[id=%d] is unauthorized. User[id=%d] is expected.",
-          userInfo.getId(),
-          dataset.getCreatedBy()
-        )
-      );
+          String.format("User[id=%d] is unauthorized.", userInfo.getId(), dataset.getCreatedBy()));
     }
 
     dataset = datasetService.uploadImages(id, files);
@@ -182,27 +165,23 @@ public class DatasetController {
     String contentType = "application/octet-stream";
     String contentDisposition = "attachment; filename=\"" + resource.getFilename() + "\"";
     return ResponseEntity.ok()
-      .contentType(MediaType.parseMediaType(contentType))
-      .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-      .body(resource);
+        .contentType(MediaType.parseMediaType(contentType))
+        .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+        .body(resource);
   }
-
 
   @PatchMapping("/{id}")
   public DatasetInfo patchDataset(
-    @PathVariable Long id,
-    @RequestBody DatasetUserPatch datasetUserPatch,
-    @AuthenticationPrincipal UserInfo userInfo
-  ) throws UnauthorizedException {
+      @PathVariable Long id,
+      @RequestBody DatasetUserPatch datasetUserPatch,
+      @AuthenticationPrincipal UserInfo userInfo)
+      throws UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
+    if (!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
-        String.format(
-          "User[id=%d] is unauthorized. User[id=%d] is expected.",
-          userInfo.getId(),
-          dataset.getCreatedBy()
-        )
-      );
+          String.format(
+              "User[id=%d] is unauthorized. User[id=%d] is expected.",
+              userInfo.getId(), dataset.getCreatedBy()));
     }
 
     DatasetPatch datasetPatch = new DatasetPatch(userInfo.getId());
@@ -217,23 +196,17 @@ public class DatasetController {
   public DatasetInfo updateDataset(
       @PathVariable Long id,
       @RequestBody DatasetUserUpdate datasetUserUpdate,
-      @AuthenticationPrincipal UserInfo userInfo
-  ) throws UnauthorizedException {
+      @AuthenticationPrincipal UserInfo userInfo)
+      throws UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if(!userInfo.getId().equals(dataset.getCreatedBy())) {
+    if (!userInfo.getId().equals(dataset.getCreatedBy())) {
       throw new UnauthorizedException(
-        String.format(
-          "User[id=%d] is unauthorized. User[id=%d] is expected.",
-          userInfo.getId(),
-          dataset.getCreatedBy()
-        )
-      );
+          String.format(
+              "User[id=%d] is unauthorized. User[id=%d] is expected.",
+              userInfo.getId(), dataset.getCreatedBy()));
     }
 
-    DatasetUpdate datasetUpdate = new DatasetUpdate(
-      datasetUserUpdate.getName(),
-      userInfo.getId()
-    );
+    DatasetUpdate datasetUpdate = new DatasetUpdate(datasetUserUpdate.getName(), userInfo.getId());
     dataset = datasetService.updateDataset(id, datasetUpdate);
     return mapper.datasetToDatasetInfo(dataset);
   }
