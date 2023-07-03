@@ -28,9 +28,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * DatasetService implements class.
- */
+/** DatasetService implements class. */
 @Service
 @Transactional
 public class DatasetServiceImpl implements DatasetService {
@@ -99,9 +97,10 @@ public class DatasetServiceImpl implements DatasetService {
 
   @Override
   public Dataset getDataset(Long id) {
-    return datasetRepository.findById(id).orElseThrow(
-        () -> new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id))
-    );
+    return datasetRepository
+        .findById(id)
+        .orElseThrow(
+            () -> new NoSuchElementException(String.format("Dataset[id=%d] is not exists.", id)));
   }
 
   @Override
@@ -123,13 +122,7 @@ public class DatasetServiceImpl implements DatasetService {
     for (MultipartFile multipartFile : files) {
       String name = multipartFile.getOriginalFilename();
       String url = this.generateFileUrl(dataset, name);
-      ImageCreate imageCreate =
-          ImageCreate.builder()
-              .datasetId(id)
-              .name(name)
-              .url(url)
-              .file(multipartFile.getBytes())
-              .build();
+      ImageCreate imageCreate = new ImageCreate(id, name, url, multipartFile.getBytes());
       imageService.createImage(imageCreate);
       size++;
     }
@@ -160,9 +153,7 @@ public class DatasetServiceImpl implements DatasetService {
     // name validation
     String name = datasetPatch.getName();
     if (name != null && datasetRepository.findByName(name) != null) {
-      throw new IllegalArgumentException(
-        String.format("Dataset[name=%s] is already exists", name)
-      );
+      throw new IllegalArgumentException(String.format("Dataset[name=%s] is already exists", name));
     }
 
     if (name != null) {
@@ -176,13 +167,11 @@ public class DatasetServiceImpl implements DatasetService {
   @Override
   public Dataset updateDataset(Long id, DatasetUpdate datasetUpdate) {
     Dataset dataset = this.getDataset(id);
-    
+
     // name validation
     String name = datasetUpdate.getName();
     if (datasetRepository.findByName(name) != null) {
-      throw new IllegalArgumentException(
-        String.format("Dataset[name=%s] is already exists", name)
-      );
+      throw new IllegalArgumentException(String.format("Dataset[name=%s] is already exists", name));
     }
     dataset.setName(name);
     dataset.setUpdatedBy(datasetUpdate.getUserId());

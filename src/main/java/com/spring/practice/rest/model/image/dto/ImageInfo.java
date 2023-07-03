@@ -1,26 +1,27 @@
 package com.spring.practice.rest.model.image.dto;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-/**
- * ImageInfo dto class.
- * Mapping with Image entity.
- */
-@Builder
+/** ImageInfo dto class. Mapping with Image entity. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImageInfo {
 
-  private Long id;
-  private Long datasetId;
-  private String name;
-  private String url;
+  @NonNull @NotNull private Long id;
 
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  @NonNull @NotNull private Long datasetId;
+
+  @NonNull @NotNull private String name;
+
+  @NonNull @NotNull private String url;
+
+  @NonNull @NotNull private LocalDateTime createdAt;
+
+  @NonNull @NotNull private LocalDateTime updatedAt;
 }
