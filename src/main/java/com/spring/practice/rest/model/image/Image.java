@@ -1,25 +1,22 @@
 package com.spring.practice.rest.model.image;
 
-import java.time.LocalDateTime;
-import javax.persistence.Column;
+import com.spring.practice.rest.model.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
-/**
- * Image Entity class.
- */
+/** Image Entity class. */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
 @Table(name = "image")
-public class Image {
+public class Image extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +26,4 @@ public class Image {
 
   private String name;
   private String url;
-
-  @CreatedDate
-  @Column(updatable = false)
-  private LocalDateTime createdAt;
-
-  @LastModifiedDate
-  private LocalDateTime updatedAt;
 }
