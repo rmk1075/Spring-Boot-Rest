@@ -17,14 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
-/**
- * ImageService test code.
- */
+/** ImageService test code. */
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 public class ImageServiceTest {
 
   private final Long testDatasetId = 1L;
+  private final Long testUserId = 1L;
   private final String testName = "test.txt";
   private final String testFileDir = System.getProperty("user.dir") + "/resources/storage";
   private final String testUrl = generateTestImageUrl(testDatasetId, testName);
@@ -40,13 +39,7 @@ public class ImageServiceTest {
 
   @BeforeEach
   void setup() throws IllegalArgumentException, URISyntaxException, IOException {
-    ImageCreate imageCreate =
-        ImageCreate.builder()
-            .datasetId(testDatasetId)
-            .name(testName)
-            .url(testUrl)
-            .file(testFile)
-            .build();
+    ImageCreate imageCreate = new ImageCreate(testDatasetId, testName, testUrl, testFile, testUserId);
     testImage = imageService.createImage(imageCreate);
   }
 
@@ -66,25 +59,18 @@ public class ImageServiceTest {
         IllegalArgumentException.class,
         () ->
             imageService.createImage(
-                ImageCreate.builder()
-                    .datasetId(1L)
-                    .name(testName)
-                    .url(String.format("file:///%s/%s", String.valueOf(1L), testName))
-                    .file("Hello World".getBytes())
-                    .build()));
+                new ImageCreate(
+                    1L,
+                    testName,
+                    String.format("file:///%s/%s", String.valueOf(1L), testName),
+                    "Hello World".getBytes(),
+                    testUserId)));
 
     Long datasetId = 1L;
     String name = "hello.txt";
     String url = generateTestImageUrl(datasetId, name);
     String contents = "Hello World";
-    ImageCreate imageCreate =
-        ImageCreate.builder()
-            .datasetId(datasetId)
-            .name(name)
-            .url(url)
-            .file(contents.getBytes())
-            .build();
-
+    ImageCreate imageCreate = new ImageCreate(datasetId, name, url, contents.getBytes(), testUserId);
     Image image = imageService.createImage(imageCreate);
     assertEquals(image.getName(), name);
     assertEquals(image.getUrl(), url);

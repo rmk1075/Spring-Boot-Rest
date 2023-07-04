@@ -1,6 +1,6 @@
 package com.spring.practice.rest.model.image;
 
-import java.time.LocalDateTime;
+import com.spring.practice.rest.model.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,32 +8,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.NonNull;
 
-/**
- * Image Entity class.
- */
+/** Image Entity class. */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
 @Table(name = "image")
-public class Image {
+public class Image extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private Long datasetId;
+  @NonNull private Long datasetId;
 
-  private String name;
-  private String url;
+  @NonNull private String name;
 
-  @CreatedDate
+  @NonNull private String url;
+
   @Column(updatable = false)
-  private LocalDateTime createdAt;
+  @NonNull
+  private Long createdBy;
 
-  @LastModifiedDate
-  private LocalDateTime updatedAt;
+  @NonNull private Long updatedBy;
 }

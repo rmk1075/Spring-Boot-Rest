@@ -4,6 +4,7 @@ import com.spring.practice.rest.common.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -39,23 +40,32 @@ public class SecurityConfig {
         .httpBasic((httpBasic) -> httpBasic.disable())
         // setup authorization check for the request by the user role
         .authorizeHttpRequests()
-        // .antMatchers("/**").hasRole("ADMIN")
+        .antMatchers(HttpMethod.POST, "/users/**")
+        .permitAll()
         .antMatchers("/users/**")
-        .hasRole("USER")
+        .hasAnyRole("USER", "ADMIN")
         .antMatchers("/datasets/**")
-        .hasRole("USER")
+        .hasAnyRole("USER", "ADMIN")
         .antMatchers("/**")
         .permitAll()
+        .anyRequest()
+        .authenticated()
         .and()
         // session 관리 정책을 설정한다. JWT 를 사용하기 때문에 따로 세션을 생성하지 않고 STATELESS 하게 운영한다.
         .sessionManagement(
             management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .exceptionHandling(
-            handling -> handling.authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
         // Security Filter 추가
         // UsernamePasswordAuthenticationFilter 앞에 JwtAuthenticationFilter 추가
         .addFilterBefore(
-            new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+            new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+        // Exception Handling related authentication
+        // - jwt authentication exception -> CustomAuthenticationEntryPoint
+        // - invalid authority user access -> CustomAccessDeniedHandler
+        .exceptionHandling(
+            handling ->
+                handling
+                    .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                    .accessDeniedHandler(new CustomAccessDeniedHandler()));
     return httpSecurity.build();
   }
 }

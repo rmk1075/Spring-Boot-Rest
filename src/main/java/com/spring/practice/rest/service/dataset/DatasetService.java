@@ -33,7 +33,7 @@ public interface DatasetService {
   public List<Dataset> deleteAllDatasets()
       throws IllegalArgumentException, URISyntaxException, IOException;
 
-  public Dataset uploadImages(Long id, MultipartFile[] files)
+  public Dataset uploadImages(Long id, MultipartFile[] files, Long userId)
       throws IllegalArgumentException, URISyntaxException, IOException;
 
   public Resource downloadImages(Long id)

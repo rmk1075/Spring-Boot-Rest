@@ -72,6 +72,9 @@ public class UserServiceImplTest {
 
     assertEquals(user.getUid(), create.getUid());
     assertEquals(user.getName(), create.getName());
+    assertEquals(user.getEmail(), create.getEmail());
+    assertNotNull(user.getCreatedAt());
+    assertNotNull(user.getUpdatedAt());
   }
 
   @Test

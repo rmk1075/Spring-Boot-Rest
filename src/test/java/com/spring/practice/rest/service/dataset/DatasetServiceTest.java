@@ -27,9 +27,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * DatasetServie test code.
- */
+/** DatasetServie test code. */
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 public class DatasetServiceTest {
@@ -48,6 +46,7 @@ public class DatasetServiceTest {
   private static final String TEST_FILE_PATH =
       String.join("/", System.getProperty("user.dir"), TEST_FILE_NAME);
   private static final String CONTENT = "Hello World";
+  private static final Long USER_ID = 1L;
 
   @BeforeAll
   static void setupAll() throws IOException, URISyntaxException {
@@ -124,8 +123,8 @@ public class DatasetServiceTest {
         new MultipartFile[] {
           new MockMultipartFile(TEST_FILE_PATH, TEST_FILE_NAME, "text/plain", CONTENT.getBytes())
         };
-    Dataset dataset = datasetService.uploadImages(created.getId(), files);
-    
+    Dataset dataset = datasetService.uploadImages(created.getId(), files, USER_ID);
+
     List<Image> images = datasetService.getImages(dataset.getId(), 0, 100);
     Map<String, Image> imageMap = new HashMap<>();
     for (Image image : images) {
@@ -135,10 +134,7 @@ public class DatasetServiceTest {
     for (MultipartFile file : files) {
       Image imageInfo = imageMap.get(file.getOriginalFilename());
       assertNotNull(imageInfo);
-      assertEquals(
-        new String(file.getBytes()),
-        new String(storageService.get(imageInfo.getUrl()))
-      );
+      assertEquals(new String(file.getBytes()), new String(storageService.get(imageInfo.getUrl())));
     }
   }
 
@@ -150,7 +146,7 @@ public class DatasetServiceTest {
         new MultipartFile[] {
           new MockMultipartFile(TEST_FILE_PATH, TEST_FILE_NAME, "text/plain", CONTENT.getBytes())
         };
-    Dataset dataset = datasetService.uploadImages(created.getId(), files);
+    Dataset dataset = datasetService.uploadImages(created.getId(), files, USER_ID);
     System.out.println(dataset.toString());
     assertEquals(dataset.getSize(), files.length);
 
@@ -163,6 +159,7 @@ public class DatasetServiceTest {
 
     DatasetPatch datasetPatch = new DatasetPatch();
     datasetPatch.setName("updated");
+    datasetPatch.setUserId(USER_ID);
 
     Dataset patched = datasetService.patchDataset(created.getId(), datasetPatch);
     created = datasetService.getDataset(created.getId());
@@ -176,6 +173,7 @@ public class DatasetServiceTest {
 
     DatasetPatch datasetPatch = new DatasetPatch();
     datasetPatch.setName("updated");
+    datasetPatch.setUserId(USER_ID);
 
     Dataset updated = datasetService.patchDataset(created.getId(), datasetPatch);
     created = datasetService.getDataset(created.getId());

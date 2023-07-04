@@ -3,6 +3,8 @@ package com.spring.practice.rest.config;
 import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
 import com.spring.practice.rest.common.utils.JwtUtil;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -10,7 +12,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -31,6 +36,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
           Authentication authentication = jwtUtil.getAuthentication(token);
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+      } else {
+        // set Uknown role to anonymous user
+        Authentication authentication =
+            new UsernamePasswordAuthenticationToken(null, null, this.getUnknownAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (UnauthenticatedException e) {
       log.error(e.getMessage(), e);
@@ -40,5 +50,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
       request.setAttribute("exception", new UnauthenticatedException("Invalid token."));
     }
     chain.doFilter(request, response);
+  }
+
+  private Collection<? extends GrantedAuthority> getUnknownAuthorities() {
+    return List.of(new SimpleGrantedAuthority("ROLE_UNKNOWN"));
   }
 }

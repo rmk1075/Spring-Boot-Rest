@@ -27,22 +27,13 @@ public interface CommonMapper {
   @Mapping(target = "updatedBy", source = "userId")
   Dataset datasetCreateToDataset(DatasetCreate datasetCreate);
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "createdBy", source = "userId")
-  @Mapping(target = "updatedBy", source = "userId")
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
-  DatasetInfo datasetCreateToDatasetInfo(DatasetCreate datasetCreate);
-
   DatasetInfo datasetToDatasetInfo(Dataset dataset);
-
-  Dataset datasetInfoToDataset(DatasetInfo dataset);
 
   ImageInfo imageToImageInfo(Image image);
 
-  Image imageInfoToImage(ImageInfo imageInfo);
-
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdBy", source = "userId")
+  @Mapping(target = "updatedBy", source = "userId")
   @Mapping(target = "createdAt", ignore = true)
   @Mapping(target = "updatedAt", ignore = true)
   Image imageCreateToImage(ImageCreate imageCreate);

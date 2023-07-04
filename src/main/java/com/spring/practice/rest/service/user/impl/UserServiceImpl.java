@@ -1,10 +1,8 @@
 package com.spring.practice.rest.service.user.impl;
 
-import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.common.constants.Role;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
-import com.spring.practice.rest.model.user.dto.UserDb;
 import com.spring.practice.rest.model.user.dto.UserPatch;
 import com.spring.practice.rest.model.user.dto.UserUpdate;
 import com.spring.practice.rest.repository.user.UserRepository;
@@ -24,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   @Autowired private UserRepository userRepository;
-
-  @Autowired private CommonMapper mapper;
 
   @Override
   public User getUser(Long id) throws NoSuchElementException {
@@ -63,16 +59,15 @@ public class UserServiceImpl implements UserService {
           String.format("User[email=%s] is already exists.", userCreate.getEmail()));
     }
 
-    UserDb userDb =
-        UserDb.builder()
-            .uid(userCreate.getUid())
-            .password(userCreate.getPassword())
-            .role(Role.USER.name())
-            .name(userCreate.getName())
-            .email(userCreate.getEmail())
-            .desc(userCreate.getDesc())
-            .build();
-    return userRepository.save(mapper.userDbToUser(userDb));
+    User user = new User(
+        userCreate.getUid(),
+        userCreate.getPassword(),
+        Role.USER.name(),
+        userCreate.getName(),
+        userCreate.getEmail(),
+        userCreate.getDesc()
+    );
+    return userRepository.save(user);
   }
 
   @Override

@@ -2,14 +2,10 @@ package com.spring.practice.rest.model.user.dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * UserInfo dto class.
- */
-@Builder
+/** UserInfo dto class. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +17,6 @@ public class UserInfo {
   private String email;
   private String desc;
 
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private String createdAt;
+  private String updatedAt;
 }
