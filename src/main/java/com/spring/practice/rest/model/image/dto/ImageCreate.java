@@ -1,22 +1,22 @@
 package com.spring.practice.rest.model.image.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-/**
- * ImageCreate dto class.
- */
-@Builder
+/** ImageCreate dto class. */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ImageCreate {
 
-  private Long datasetId;
-  private String name;
-  private String url;
+  @NonNull @NotNull private Long datasetId;
 
-  private byte[] file;
+  @NonNull @NotNull private String name;
+
+  @NonNull @NotNull private String url;
+
+  @NonNull @NotNull private byte[] file;
 }
