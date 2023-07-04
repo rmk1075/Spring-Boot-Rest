@@ -23,6 +23,7 @@ import org.springframework.test.context.TestPropertySource;
 public class ImageServiceTest {
 
   private final Long testDatasetId = 1L;
+  private final Long testUserId = 1L;
   private final String testName = "test.txt";
   private final String testFileDir = System.getProperty("user.dir") + "/resources/storage";
   private final String testUrl = generateTestImageUrl(testDatasetId, testName);
@@ -38,7 +39,7 @@ public class ImageServiceTest {
 
   @BeforeEach
   void setup() throws IllegalArgumentException, URISyntaxException, IOException {
-    ImageCreate imageCreate = new ImageCreate(testDatasetId, testName, testUrl, testFile);
+    ImageCreate imageCreate = new ImageCreate(testDatasetId, testName, testUrl, testFile, testUserId);
     testImage = imageService.createImage(imageCreate);
   }
 
@@ -62,13 +63,14 @@ public class ImageServiceTest {
                     1L,
                     testName,
                     String.format("file:///%s/%s", String.valueOf(1L), testName),
-                    "Hello World".getBytes())));
+                    "Hello World".getBytes(),
+                    testUserId)));
 
     Long datasetId = 1L;
     String name = "hello.txt";
     String url = generateTestImageUrl(datasetId, name);
     String contents = "Hello World";
-    ImageCreate imageCreate = new ImageCreate(datasetId, name, url, contents.getBytes());
+    ImageCreate imageCreate = new ImageCreate(datasetId, name, url, contents.getBytes(), testUserId);
     Image image = imageService.createImage(imageCreate);
     assertEquals(image.getName(), name);
     assertEquals(image.getUrl(), url);

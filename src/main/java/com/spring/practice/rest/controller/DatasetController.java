@@ -145,7 +145,7 @@ public class DatasetController {
           String.format("User[id=%d] is unauthorized.", userInfo.getId(), dataset.getCreatedBy()));
     }
 
-    dataset = datasetService.uploadImages(id, files);
+    dataset = datasetService.uploadImages(id, files, userInfo.getId());
     return mapper.datasetToDatasetInfo(dataset);
   }
 

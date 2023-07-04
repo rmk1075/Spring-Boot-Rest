@@ -123,7 +123,7 @@ public class DatasetServiceTest {
         new MultipartFile[] {
           new MockMultipartFile(TEST_FILE_PATH, TEST_FILE_NAME, "text/plain", CONTENT.getBytes())
         };
-    Dataset dataset = datasetService.uploadImages(created.getId(), files);
+    Dataset dataset = datasetService.uploadImages(created.getId(), files, USER_ID);
 
     List<Image> images = datasetService.getImages(dataset.getId(), 0, 100);
     Map<String, Image> imageMap = new HashMap<>();
@@ -146,7 +146,7 @@ public class DatasetServiceTest {
         new MultipartFile[] {
           new MockMultipartFile(TEST_FILE_PATH, TEST_FILE_NAME, "text/plain", CONTENT.getBytes())
         };
-    Dataset dataset = datasetService.uploadImages(created.getId(), files);
+    Dataset dataset = datasetService.uploadImages(created.getId(), files, USER_ID);
     System.out.println(dataset.toString());
     assertEquals(dataset.getSize(), files.length);
 

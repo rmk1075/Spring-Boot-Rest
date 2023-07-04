@@ -115,19 +115,20 @@ public class DatasetServiceImpl implements DatasetService {
   }
 
   @Override
-  public Dataset uploadImages(Long id, MultipartFile[] files)
+  public Dataset uploadImages(Long id, MultipartFile[] files, Long userId)
       throws IllegalArgumentException, URISyntaxException, IOException {
     Dataset dataset = this.getDataset(id);
     int size = 0;
     for (MultipartFile multipartFile : files) {
       String name = multipartFile.getOriginalFilename();
       String url = this.generateFileUrl(dataset, name);
-      ImageCreate imageCreate = new ImageCreate(id, name, url, multipartFile.getBytes());
+      ImageCreate imageCreate = new ImageCreate(id, name, url, multipartFile.getBytes(), userId);
       imageService.createImage(imageCreate);
       size++;
     }
 
     dataset.setSize(size);
+    dataset.setUpdatedBy(id);
     dataset = datasetRepository.save(dataset);
     return dataset;
   }
