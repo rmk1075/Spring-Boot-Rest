@@ -17,6 +17,6 @@ public class UserInfo {
   private String email;
   private String desc;
 
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private String createdAt;
+  private String updatedAt;
 }

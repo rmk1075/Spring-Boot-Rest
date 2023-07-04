@@ -19,6 +19,6 @@ public class DatasetInfo {
   private Long createdBy;
   private Long updatedBy;
 
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+  private String createdAt;
+  private String updatedAt;
 }

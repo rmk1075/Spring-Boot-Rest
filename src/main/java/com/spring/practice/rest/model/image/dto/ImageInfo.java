@@ -21,7 +21,7 @@ public class ImageInfo {
 
   @NonNull @NotNull private String url;
 
-  @NonNull @NotNull private LocalDateTime createdAt;
+  @NonNull @NotNull private String createdAt;
 
-  @NonNull @NotNull private LocalDateTime updatedAt;
+  @NonNull @NotNull private String updatedAt;
 }

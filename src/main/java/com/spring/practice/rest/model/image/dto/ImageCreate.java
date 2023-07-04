@@ -19,4 +19,6 @@ public class ImageCreate {
   @NonNull @NotNull private String url;
 
   @NonNull @NotNull private byte[] file;
+
+  @NonNull @NotNull private Long userId;
 }
