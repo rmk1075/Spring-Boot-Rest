@@ -2,6 +2,7 @@ package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.common.constants.Message;
+import com.spring.practice.rest.common.constants.Role;
 import com.spring.practice.rest.common.exceptions.UnauthorizedException;
 import com.spring.practice.rest.model.dataset.Dataset;
 import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
@@ -13,8 +14,10 @@ import com.spring.practice.rest.model.dataset.dto.DatasetUserPatch;
 import com.spring.practice.rest.model.dataset.dto.DatasetUserUpdate;
 import com.spring.practice.rest.model.image.Image;
 import com.spring.practice.rest.model.image.dto.ImageInfo;
+import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserInfo;
 import com.spring.practice.rest.service.dataset.DatasetService;
+import com.spring.practice.rest.service.user.UserService;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -45,6 +48,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class DatasetController {
 
   @Autowired private DatasetService datasetService;
+
+  @Autowired private UserService userService;
 
   @Autowired private CommonMapper mapper;
 
@@ -225,11 +230,14 @@ public class DatasetController {
    */
   private Dataset getAuthorizedDataset(Long id, UserInfo userInfo) throws UnauthorizedException {
     Dataset dataset = datasetService.getDataset(id);
-    if (!userInfo.getId().equals(dataset.getCreatedBy())) {
-      throw new UnauthorizedException(
-          String.format(
-              Message.USER_UNAUTHORIZED.getMessage(),
-              userInfo.getId(), dataset.getCreatedBy()));
+    User user = userService.getUser(userInfo.getId());
+    if (!user.getRole().equals(Role.ADMIN.name())) {
+      if (!userInfo.getId().equals(dataset.getCreatedBy())) {
+        throw new UnauthorizedException(
+            String.format(
+                Message.USER_UNAUTHORIZED.getMessage(),
+                userInfo.getId(), dataset.getCreatedBy()));
+      }
     }
     return dataset;
   }
