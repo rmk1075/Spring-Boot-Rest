@@ -1,6 +1,5 @@
 package com.spring.practice.rest.model.image.dto;
 
-import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
