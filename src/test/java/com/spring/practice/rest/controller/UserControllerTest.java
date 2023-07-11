@@ -3,6 +3,12 @@ package com.spring.practice.rest.controller;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.common.exceptions.UnauthorizedException;
+import com.spring.practice.rest.model.user.dto.UserCreate;
+import com.spring.practice.rest.model.user.dto.UserInfo;
+import com.spring.practice.rest.service.user.UserService;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
-import com.spring.practice.rest.model.user.dto.UserCreate;
-import com.spring.practice.rest.model.user.dto.UserInfo;
 
 /**
  * Test code for UserController.
@@ -23,6 +27,12 @@ public class UserControllerTest {
   @Autowired
   private UserController userController;
 
+  @Autowired
+  private UserService userService;
+
+  @Autowired
+  private CommonMapper mapper;
+
   private Long testId;
   private final String testUid = "testId";
   private final String testPwd = "$2y$10$nOB0T9ta16XuUNhOQDw.8.iVKAJOIHQWw5xdvWmbfxbuDEun3vBBK";
@@ -31,13 +41,20 @@ public class UserControllerTest {
 
   @BeforeEach
   void setup() {
-    UserInfo testUser = userController.createUser(new UserCreate(testUid, testPwd, testName, testEmail));
+    UserInfo testUser = userController.createUser(
+      new UserCreate(testUid, testPwd, testName, testEmail));
     testId = testUser.getId();
   }
 
   @AfterEach
   void tearDown() {
-    userController.deleteUser(testId);
+    try {
+      userController.deleteUser(testId, mapper.userToUserInfo(userService.getUser(testId)));
+    } catch (NoSuchElementException e) {
+      e.printStackTrace();
+    } catch (UnauthorizedException e) {
+      e.printStackTrace();
+    }
   }
 
   @Test

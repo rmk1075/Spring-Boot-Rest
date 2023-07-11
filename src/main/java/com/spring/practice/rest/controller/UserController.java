@@ -78,9 +78,23 @@ public class UserController {
     return mapper.userToUserInfo(user);
   }
 
+  /**
+   * Patch User info.
+   *
+   * @param id User id.
+   * @param userInfo User info.
+   * @param userPatch User patch arguments.
+   * @return Patched UserInfo.
+   * @throws UnauthorizedException User is not authorized.
+   */
   @PatchMapping("/{id}")
-  public UserInfo patchUser(@PathVariable Long id, @RequestBody UserPatch userPatch) {
-    User user = userService.patchUser(id, userPatch);
+  public UserInfo patchUser(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo,
+      @RequestBody UserPatch userPatch
+  ) throws UnauthorizedException {
+    User user = this.getAuthorizedUser(id, userInfo);
+    user = userService.patchUser(user.getId(), userPatch);
     return mapper.userToUserInfo(user);
   }
 
@@ -90,10 +104,16 @@ public class UserController {
    * @param id User id.
    * @param userUpdate User update arguments.
    * @return Updated UserInfo.
+   * @throws UnauthorizedException User is not authorized.
    */
   @PutMapping("/{id}")
-  public UserInfo updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdate userUpdate) {
-    User user = userService.updateUser(id, userUpdate);
+  public UserInfo updateUser(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo,
+      @Valid @RequestBody UserUpdate userUpdate
+  ) throws UnauthorizedException {
+    User user = this.getAuthorizedUser(id, userInfo);
+    user = userService.updateUser(user.getId(), userUpdate);
     return mapper.userToUserInfo(user);
   }
 
@@ -101,11 +121,16 @@ public class UserController {
    * Delete User.
    *
    * @param id User id.
+   * @throws UnauthorizedException User is not authorized.
    */
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
-  public void deleteUser(@PathVariable Long id) {
-    userService.deleteUser(id);
+  public void deleteUser(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo
+  ) throws UnauthorizedException {
+    User user = this.getAuthorizedUser(id, userInfo);
+    userService.deleteUser(user.getId());
   }
 
   /**
