@@ -5,7 +5,8 @@ package com.spring.practice.rest.common.constants;
  */
 public enum Message {
 
-  INVALID_LOGIN_INFO("Invalid login info.");
+  INVALID_LOGIN_INFO("Invalid login info."),
+  USER_UNAUTHORIZED("User[id=%d] is unauthorized. User[id=%d] is expected.");
 
   private String message;
 
