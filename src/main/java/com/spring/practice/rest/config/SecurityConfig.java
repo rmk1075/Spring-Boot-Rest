@@ -42,6 +42,8 @@ public class SecurityConfig {
         .authorizeHttpRequests()
         .antMatchers(HttpMethod.POST, "/users/**")
         .permitAll()
+        .antMatchers(HttpMethod.GET, "/users/")
+        .hasRole("ADMIN")
         .antMatchers("/users/**")
         .hasAnyRole("USER", "ADMIN")
         .antMatchers("/datasets/**")
