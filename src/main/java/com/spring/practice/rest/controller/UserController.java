@@ -1,6 +1,9 @@
 package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.common.constants.Message;
+import com.spring.practice.rest.common.constants.Role;
+import com.spring.practice.rest.common.exceptions.UnauthorizedException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
 import com.spring.practice.rest.model.user.dto.UserInfo;
@@ -11,6 +14,7 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,9 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Controller for UserService.
- */
+/** Controller for UserService. */
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -52,10 +54,14 @@ public class UserController {
    *
    * @param id User id.
    * @return UserInfo.
+   * @throws UnauthorizedException User is not authorized.
    */
   @GetMapping("/{id}")
-  public UserInfo getUser(@PathVariable Long id) {
-    User user = userService.getUser(id);
+  public UserInfo getUser(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo
+  ) throws UnauthorizedException {
+    User user = this.getAuthorizedUser(id, userInfo);
     return mapper.userToUserInfo(user);
   }
 
@@ -72,9 +78,23 @@ public class UserController {
     return mapper.userToUserInfo(user);
   }
 
+  /**
+   * Patch User info.
+   *
+   * @param id User id.
+   * @param userInfo User info.
+   * @param userPatch User patch arguments.
+   * @return Patched UserInfo.
+   * @throws UnauthorizedException User is not authorized.
+   */
   @PatchMapping("/{id}")
-  public UserInfo patchUser(@PathVariable Long id, @RequestBody UserPatch userPatch) {
-    User user = userService.patchUser(id, userPatch);
+  public UserInfo patchUser(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo,
+      @RequestBody UserPatch userPatch
+  ) throws UnauthorizedException {
+    User user = this.getAuthorizedUser(id, userInfo);
+    user = userService.patchUser(user.getId(), userPatch);
     return mapper.userToUserInfo(user);
   }
 
@@ -84,10 +104,16 @@ public class UserController {
    * @param id User id.
    * @param userUpdate User update arguments.
    * @return Updated UserInfo.
+   * @throws UnauthorizedException User is not authorized.
    */
   @PutMapping("/{id}")
-  public UserInfo updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdate userUpdate) {
-    User user = userService.updateUser(id, userUpdate);
+  public UserInfo updateUser(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo,
+      @Valid @RequestBody UserUpdate userUpdate
+  ) throws UnauthorizedException {
+    User user = this.getAuthorizedUser(id, userInfo);
+    user = userService.updateUser(user.getId(), userUpdate);
     return mapper.userToUserInfo(user);
   }
 
@@ -95,10 +121,36 @@ public class UserController {
    * Delete User.
    *
    * @param id User id.
+   * @throws UnauthorizedException User is not authorized.
    */
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
-  public void deleteUser(@PathVariable Long id) {
-    userService.deleteUser(id);
+  public void deleteUser(
+      @PathVariable Long id,
+      @AuthenticationPrincipal UserInfo userInfo
+  ) throws UnauthorizedException {
+    User user = this.getAuthorizedUser(id, userInfo);
+    userService.deleteUser(user.getId());
+  }
+
+  /**
+   * Get authorized User info.
+   *
+   * @param id User id.
+   * @param userInfo User info.
+   * @return User.
+   * @throws UnauthorizedException User is not authorized.
+   */
+  private User getAuthorizedUser(Long id, UserInfo userInfo) throws UnauthorizedException {
+    User user = userService.getUser(userInfo.getId());
+    if (!user.getRole().equals(Role.ADMIN.name())) {
+      if (!userInfo.getId().equals(id)) {
+        throw new UnauthorizedException(
+            String.format(
+                Message.USER_UNAUTHORIZED.getMessage(),
+                userInfo.getId(), id));
+      }
+    }
+    return userService.getUser(id);
   }
 }
