@@ -1,9 +1,9 @@
 package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.common.constants.Message;
 import com.spring.practice.rest.common.constants.Role;
 import com.spring.practice.rest.common.exceptions.UnauthorizedException;
+import com.spring.practice.rest.common.exceptions.UserUnauthorizedException;
 import com.spring.practice.rest.model.dataset.Dataset;
 import com.spring.practice.rest.model.dataset.dto.DatasetCreate;
 import com.spring.practice.rest.model.dataset.dto.DatasetInfo;
@@ -233,10 +233,7 @@ public class DatasetController {
     User user = userService.getUser(userInfo.getId());
     if (!user.getRole().equals(Role.ADMIN.name())) {
       if (!userInfo.getId().equals(dataset.getCreatedBy())) {
-        throw new UnauthorizedException(
-            String.format(
-                Message.USER_UNAUTHORIZED.getMessage(),
-                userInfo.getId(), dataset.getCreatedBy()));
+        throw new UserUnauthorizedException(userInfo.getId(), dataset.getCreatedBy());
       }
     }
     return dataset;
