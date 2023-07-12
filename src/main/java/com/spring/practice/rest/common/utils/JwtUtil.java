@@ -1,6 +1,7 @@
 package com.spring.practice.rest.common.utils;
 
 import com.spring.practice.rest.common.CommonMapper;
+import com.spring.practice.rest.common.exceptions.InvalidTokenUnauthenticatedException;
 import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.service.user.UserService;
@@ -73,7 +74,7 @@ public class JwtUtil {
       return new UsernamePasswordAuthenticationToken(
           mapper.userToUserInfo(user), "", user.getAuthorities("ROLE_"));
     } catch (NoSuchElementException e) {
-      throw new UnauthenticatedException("Token has invalid user signature.");
+      throw new InvalidTokenUnauthenticatedException();
     }
   }
 

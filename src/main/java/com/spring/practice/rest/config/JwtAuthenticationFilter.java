@@ -1,5 +1,6 @@
 package com.spring.practice.rest.config;
 
+import com.spring.practice.rest.common.exceptions.InvalidTokenUnauthenticatedException;
 import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
 import com.spring.practice.rest.common.utils.JwtUtil;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
       request.setAttribute("exception", e);
     } catch (Exception e) {
       log.error(String.format("Token is invalid. %s", e.getMessage()), e);
-      request.setAttribute("exception", new UnauthenticatedException("Invalid token."));
+      request.setAttribute("exception", new InvalidTokenUnauthenticatedException());
     }
     chain.doFilter(request, response);
   }

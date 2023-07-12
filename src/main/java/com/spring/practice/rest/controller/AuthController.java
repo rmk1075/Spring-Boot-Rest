@@ -1,6 +1,6 @@
 package com.spring.practice.rest.controller;
 
-import com.spring.practice.rest.common.constants.Message;
+import com.spring.practice.rest.common.exceptions.InvalidLoginInfoUnauthenticatedException;
 import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
 import com.spring.practice.rest.common.utils.JwtUtil;
 import com.spring.practice.rest.model.user.User;
@@ -37,7 +37,7 @@ public class AuthController {
           jwtUtil.createToken(user.getId().toString(), JwtUtil.ACCESS_TOKEN_TYPE),
           jwtUtil.createToken(user.getId().toString(), JwtUtil.REFRESH_TOKEN_TYPE));
     } catch (NoSuchElementException e) {
-      throw new UnauthenticatedException(Message.INVALID_LOGIN_INFO.getMessage());
+      throw new InvalidLoginInfoUnauthenticatedException();
     }
   }
 }

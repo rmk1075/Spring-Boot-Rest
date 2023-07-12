@@ -1,9 +1,9 @@
 package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.common.constants.Message;
 import com.spring.practice.rest.common.constants.Role;
 import com.spring.practice.rest.common.exceptions.UnauthorizedException;
+import com.spring.practice.rest.common.exceptions.UserUnauthorizedException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
 import com.spring.practice.rest.model.user.dto.UserInfo;
@@ -145,10 +145,7 @@ public class UserController {
     User user = userService.getUser(userInfo.getId());
     if (!user.getRole().equals(Role.ADMIN.name())) {
       if (!userInfo.getId().equals(id)) {
-        throw new UnauthorizedException(
-            String.format(
-                Message.USER_UNAUTHORIZED.getMessage(),
-                userInfo.getId(), id));
+        throw new UserUnauthorizedException(userInfo.getId(), id);
       }
     }
     return userService.getUser(id);
