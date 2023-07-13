@@ -1,7 +1,7 @@
 package com.spring.practice.rest.controller;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.common.constants.Role;
+import com.spring.practice.rest.common.constant.Role;
 import com.spring.practice.rest.common.exception.UnauthorizedException;
 import com.spring.practice.rest.common.exception.UserUnauthorizedException;
 import com.spring.practice.rest.model.dataset.Dataset;

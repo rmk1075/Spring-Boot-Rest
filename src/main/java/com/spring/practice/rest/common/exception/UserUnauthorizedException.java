@@ -1,6 +1,6 @@
 package com.spring.practice.rest.common.exception;
 
-import com.spring.practice.rest.common.constants.Message;
+import com.spring.practice.rest.common.constant.Message;
 
 /** UserUnauthorizedException class. Exception for user unauthorized access. */
 public class UserUnauthorizedException extends UnauthorizedException {

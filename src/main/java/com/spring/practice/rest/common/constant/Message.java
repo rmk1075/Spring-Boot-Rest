@@ -1,7 +1,7 @@
-package com.spring.practice.rest.common.constants;
+package com.spring.practice.rest.common.constant;
 
 /**
- * Message constants.
+ * Message constant.
  */
 public enum Message {
 
