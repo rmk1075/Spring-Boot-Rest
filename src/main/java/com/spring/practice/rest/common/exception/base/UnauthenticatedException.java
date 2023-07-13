@@ -1,4 +1,4 @@
-package com.spring.practice.rest.common.exception;
+package com.spring.practice.rest.common.exception.base;
 
 /** UnauthenticatedException class. Exception for unauthenticated access. */
 public class UnauthenticatedException extends Exception {

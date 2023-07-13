@@ -1,7 +1,8 @@
 package com.spring.practice.rest.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.practice.rest.common.exception.UnauthenticatedException;
+import com.spring.practice.rest.common.exception.base.UnauthenticatedException;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

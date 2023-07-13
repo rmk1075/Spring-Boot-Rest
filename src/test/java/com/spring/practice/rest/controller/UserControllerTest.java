@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.common.exception.UnauthorizedException;
+import com.spring.practice.rest.common.exception.base.UnauthorizedException;
 import com.spring.practice.rest.model.user.dto.UserCreate;
 import com.spring.practice.rest.model.user.dto.UserInfo;
 import com.spring.practice.rest.service.user.UserService;

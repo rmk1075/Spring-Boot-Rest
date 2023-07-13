@@ -1,7 +1,7 @@
 package com.spring.practice.rest.controller;
 
-import com.spring.practice.rest.common.exception.InvalidLoginInfoUnauthenticatedException;
-import com.spring.practice.rest.common.exception.UnauthenticatedException;
+import com.spring.practice.rest.common.exception.auth.InvalidLoginInfoUnauthenticatedException;
+import com.spring.practice.rest.common.exception.base.UnauthenticatedException;
 import com.spring.practice.rest.common.utils.JwtUtil;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserLogin;
