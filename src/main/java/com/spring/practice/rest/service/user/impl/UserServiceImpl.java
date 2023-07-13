@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.user.impl;
 
 import com.spring.practice.rest.common.constant.Role;
+import com.spring.practice.rest.common.exception.user.UserInfoDuplicatedException;
 import com.spring.practice.rest.common.exception.user.UserNotFoundException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
@@ -50,16 +51,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User createUser(UserCreate userCreate) {
-    if (userRepository.findByUid(userCreate.getUid()).isPresent()) {
-      throw new IllegalArgumentException(
-          String.format("User[uid=%s] is already exists.", userCreate.getUid()));
-    }
-
-    if (userRepository.findByEmail(userCreate.getEmail()).isPresent()) {
-      throw new IllegalArgumentException(
-          String.format("User[email=%s] is already exists.", userCreate.getEmail()));
-    }
-
+    this.validateUserCreate(userCreate);
     User user =
         new User(
             userCreate.getUid(),
@@ -69,6 +61,18 @@ public class UserServiceImpl implements UserService {
             userCreate.getEmail(),
             userCreate.getDesc());
     return userRepository.save(user);
+  }
+
+  private void validateUserCreate(UserCreate userCreate) {
+    String uid = userCreate.getUid();
+    if (userRepository.findByUid(uid).isPresent()) {
+      throw new UserInfoDuplicatedException(uid);
+    }
+
+    String email = userCreate.getEmail();
+    if (userRepository.findByEmail(email).isPresent()) {
+      throw new UserInfoDuplicatedException(email);
+    }
   }
 
   @Override
