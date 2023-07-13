@@ -1,7 +1,7 @@
 package com.spring.practice.rest.config;
 
-import com.spring.practice.rest.common.exceptions.InvalidTokenUnauthenticatedException;
-import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
+import com.spring.practice.rest.common.exception.InvalidTokenUnauthenticatedException;
+import com.spring.practice.rest.common.exception.UnauthenticatedException;
 import com.spring.practice.rest.common.utils.JwtUtil;
 import java.io.IOException;
 import java.util.Collection;

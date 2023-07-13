@@ -1,8 +1,8 @@
 package com.spring.practice.rest.common.utils;
 
 import com.spring.practice.rest.common.CommonMapper;
-import com.spring.practice.rest.common.exceptions.InvalidTokenUnauthenticatedException;
-import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
+import com.spring.practice.rest.common.exception.InvalidTokenUnauthenticatedException;
+import com.spring.practice.rest.common.exception.UnauthenticatedException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.service.user.UserService;
 import io.jsonwebtoken.Claims;

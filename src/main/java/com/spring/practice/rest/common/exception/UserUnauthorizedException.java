@@ -1,4 +1,4 @@
-package com.spring.practice.rest.common.exceptions;
+package com.spring.practice.rest.common.exception;
 
 import com.spring.practice.rest.common.constants.Message;
 
