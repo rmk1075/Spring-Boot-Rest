@@ -7,6 +7,7 @@ public enum Message {
   USER_UNAUTHORIZED("User[id=%d] is unauthorized. User[id=%d] is expected."),
   USER_ID_NOT_FOUND("User[id=%d] is not found."),
   USER_UID_NOT_FOUND("User[uid=%s] is not found."),
+  USER_INFO_DUPLICATED("User[%s] is duplicated."),
   ;
 
   private String message;
