@@ -1,14 +1,14 @@
 package com.spring.practice.rest.config;
 
+import com.spring.practice.rest.common.exception.base.NotFoundException;
+import com.spring.practice.rest.common.exception.base.UnauthenticatedException;
+import com.spring.practice.rest.common.exception.base.UnauthorizedException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.spring.practice.rest.common.exception.base.UnauthenticatedException;
-import com.spring.practice.rest.common.exception.base.UnauthorizedException;
 
 /** CommonRestControllerAdvice class. Rest API status code handler. */
 @Slf4j
@@ -65,10 +65,10 @@ public class CommonRestControllerAdvice {
   /**
    * Return ResponseEntity with NOT_FOUND (404) status code.
    *
-   * @param exception NoSuchElementException
+   * @param exception NoSuchElementException, NotFoundException
    * @return NOT_FOUND (404)
    */
-  @ExceptionHandler({NoSuchElementException.class})
+  @ExceptionHandler({NoSuchElementException.class, NotFoundException.class})
   public ResponseEntity<String> notFoundHandler(Exception exception) {
     HttpStatus status = HttpStatus.NOT_FOUND;
     this.error(status, exception);

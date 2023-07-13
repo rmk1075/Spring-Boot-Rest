@@ -1,13 +1,13 @@
 package com.spring.practice.rest.common.constant;
 
-/**
- * Message constant.
- */
+/** Message constant. */
 public enum Message {
-
   INVALID_LOGIN_INFO("Invalid login info."),
   INVALID_TOKEN("Invalid token."),
-  USER_UNAUTHORIZED("User[id=%d] is unauthorized. User[id=%d] is expected.");
+  USER_UNAUTHORIZED("User[id=%d] is unauthorized. User[id=%d] is expected."),
+  USER_ID_NOT_FOUND("User[id=%d] is not found."),
+  USER_UID_NOT_FOUND("User[uid=%s] is not found."),
+  ;
 
   private String message;
 

@@ -1,6 +1,7 @@
 package com.spring.practice.rest.service.user.impl;
 
 import com.spring.practice.rest.common.constant.Role;
+import com.spring.practice.rest.common.exception.user.UserNotFoundException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
 import com.spring.practice.rest.model.user.dto.UserPatch;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
   public User getUser(Long id) throws NoSuchElementException {
     Optional<User> user = userRepository.findById(id);
     if (user.isEmpty()) {
-      throw new NoSuchElementException(String.format("User[id=%d] is not exists.", id));
+      throw new UserNotFoundException(id);
     }
     return user.get();
   }
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
   public User getUserByUid(String uid) throws NoSuchElementException {
     Optional<User> user = userRepository.findByUid(uid);
     if (user.isEmpty()) {
-      throw new NoSuchElementException(String.format("User[uid=%s] is not exists.", uid));
+      throw new UserNotFoundException(uid);
     }
     return user.get();
   }
@@ -59,14 +60,14 @@ public class UserServiceImpl implements UserService {
           String.format("User[email=%s] is already exists.", userCreate.getEmail()));
     }
 
-    User user = new User(
-        userCreate.getUid(),
-        userCreate.getPassword(),
-        Role.USER.name(),
-        userCreate.getName(),
-        userCreate.getEmail(),
-        userCreate.getDesc()
-    );
+    User user =
+        new User(
+            userCreate.getUid(),
+            userCreate.getPassword(),
+            Role.USER.name(),
+            userCreate.getName(),
+            userCreate.getEmail(),
+            userCreate.getDesc());
     return userRepository.save(user);
   }
 
