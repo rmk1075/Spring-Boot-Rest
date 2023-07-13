@@ -1,4 +1,4 @@
-package com.spring.practice.rest.common.constants;
+package com.spring.practice.rest.common.constant;
 
 import java.util.List;
 import java.util.Map;

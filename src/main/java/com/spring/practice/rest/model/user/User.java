@@ -1,6 +1,6 @@
 package com.spring.practice.rest.model.user;
 
-import com.spring.practice.rest.common.constants.RoleAuthority;
+import com.spring.practice.rest.common.constant.RoleAuthority;
 import com.spring.practice.rest.model.BaseEntity;
 import java.util.Collection;
 import javax.persistence.Column;

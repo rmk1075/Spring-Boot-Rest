@@ -1,6 +1,6 @@
 package com.spring.practice.rest.service.user.impl;
 
-import com.spring.practice.rest.common.constants.Role;
+import com.spring.practice.rest.common.constant.Role;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
 import com.spring.practice.rest.model.user.dto.UserPatch;

@@ -1,13 +1,14 @@
 package com.spring.practice.rest.config;
 
-import com.spring.practice.rest.common.exceptions.UnauthenticatedException;
-import com.spring.practice.rest.common.exceptions.UnauthorizedException;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.spring.practice.rest.common.exception.base.UnauthenticatedException;
+import com.spring.practice.rest.common.exception.base.UnauthorizedException;
 
 /** CommonRestControllerAdvice class. Rest API status code handler. */
 @Slf4j
