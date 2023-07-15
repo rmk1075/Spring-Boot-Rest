@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     String name = userPatch.getName();
     if (name != null) {
       if (userRepository.findByName(name).isPresent()) {
-        throw new IllegalArgumentException(String.format("User[name=%s] is already exists", name));
+        throw new UserInfoDuplicatedException(name);
       }
       user.setName(name);
     }
@@ -92,8 +92,7 @@ public class UserServiceImpl implements UserService {
     String email = userPatch.getEmail();
     if (email != null) {
       if (userRepository.findByEmail(email).isPresent()) {
-        throw new IllegalArgumentException(
-            String.format("User[email=%s] is already exists.", email));
+        throw new UserInfoDuplicatedException(email);
       }
       user.setEmail(email);
     }
@@ -114,14 +113,14 @@ public class UserServiceImpl implements UserService {
     // name validation
     String name = userUpdate.getName();
     if (userRepository.findByName(name).isPresent()) {
-      throw new IllegalArgumentException(String.format("User[name=%s] is already exists", name));
+      throw new UserInfoDuplicatedException(name);
     }
     user.setName(name);
 
     // email validation
     String email = userUpdate.getEmail();
     if (userRepository.findByEmail(email).isPresent()) {
-      throw new IllegalArgumentException(String.format("User[email=%s] is already exists.", email));
+      throw new UserInfoDuplicatedException(email);
     }
     user.setEmail(email);
 
