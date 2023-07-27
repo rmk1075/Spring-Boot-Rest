@@ -1,5 +1,6 @@
 package com.spring.practice.rest.service.user;
 
+import com.spring.practice.rest.common.exception.user.UserInfoDuplicatedException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
 import com.spring.practice.rest.model.user.dto.UserPatch;
@@ -15,9 +16,9 @@ public interface UserService {
 
   public List<User> getUsers(int start, int limit);
 
-  public User createUser(UserCreate userCreate);
+  public User createUser(UserCreate userCreate) throws UserInfoDuplicatedException;
 
-  public User patchUser(Long id, UserPatch userPatch);
+  public User patchUser(Long id, UserPatch userPatch) throws UserInfoDuplicatedException;
 
   public User updateUser(Long id, UserUpdate userUpdate);
 

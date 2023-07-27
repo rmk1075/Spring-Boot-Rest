@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User createUser(UserCreate userCreate) {
+  public User createUser(UserCreate userCreate) throws UserInfoDuplicatedException {
     this.validateUserCreate(userCreate);
     User user =
         new User(
@@ -64,46 +64,55 @@ public class UserServiceImpl implements UserService {
   }
 
   private void validateUserCreate(UserCreate userCreate) {
-    String uid = userCreate.getUid();
+    this.validateUserIdDuplications(userCreate.getUid());
+    this.validateUserEmailDuplications(userCreate.getEmail());
+  }
+
+  private void validateUserIdDuplications(String uid) {
     if (userRepository.findByUid(uid).isPresent()) {
       throw new UserInfoDuplicatedException(uid);
     }
+  }
 
-    String email = userCreate.getEmail();
+  private void validateUserEmailDuplications(String email) {
     if (userRepository.findByEmail(email).isPresent()) {
       throw new UserInfoDuplicatedException(email);
     }
   }
 
   @Override
-  public User patchUser(Long id, UserPatch userPatch) {
+  public User patchUser(Long id, UserPatch userPatch) throws UserInfoDuplicatedException {
     User user = this.getUser(id);
+    user = this.updateUserByUserPatch(user, userPatch);
+    return userRepository.save(user);
+  }
 
-    // name validation
+  private User updateUserByUserPatch(User user, UserPatch userPatch)
+      throws UserInfoDuplicatedException {
     String name = userPatch.getName();
     if (name != null) {
-      if (userRepository.findByName(name).isPresent()) {
-        throw new UserInfoDuplicatedException(name);
-      }
+      this.validateUserName(name);
       user.setName(name);
     }
 
-    // email validation
     String email = userPatch.getEmail();
     if (email != null) {
-      if (userRepository.findByEmail(email).isPresent()) {
-        throw new UserInfoDuplicatedException(email);
-      }
+      this.validateUserEmailDuplications(email);
       user.setEmail(email);
     }
 
-    // desc validation
     String desc = userPatch.getDesc();
     if (desc != null) {
       user.setDesc(desc);
     }
 
-    return userRepository.save(user);
+    return user;
+  }
+
+  private void validateUserName(String name) throws UserInfoDuplicatedException {
+    if (userRepository.findByName(name).isPresent()) {
+      throw new UserInfoDuplicatedException(name);
+    }
   }
 
   @Override

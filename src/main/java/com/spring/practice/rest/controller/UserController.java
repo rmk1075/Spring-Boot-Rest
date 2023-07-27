@@ -3,6 +3,7 @@ package com.spring.practice.rest.controller;
 import com.spring.practice.rest.common.CommonMapper;
 import com.spring.practice.rest.common.constant.Role;
 import com.spring.practice.rest.common.exception.base.UnauthorizedException;
+import com.spring.practice.rest.common.exception.user.UserInfoDuplicatedException;
 import com.spring.practice.rest.common.exception.user.UserUnauthorizedException;
 import com.spring.practice.rest.model.user.User;
 import com.spring.practice.rest.model.user.dto.UserCreate;
@@ -57,10 +58,8 @@ public class UserController {
    * @throws UnauthorizedException User is not authorized.
    */
   @GetMapping("/{id}")
-  public UserInfo getUser(
-      @PathVariable Long id,
-      @AuthenticationPrincipal UserInfo userInfo
-  ) throws UnauthorizedException {
+  public UserInfo getUser(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo)
+      throws UnauthorizedException {
     User user = this.getAuthorizedUser(id, userInfo);
     return mapper.userToUserInfo(user);
   }
@@ -73,7 +72,8 @@ public class UserController {
    */
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping("/")
-  public UserInfo createUser(@Valid @RequestBody UserCreate userCreate) {
+  public UserInfo createUser(@Valid @RequestBody UserCreate userCreate)
+      throws UserInfoDuplicatedException {
     User user = userService.createUser(userCreate);
     return mapper.userToUserInfo(user);
   }
@@ -91,8 +91,8 @@ public class UserController {
   public UserInfo patchUser(
       @PathVariable Long id,
       @AuthenticationPrincipal UserInfo userInfo,
-      @RequestBody UserPatch userPatch
-  ) throws UnauthorizedException {
+      @RequestBody UserPatch userPatch)
+      throws UnauthorizedException, UserInfoDuplicatedException {
     User user = this.getAuthorizedUser(id, userInfo);
     user = userService.patchUser(user.getId(), userPatch);
     return mapper.userToUserInfo(user);
@@ -110,8 +110,8 @@ public class UserController {
   public UserInfo updateUser(
       @PathVariable Long id,
       @AuthenticationPrincipal UserInfo userInfo,
-      @Valid @RequestBody UserUpdate userUpdate
-  ) throws UnauthorizedException {
+      @Valid @RequestBody UserUpdate userUpdate)
+      throws UnauthorizedException {
     User user = this.getAuthorizedUser(id, userInfo);
     user = userService.updateUser(user.getId(), userUpdate);
     return mapper.userToUserInfo(user);
@@ -125,10 +125,8 @@ public class UserController {
    */
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @DeleteMapping("/{id}")
-  public void deleteUser(
-      @PathVariable Long id,
-      @AuthenticationPrincipal UserInfo userInfo
-  ) throws UnauthorizedException {
+  public void deleteUser(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo)
+      throws UnauthorizedException {
     User user = this.getAuthorizedUser(id, userInfo);
     userService.deleteUser(user.getId());
   }
