@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
       throws UserInfoDuplicatedException {
     String name = userPatch.getName();
     if (name != null) {
-      this.validateUserName(name);
+      this.validateUserNameDuplication(name);
       user.setName(name);
     }
 
@@ -109,35 +109,33 @@ public class UserServiceImpl implements UserService {
     return user;
   }
 
-  private void validateUserName(String name) throws UserInfoDuplicatedException {
+  private void validateUserNameDuplication(String name) throws UserInfoDuplicatedException {
     if (userRepository.findByName(name).isPresent()) {
       throw new UserInfoDuplicatedException(name);
     }
   }
 
   @Override
-  public User updateUser(Long id, UserUpdate userUpdate) {
+  public User updateUser(Long id, UserUpdate userUpdate) throws UserInfoDuplicatedException {
     User user = this.getUser(id);
+    user = this.updateUserByUserUpdate(user, userUpdate);
+    return userRepository.save(user);
+  }
 
-    // name validation
+  private User updateUserByUserUpdate(User user, UserUpdate userUpdate)
+      throws UserInfoDuplicatedException {
     String name = userUpdate.getName();
-    if (userRepository.findByName(name).isPresent()) {
-      throw new UserInfoDuplicatedException(name);
-    }
+    this.validateUserNameDuplication(name);
     user.setName(name);
 
-    // email validation
     String email = userUpdate.getEmail();
-    if (userRepository.findByEmail(email).isPresent()) {
-      throw new UserInfoDuplicatedException(email);
-    }
+    this.validateUserEmailDuplications(email);
     user.setEmail(email);
 
-    // desc validation
     String desc = userUpdate.getDesc();
     user.setDesc(desc);
 
-    return userRepository.save(user);
+    return user;
   }
 
   @Override

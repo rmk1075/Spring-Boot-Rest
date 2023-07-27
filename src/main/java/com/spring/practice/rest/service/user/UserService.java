@@ -20,7 +20,7 @@ public interface UserService {
 
   public User patchUser(Long id, UserPatch userPatch) throws UserInfoDuplicatedException;
 
-  public User updateUser(Long id, UserUpdate userUpdate);
+  public User updateUser(Long id, UserUpdate userUpdate) throws UserInfoDuplicatedException;
 
   public User deleteUser(Long id);
 }

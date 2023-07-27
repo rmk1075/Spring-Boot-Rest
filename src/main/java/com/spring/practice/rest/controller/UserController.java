@@ -111,7 +111,7 @@ public class UserController {
       @PathVariable Long id,
       @AuthenticationPrincipal UserInfo userInfo,
       @Valid @RequestBody UserUpdate userUpdate)
-      throws UnauthorizedException {
+      throws UnauthorizedException, UserInfoDuplicatedException {
     User user = this.getAuthorizedUser(id, userInfo);
     user = userService.updateUser(user.getId(), userUpdate);
     return mapper.userToUserInfo(user);
